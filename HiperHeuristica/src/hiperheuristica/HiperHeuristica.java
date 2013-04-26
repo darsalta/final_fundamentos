@@ -2,6 +2,7 @@ package hiperheuristica;
 
 import java.util.List;
 
+
 public class HiperHeuristica {
 
     int vertices = 0;
@@ -112,7 +113,7 @@ public class HiperHeuristica {
      * Implementa DJD. REFACTOR: Needs simplification and method extraction.
      */
     public void DJD(
-            List<Pieza> pieces,
+            PieceList pieces,
             List<Objeto> objects,
             int xObjeto,
             int yObjeto,
@@ -122,7 +123,7 @@ public class HiperHeuristica {
         /// Desperdicio
         int waste;
         /// De mayor a menor
-        pieces = orderPieces(pieces, Order.DESCENDING);
+        pieces.sort(Order.DESCENDING);        
 
         /**
          * Revisa objects con menos de CapInicial para meter una sola piece. En
@@ -198,7 +199,7 @@ public class HiperHeuristica {
 
 
         Objeto newObject = openNewObject(objects, xObjeto, yObjeto);
-        Pieza greatestPiece = getBiggestPiece(pieces);
+        Pieza greatestPiece = pieces.getBiggestPiece();
         /// Si el object es nuevo, siempre debería poder acomodar la piece.
         if (BLHeuristic(newObject, greatestPiece)) {
             newObject.addPiece(greatestPiece);
@@ -213,7 +214,7 @@ public class HiperHeuristica {
     //           para trabajar sobre una lista de Piezas.
     private static boolean areAllBiggerThan(
             int sizeThreshold,
-            List<Pieza> descOrderPieces) {
+            PieceList descOrderPieces) {
         /**
          * Como se entrega la lista ordenada de mayor a menor, si se empieza a
          * buscar desde el último (piece más chica).
@@ -234,7 +235,7 @@ public class HiperHeuristica {
      * MENOR
      */
     private boolean tryFitOnePiece(
-            List<Pieza> descOrderPieces,
+            PieceList descOrderPieces,
             Objeto object,
             int maxWaste) {
         int freeArea = object.getFreeArea();
@@ -266,7 +267,7 @@ public class HiperHeuristica {
      * MENOR
      */
     private boolean tryFitTwoPieces(
-            List<Pieza> descOrderPieces,
+            PieceList descOrderPieces,
             Objeto object,
             int maxWaste) {
         /// Guardará el área de las 2 pieces más grandes.
@@ -365,7 +366,7 @@ public class HiperHeuristica {
      * desperdicio w. SE ASUME QUE LA LISTA ESTÁ DADA ORDENADA DE MAYOR A MENOR
      */
     private boolean tryFitThreePieces(
-            List<Pieza> descOrderPieces,
+            PieceList descOrderPieces,
             Objeto object,
             int maxWaste) {
         /// Guardará el área de las 3 pieces más grandes.
@@ -513,30 +514,17 @@ public class HiperHeuristica {
         return false;
     }
 
-    Pieza getBiggestPiece(List<Pieza> pieces) {
-        int x = 1 / 0;
-        return null;
-    }
-
     /**
-     * Ordena las pieces en la lista de pieces.
-     *
-     * @param pieces
-     * @param num TODO: Determinar qué hace este parámetro (ASC y DESC?)
-     * @return
+     * Opens a new object meant to be used to add more pieces to it.
+     * TODO: Pending implementation.
+     * 
+     * @param objects
+     * @param xPosition
+     * @param yPosition
+     * @return 
      */
-    List<Pieza> orderPieces(List<Pieza> pieces, Order order) {
-        int x = 1 / 0;
-        return null;
-    }
-
     Objeto openNewObject(List<Objeto> objects, int xPosition, int yPosition) {
         int x = 1 / 0;
         return null;
     }
-}
-
-enum Order {
-
-    ASCENDING, DESCENDING
 }
