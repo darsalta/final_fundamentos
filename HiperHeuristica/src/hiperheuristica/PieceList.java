@@ -12,21 +12,21 @@ import java.util.List;
  *
  * @author Marcel
  */
-class PieceList implements Iterable<Pieza> {
+class PieceList implements Iterable<Piece> {
 
-    private List<Pieza> pieces;
+    private List<Piece> pieces;
 
     public PieceList() {
         this.pieces = new ArrayList<>();
     }
 
     /**
-     * Gets the Pieza at the given index
+     * Gets the Piece at the given index
      *
-     * @param index of the Pieza
-     * @return the Pieza at the given index
+     * @param index of the Piece
+     * @return the Piece at the given index
      */
-    public Pieza get(int index) {
+    public Piece get(int index) {
         return this.pieces.get(index);
     }
 
@@ -36,7 +36,7 @@ class PieceList implements Iterable<Pieza> {
      * @param piece to remove
      * @return true if the piece was found and removed, false otherwise.
      */
-    public boolean remove(Pieza piece) {
+    public boolean remove(Piece piece) {
         return this.pieces.remove(piece);
     }
     
@@ -55,18 +55,18 @@ class PieceList implements Iterable<Pieza> {
      * @param sort according to an order
      */
     public void sort(Order order) {
-        java.util.Collections.<Pieza>sort(this.pieces);
+        java.util.Collections.<Piece>sort(this.pieces);
         if (order.equals(Order.DESCENDING)) {
-            java.util.Collections.<Pieza>reverse(this.pieces);
+            java.util.Collections.<Piece>reverse(this.pieces);
         }
     }
     
     /**
-     * Gets the biggest Pieza in this PieceList
-     * @return the biggest Pieza
+     * Gets the biggest Piece in this PieceList
+     * @return the biggest Piece
      */
-    public Pieza getBiggest() {
-        return java.util.Collections.<Pieza>max(this.pieces);
+    public Piece getBiggest() {
+        return java.util.Collections.<Piece>max(this.pieces);
     }
     
     /**
@@ -76,7 +76,7 @@ class PieceList implements Iterable<Pieza> {
      * @return true if all pieces are bigger than sizeThreshold, false otherwise.
      */
     public boolean areAllBiggerThan(int sizeThreshold) {
-        for(Pieza piece : this.pieces) {
+        for(Piece piece : this.pieces) {
             if(piece.getArea() <= sizeThreshold) {
                 return false;
             }
@@ -86,10 +86,10 @@ class PieceList implements Iterable<Pieza> {
     }   
 
     /**
-     * Adds a Pieza to this PieceList
+     * Adds a Piece to this PieceList
      * @param piece to add
      */
-    public void add(Pieza piece) {
+    public void add(Piece piece) {
         this.pieces.add(piece);
     }
     
@@ -99,7 +99,7 @@ class PieceList implements Iterable<Pieza> {
      */
     public int piecesArea() {
         int area = 0;
-        for(Pieza piece : this.pieces) {
+        for(Piece piece : this.pieces) {
             area += piece.getArea();
         }
         
@@ -107,7 +107,7 @@ class PieceList implements Iterable<Pieza> {
     }
 
     @Override
-    public Iterator<Pieza> iterator() {
+    public Iterator<Piece> iterator() {
         return this.pieces.iterator();
     }
 }

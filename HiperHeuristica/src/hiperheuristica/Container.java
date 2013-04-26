@@ -5,11 +5,11 @@ package hiperheuristica;
  *
  * @author Marcel
  */
-class Objeto extends Figure {
+class Container extends Figure {
 
     PieceList pieces;
 
-    public Objeto(int width, int height) {
+    public Container(int width, int height) {
         super(new Point[]{
             new Point(0, 0),
             new Point(width, 0),
@@ -21,24 +21,24 @@ class Objeto extends Figure {
     }
 
     /**
-     * Puts a piece into this Objeto
+     * Puts a piece into this Container
      *
      * @param pieza to add.
      */
-    public void putPiece(Pieza pieza) {
+    public void putPiece(Piece pieza) {
         this.pieces.add(pieza);
     }
     
     /**
-     * Removes a piece from this Objeto.
+     * Removes a piece from this Container.
      * @param piece 
      */
-    public void removePiece(Pieza piece) {
+    public void removePiece(Piece piece) {
         this.pieces.remove(piece);
     }
 
     /**
-     * Gets the unused area in this Objeto.
+     * Gets the unused area in this Container.
      *
      * @return the free area
      */
@@ -47,9 +47,9 @@ class Objeto extends Figure {
     }
 
     /**
-     * Gets the area used up by all pieces in this Objeto.
+     * Gets the area used up by all pieces in this Container.
      *
-     * @return area used up by pieces in this Objeto.
+     * @return area used up by pieces in this Container.
      */
     public int getUsedArea() {
         return this.pieces.piecesArea();
@@ -60,16 +60,16 @@ class Objeto extends Figure {
      * vertical que una pieza candidata puede desplazarse verticalmente hacia
      * abajo hasta topar con otra pieza o con la base del objeto.
      *
-     * @param piece to determine its bottom bound within this Objeto
-     * @return distance to the bottom bound within this Objeto for a piece.
+     * @param piece to determine its bottom bound within this Container
+     * @return distance to the bottom bound within this Container for a piece.
      */
-    public int distanceToBottBound(Pieza piece) {
+    public int distanceToBottBound(Piece piece) {
         assert (piece != null);
         assert (piece.getBottBound() > this.getBottBound());
 
         // get biggest maxY
         int bottomBounds = 0;
-        for (Pieza _piece : this.pieces) {
+        for (Piece _piece : this.pieces) {
             if (_piece.intersectsOnXAxis(piece)
                     && _piece.getTopBound() > bottomBounds) {
                 bottomBounds = _piece.getTopBound();
@@ -84,16 +84,16 @@ class Objeto extends Figure {
      * horizontal que una pieza candidata puede desplazarse verticalmente hacia
      * la izquierda hasta topar con otra pieza o con la base del objeto.
      *
-     * @param piece to determine its left bound within this Objeto
-     * @return the distance to the left bound within this Objeto for a piece.
+     * @param piece to determine its left bound within this Container
+     * @return the distance to the left bound within this Container for a piece.
      */
-    public int distanceToLeftBound(Pieza piece) {
+    public int distanceToLeftBound(Piece piece) {
         assert (piece != null);
         assert (piece.getLeftBound() > this.getLeftBound());
 
         // get biggest maxY
         int leftBounds = 0;
-        for (Pieza _piece : this.pieces) {
+        for (Piece _piece : this.pieces) {
             if (_piece.intersectsOnYAxis(piece)
                     && _piece.getRightBound() > leftBounds) {
                 leftBounds = _piece.getRightBound();
@@ -106,8 +106,8 @@ class Objeto extends Figure {
     @Override
     /**
      * TODO: Test this method, it is high risk method. Determines if a figure is
-     * within the bounds of this Objeto and does not overlap with any Figures
-     * already in this Objeto
+     * within the bounds of this Container and does not overlap with any Figures
+     * already in this Container
      *
      * @param figure to check
      * @returns true if the figure is within the bounds of this instance and
@@ -125,8 +125,8 @@ class Objeto extends Figure {
      * límites del objeto o con alguna pieza ya colocada.
      *
      * @param figure to check for intersection.
-     * @return true if it intersects with this Objeto's bounds or a piece within
-     * this Objeto, false otherwise.
+     * @return true if it intersects with this Container's bounds or a piece within
+     * this Container, false otherwise.
      */
     @Override
     public boolean intersectsWith(Figure figure) {
@@ -135,7 +135,7 @@ class Objeto extends Figure {
             return true;
         }
 
-        for (Pieza piece : this.pieces) {
+        for (Piece piece : this.pieces) {
             if (figure.intersectsWith(piece)) {
                 return true;
             }
@@ -150,9 +150,9 @@ class Objeto extends Figure {
      *
      * @return A copy of this instance.
      */
-    public Objeto getCopy() {
-        Objeto copy = new Objeto(this.getWidth(), this.getHeight());
-        for (Pieza piece : this.pieces) {
+    public Container getCopy() {
+        Container copy = new Container(this.getWidth(), this.getHeight());
+        for (Piece piece : this.pieces) {
             copy.putPiece(piece.getCopy());
         }
 

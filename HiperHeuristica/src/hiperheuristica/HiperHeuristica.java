@@ -12,7 +12,7 @@ public class HiperHeuristica {
      * @param piece
      * @return true if the piece fits, false otherwise.
      */
-    private static boolean tryPlaceInBottomLeft(Objeto container, Pieza piece) {
+    private static boolean tryPlaceInBottomLeft(Objeto container, Piece piece) {
         /**
          * Coloca la piece en la parte superior derecha del container, justo
          * afuera del container.
@@ -31,13 +31,13 @@ public class HiperHeuristica {
      * TODO: Needs testing, high risk method. Mueve la piece hasta una posicion
      * estable lo más abajo y a la izquierda posible. Devuelve TRUE si hubo
      * movimiento y FALSE si no hubo. REFACTOR: Mover este método a Objeto o
-     * Pieza.
+     * Piece.
      *
      * @param container whose bounds are used.
      * @param piece to move.
      * @return true if the piece was moved, false otherwise.
      */
-    private static boolean movePieceToLowerLeft(Objeto container, Pieza piece) {
+    private static boolean movePieceToLowerLeft(Objeto container, Piece piece) {
         int totalVertDistance = 0, totalHorDistance = 0;
         int distToBott, distToLeft;
         do {
@@ -96,7 +96,7 @@ public class HiperHeuristica {
             if (container.getUsedArea() < container.getArea() * initialCapacity) {
                 /// Recorre de mayor a menor, dado que pieces está en orden DESC
                 for (int i = 0; i < inputPieces.size(); i++) {
-                    Pieza piece = inputPieces.get(i);
+                    Piece piece = inputPieces.get(i);
                     if (piece.getArea() <= container.getFreeArea()) {
                         /* *
                          * true o false, dependiendo si se puede acomodar 
@@ -149,7 +149,7 @@ public class HiperHeuristica {
         }
 
         Objeto newObject = openNewObject(containers, xObjeto, yObjeto);
-        Pieza biggest = inputPieces.getBiggest();
+        Piece biggest = inputPieces.getBiggest();
         /// Si el container es nuevo, siempre debería poder acomodar la piece.
         /// ¿A menos que la piece sea más ancha o alta que el objeto?!
         if (tryPlaceInBottomLeft(newObject, biggest)) {
@@ -207,7 +207,7 @@ public class HiperHeuristica {
         assert (descOrderPieces.get(0).equals(descOrderPieces.getBiggest()));
 
         for (int i = 0; i < descOrderPieces.size(); i++) {
-            Pieza piece = descOrderPieces.get(i);
+            Piece piece = descOrderPieces.get(i);
             if (container.getFreeArea() - piece.getArea() > maxWaste) {
                 /**
                  * Si con una piece deja más desperdicio que maxWaste, con las
@@ -263,7 +263,7 @@ public class HiperHeuristica {
 
         Objeto tempContainer = container.getCopy();
         for (int i = 0; i < descOrderPieces.size(); i++) {
-            Pieza candidateI = descOrderPieces.get(i);
+            Piece candidateI = descOrderPieces.get(i);
 
             if (tempContainer.getFreeArea()
                     - candidateI.getArea()
@@ -306,7 +306,7 @@ public class HiperHeuristica {
                         continue;
                     }
 
-                    Pieza candidateJ = descOrderPieces.get(j);
+                    Piece candidateJ = descOrderPieces.get(j);
 
                     if (tempContainer.getFreeArea()
                             - candidateJ.getArea() > maxWaste) {
@@ -394,7 +394,7 @@ public class HiperHeuristica {
          */
         Objeto tempContainer = container.getCopy();
         for (int i = 0; i < descOrderPieces.size(); i++) {
-            Pieza candidateI = descOrderPieces.get(i);
+            Piece candidateI = descOrderPieces.get(i);
             if (tempContainer.getFreeArea()
                     - candidateI.getArea()
                     - largestSz
@@ -427,7 +427,7 @@ public class HiperHeuristica {
                         continue;
                     }
 
-                    Pieza candidateJ = descOrderPieces.get(j);
+                    Piece candidateJ = descOrderPieces.get(j);
 
                     if (tempContainer.getFreeArea()
                             - candidateJ.getArea()
@@ -456,7 +456,7 @@ public class HiperHeuristica {
                                 continue;
                             }
 
-                            Pieza candidateK = descOrderPieces.get(k);
+                            Piece candidateK = descOrderPieces.get(k);
 
                             if (tempContainer.getFreeArea()
                                     - candidateK.getArea() > maxWaste) {
