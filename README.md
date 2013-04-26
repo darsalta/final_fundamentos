@@ -10,6 +10,6 @@ solución a los ejercicios.
 
 ### Integrantes
 
-#. Priscila Angulo
-#. Marcel valdez
+1. Priscila Angulo
+2. Marcel valdez
 
