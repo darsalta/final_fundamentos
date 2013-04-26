@@ -6,7 +6,7 @@ package hiperheuristica;
  */
 public class Program {
 
-    public static void main(String[] args) throws Exception {
-        throw new Exception("Not implemented yet.");
-    }
+  public static void main(String[] args) throws Exception {
+    throw new Exception("Not implemented yet.");
+  }
 }

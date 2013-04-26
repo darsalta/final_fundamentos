@@ -10,5 +10,5 @@ package hiperheuristica;
  */
 enum Order {
 
-    ASCENDING, DESCENDING
+  ASCENDING, DESCENDING
 }
