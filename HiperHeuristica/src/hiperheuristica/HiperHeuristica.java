@@ -2,7 +2,7 @@ package hiperheuristica;
 
 import java.util.List;
 
-public class HiperHeuristica {
+class HiperHeuristica {
 
     /**
      * HeurísticaBL, trata de colocar piece en container abajo a la izquierda,
@@ -12,7 +12,7 @@ public class HiperHeuristica {
      * @param piece
      * @return true if the piece fits, false otherwise.
      */
-    private static boolean tryPlaceInBottomLeft(Objeto container, Piece piece) {
+    private static boolean tryPlaceInBottomLeft(Container container, Piece piece) {
         /**
          * Coloca la piece en la parte superior derecha del container, justo
          * afuera del container.
@@ -30,14 +30,14 @@ public class HiperHeuristica {
     /**
      * TODO: Needs testing, high risk method. Mueve la piece hasta una posicion
      * estable lo más abajo y a la izquierda posible. Devuelve TRUE si hubo
-     * movimiento y FALSE si no hubo. REFACTOR: Mover este método a Objeto o
+     * movimiento y FALSE si no hubo. REFACTOR: Mover este método a Container o
      * Piece.
      *
      * @param container whose bounds are used.
      * @param piece to move.
      * @return true if the piece was moved, false otherwise.
      */
-    private static boolean movePieceToLowerLeft(Objeto container, Piece piece) {
+    private static boolean movePieceToLowerLeft(Container container, Piece piece) {
         int totalVertDistance = 0, totalHorDistance = 0;
         int distToBott, distToLeft;
         do {
@@ -61,7 +61,7 @@ public class HiperHeuristica {
             // izquierda hasta que ya no pueda moverse más.
         } while (distToLeft > 0 || distToBott > 0);
 
-        // Si la pieza no cupo dentro del Objeto, debemos regresarla a su lugar.
+        // Si la pieza no cupo dentro del Container, debemos regresarla a su lugar.
         if (!container.isWithinBounds(piece)) {
             piece.moveDistance(totalHorDistance, Direction.RIGHT);
             piece.moveDistance(totalVertDistance, Direction.UP);
@@ -77,9 +77,9 @@ public class HiperHeuristica {
      */
     public void DJD(
             PieceList inputPieces,
-            List<Objeto> containers,
-            int xObjeto,
-            int yObjeto,
+            List<Container> containers,
+            int xContainer,
+            int yContainer,
             double initialCapacity) throws Exception {
         /// El desperdicio se incrementa en 1/20 del container.
         int increment = containers.get(0).getArea() / 20;
@@ -91,7 +91,7 @@ public class HiperHeuristica {
          * En alguna HH podría ser necesario revisar varios containers.
          */
         for (int j = containers.size() - 1; j < containers.size(); j++) {
-            Objeto container = containers.get(j);
+            Container container = containers.get(j);
             // initialCapacity = 1/4 o 1/3
             if (container.getUsedArea() < container.getArea() * initialCapacity) {
                 /// Recorre de mayor a menor, dado que pieces está en orden DESC
@@ -119,7 +119,7 @@ public class HiperHeuristica {
          */
         /// En alguna HH podría ser necesario revisar varios containers
         for (int j = containers.size() - 1; j < containers.size(); j++) {
-            Objeto container = containers.get(j);
+            Container container = containers.get(j);
 
             if (inputPieces.areAllBiggerThan(container.getFreeArea())) {
                 /**
@@ -148,7 +148,7 @@ public class HiperHeuristica {
             }
         }
 
-        Objeto newObject = openNewObject(containers, xObjeto, yObjeto);
+        Container newObject = openNewObject(containers, xContainer, yContainer);
         Piece biggest = inputPieces.getBiggest();
         /// Si el container es nuevo, siempre debería poder acomodar la piece.
         /// ¿A menos que la piece sea más ancha o alta que el objeto?!
@@ -156,8 +156,8 @@ public class HiperHeuristica {
             newObject.putPiece(biggest);
             inputPieces.remove(biggest);
         } else {
-            throw new Exception("A new Objeto should always be empty and every\n"
-                    + " Pieza should always be smaller than an Objeto.");
+            throw new Exception("A new Container should always be empty and every\n"
+                    + " Pieza should always be smaller than an Container.");
         }
     }
 
@@ -172,7 +172,7 @@ public class HiperHeuristica {
      */
     private static boolean tryFitPieces(
             PieceList descOrderPieces,
-            Objeto container,
+            Container container,
             int maxWaste) {
         /**
          * BAD: Should these three be in the same method, and return a single
@@ -202,7 +202,7 @@ public class HiperHeuristica {
      */
     private static boolean tryFitOnePiece(
             PieceList descOrderPieces,
-            Objeto container,
+            Container container,
             int maxWaste) {
         assert (descOrderPieces.get(0).equals(descOrderPieces.getBiggest()));
 
@@ -234,7 +234,7 @@ public class HiperHeuristica {
      */
     private static boolean tryFitTwoPieces(
             PieceList descOrderPieces,
-            Objeto container,
+            Container container,
             int maxWaste) {
         /// Assert descOrderPieces are actually in descending order.
         assert (descOrderPieces.get(0).equals(descOrderPieces.getBiggest()));
@@ -261,7 +261,7 @@ public class HiperHeuristica {
             return false;
         }
 
-        Objeto tempContainer = container.getCopy();
+        Container tempContainer = container.getCopy();
         for (int i = 0; i < descOrderPieces.size(); i++) {
             Piece candidateI = descOrderPieces.get(i);
 
@@ -352,7 +352,7 @@ public class HiperHeuristica {
      */
     private static boolean tryFitThreePieces(
             PieceList descOrderPieces,
-            Objeto container,
+            Container container,
             int maxWaste) {
         /// Assert descOrderPieces are actually in descending order.
         assert (descOrderPieces.get(0).equals(descOrderPieces.getBiggest()));
@@ -392,7 +392,7 @@ public class HiperHeuristica {
          * ese, y si se encuentra que sí caben, entonces se modifica el
          * contenedor original (container).
          */
-        Objeto tempContainer = container.getCopy();
+        Container tempContainer = container.getCopy();
         for (int i = 0; i < descOrderPieces.size(); i++) {
             Piece candidateI = descOrderPieces.get(i);
             if (tempContainer.getFreeArea()
@@ -514,7 +514,7 @@ public class HiperHeuristica {
      * @param yCoord
      * @return
      */
-    Objeto openNewObject(List<Objeto> containers, int xCoord, int yCoord) {
+    Container openNewObject(List<Container> containers, int xCoord, int yCoord) {
         int x = 1 / 0;
         return null;
     }
