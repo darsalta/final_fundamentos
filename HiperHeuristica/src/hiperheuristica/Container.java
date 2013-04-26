@@ -56,6 +56,7 @@ class Container extends Figure {
     }
 
     /**
+     * TODO: Needs testings, it is a high risk method.
      * Dado un objeto (con sus piezas ya colocadas), indica cuál es la distancia
      * vertical que una pieza candidata puede desplazarse verticalmente hacia
      * abajo hasta topar con otra pieza o con la base del objeto.
@@ -80,6 +81,7 @@ class Container extends Figure {
     }
 
     /**
+     * TODO: Needs testings, it is a high risk method.
      * Dado un objeto (con sus piezas ya colocadas), indica cuál es la distincia
      * horizontal que una pieza candidata puede desplazarse verticalmente hacia
      * la izquierda hasta topar con otra pieza o con la base del objeto.
@@ -102,8 +104,7 @@ class Container extends Figure {
 
         return piece.getLeftBound() - leftBounds;
     }
-
-    @Override
+    
     /**
      * TODO: Test this method, it is high risk method. Determines if a figure is
      * within the bounds of this Container and does not overlap with any Figures
@@ -113,6 +114,7 @@ class Container extends Figure {
      * @returns true if the figure is within the bounds of this instance and
      * does not overlap with other figures in this instance.
      */
+    @Override
     public boolean isWithinBounds(Figure figure) {
         assert (figure != null);
 

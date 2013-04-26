@@ -2,6 +2,11 @@ package hiperheuristica;
 
 import java.util.List;
 
+/**
+ * Clase que utiliza hiperheurísticas para acomodar piezas dentro de 
+ * contenedores.
+ * @author Dra. Eunice Lopez, modifications by Marcel Valdez
+ */
 class HiperHeuristica {
 
     /**
@@ -148,7 +153,7 @@ class HiperHeuristica {
             }
         }
 
-        Container newObject = openNewObject(containers, xContainer, yContainer);
+        Container newObject = openNewContainer(containers, xContainer, yContainer);
         Piece biggest = inputPieces.getBiggest();
         /// Si el container es nuevo, siempre debería poder acomodar la piece.
         /// ¿A menos que la piece sea más ancha o alta que el objeto?!
@@ -514,7 +519,7 @@ class HiperHeuristica {
      * @param yCoord
      * @return
      */
-    Container openNewObject(List<Container> containers, int xCoord, int yCoord) {
+    Container openNewContainer(List<Container> containers, int xCoord, int yCoord) {
         int x = 1 / 0;
         return null;
     }
