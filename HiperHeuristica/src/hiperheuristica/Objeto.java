@@ -109,6 +109,9 @@ class Objeto {
     
     /**
      * TODO: Pending implementation.
+     * Dado un objeto (con sus piezas ya colocadas), indica cuál es la distancia
+     * vertical que una pieza candidata puede desplazarse verticalmente hacia
+     * abajo hasta topar con otra pieza o con la base del objeto.
      * @param piece
      * @return 
      */
@@ -118,6 +121,9 @@ class Objeto {
     
     /**
      * TODO: Pending implementation.
+     * Dado un objeto (con sus piezas ya colocadas), indica cuál es la distincia
+     * horizontal que una pieza candidata puede desplazarse verticalmente hacia 
+     * la izquierda hasta topar con otra pieza o con la base del objeto.
      * @param piece
      * @return 
      */
@@ -127,6 +133,9 @@ class Objeto {
     
     /**
      * TODO: Pending implementation.
+     * Dado un objeto (con sus piezas ya colocadas), indica si una pieza 
+     * candidata intersecta con los límites del objeto o con alguna pieza ya 
+     * colocada.
      * @param piece
      * @return 
      */

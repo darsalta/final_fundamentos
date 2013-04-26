@@ -16,9 +16,6 @@ public class HiperHeuristica {
     /// TODO: Determinar qué es esto.
     int[] coordX = new int[100];
 
-    public static void main(String[] args) {
-    }
-
     /**
      * HeurísticaBL, trata de colocar piece en object
      *
@@ -117,7 +114,7 @@ public class HiperHeuristica {
             List<Objeto> objects,
             int xObjeto,
             int yObjeto,
-            double initialCapacity) throws Exception {
+            double initialCapacity) throws Exception {        
         /// El desperdicio se incrementa en 1/20 del object.
         int increment = (objects.get(0)).getTotalSize() / 20;
         /// Desperdicio
@@ -164,7 +161,7 @@ public class HiperHeuristica {
             /// Decide cuándo pasar a otro object.
             boolean finish;
 
-            if (areAllBiggerThan(object.getFreeArea(), pieces)) {
+            if (pieces.areAllBiggerThan(object.getFreeArea())) {
                 /**
                  * Si por area libre, ya no cabe ninguna piece, se pasa al otro
                  * object, en caso de haber.
@@ -209,26 +206,6 @@ public class HiperHeuristica {
         }
     }
 
-    // Refactor: Se requiere que lista de piezas sea una clase del dominio,
-    //           no de la librería Java, porque hay muchos métodos específicos
-    //           para trabajar sobre una lista de Piezas.
-    private static boolean areAllBiggerThan(
-            int sizeThreshold,
-            PieceList descOrderPieces) {
-        /**
-         * Como se entrega la lista ordenada de mayor a menor, si se empieza a
-         * buscar desde el último (piece más chica).
-         */
-        for (int i = descOrderPieces.size() - 1; i >= 0; i--) {
-            // Devuelve un 'false' con menos comparaciones.            
-            if (descOrderPieces.get(i).getTotalSize() <= sizeThreshold) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     /**
      * Indica si puede o no poner una piece en el object, dejando un máximo de
      * desperdicio maxWaste. SE ASUME QUE LA LISTA ESTÁ DADA ORDENADA DE MAYOR A
@@ -238,6 +215,7 @@ public class HiperHeuristica {
             PieceList descOrderPieces,
             Objeto object,
             int maxWaste) {
+        assert(descOrderPieces.get(0).equals(descOrderPieces.getBiggestPiece()));
         int freeArea = object.getFreeArea();
 
         for (int i = 0; i < descOrderPieces.size(); i++) {
@@ -270,6 +248,9 @@ public class HiperHeuristica {
             PieceList descOrderPieces,
             Objeto object,
             int maxWaste) {
+        /// Assert descOrderPieces are actually in descending order.
+        assert(descOrderPieces.get(0).equals(descOrderPieces.getBiggestPiece()));
+        
         /// Guardará el área de las 2 pieces más grandes.
         int largestSz, secondLargeSz;
         /// Guardará el área de la piece más pequeña.
@@ -369,6 +350,9 @@ public class HiperHeuristica {
             PieceList descOrderPieces,
             Objeto object,
             int maxWaste) {
+        /// Assert descOrderPieces are actually in descending order.
+        assert(descOrderPieces.get(0).equals(descOrderPieces.getBiggestPiece()));
+        
         /// Guardará el área de las 3 pieces más grandes.
         int largestSz, secondLargeSz, thirdLargeSz;
         /// Guardará el área de las 2 pieces más pequeñas.

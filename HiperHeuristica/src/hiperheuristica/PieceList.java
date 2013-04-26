@@ -67,4 +67,20 @@ class PieceList {
     public Pieza getBiggestPiece() {
         return java.util.Collections.<Pieza>max(this.pieces);
     }
+    
+    /**
+     * Determines if all pieces in this PieceList are bigger than the
+     * sizeThreshold
+     * @param sizeThreshold to compare all pieces against
+     * @return true if all pieces are bigger than sizeThreshold, false otherwise.
+     */
+    public boolean areAllBiggerThan(int sizeThreshold) {
+        for(Pieza piece : this.pieces) {
+            if(piece.getTotalSize() <= sizeThreshold) {
+                return false;
+            }
+        }
+        
+        return true;
+    }   
 }
