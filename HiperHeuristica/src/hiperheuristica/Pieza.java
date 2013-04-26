@@ -4,71 +4,57 @@
  */
 package hiperheuristica;
 
+import static hiperheuristica.Direction.DOWN;
+import static hiperheuristica.Direction.LEFT;
+import static hiperheuristica.Direction.RIGHT;
+import static hiperheuristica.Direction.UP;
+
 /**
  * TODO: Pending implementation.
+ *
  * @author Marcel
  */
-class Pieza implements Comparable<Pieza> {
+class Pieza extends Figure {
 
-    /**
-     * TODO: Pending implementation.
-     * @return 
-     */
-    public int getXmax() {
-        return 1 / 0;
+    public Pieza(Point[] vertices) {
+        super(vertices);
     }
 
     /**
-     * TODO: Pending implementation.
-     * @return 
+     * Moves this piece in a direction for a given distance
+     *
+     * @param distance to move the Pieza
+     * @param dir in which to move.
      */
-    public int getXmin() {
-        return 1 / 0;
-    }
+    public void moveDistance(int distance, Direction dir) {
+        for (int i = 0; i < this.vertices.length; i++) {
+            Point cPoint = this.vertices[i];
+            switch (dir) {
+                case UP:
+                    this.vertices[i] = new Point(cPoint.getX(), cPoint.getY() + distance);
+                    break;
 
+                case DOWN:
+                    this.vertices[i] = new Point(cPoint.getX(), cPoint.getY() - distance);
+                    break;
+
+                case LEFT:
+                    this.vertices[i] = new Point(cPoint.getX() - distance, cPoint.getY());
+                    break;
+
+                case RIGHT:
+                    this.vertices[i] = new Point(cPoint.getX() + distance, cPoint.getY());
+                    break;
+            }
+        }
+    }
+    
     /**
-     * TODO: Pending implementation.
-     * @return 
+     * Gets a copy of this Pieza, but keep in mind that:
+     * this.getCopy().equals(this) == false
+     * @return A deep copy of this Pieza
      */
-    public int getYmax() {
-        return 1 / 0;
-    }
-
-    /**
-     * TODO: Pending implementation.
-     * @return 
-     */
-    public int getYmin() {
-        return 1 / 0;
-    }
-
-    /**
-     * TODO: Pending implementation.
-     * @param distVertical
-     * @param dir 
-     */
-    void moveDistance(int distVertical, Direction dir) {
-        int x = 1 / 0;
-    }
-
-    /**
-     * TODO: Pending implementation.
-     * @return 
-     */
-    public int getTotalSize() {
-        return 1 / 0;
-    }
-
-    @Override
-    public int compareTo(Pieza o) {
-        assert(o != null);
-        
-        if(this.getTotalSize() < o.getTotalSize())
-            return -1;
-        
-        if(this.getTotalSize() > o.getTotalSize())
-            return 1;
-        
-        return 0;
+    public Pieza getCopy() {
+        return new Pieza(this.vertices.clone());
     }
 }

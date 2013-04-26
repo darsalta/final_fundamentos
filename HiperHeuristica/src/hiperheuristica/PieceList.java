@@ -5,13 +5,14 @@
 package hiperheuristica;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  *
  * @author Marcel
  */
-class PieceList {
+class PieceList implements Iterable<Pieza> {
 
     private List<Pieza> pieces;
 
@@ -64,7 +65,7 @@ class PieceList {
      * Gets the biggest Pieza in this PieceList
      * @return the biggest Pieza
      */
-    public Pieza getBiggestPiece() {
+    public Pieza getBiggest() {
         return java.util.Collections.<Pieza>max(this.pieces);
     }
     
@@ -76,11 +77,37 @@ class PieceList {
      */
     public boolean areAllBiggerThan(int sizeThreshold) {
         for(Pieza piece : this.pieces) {
-            if(piece.getTotalSize() <= sizeThreshold) {
+            if(piece.getArea() <= sizeThreshold) {
                 return false;
             }
         }
         
         return true;
     }   
+
+    /**
+     * Adds a Pieza to this PieceList
+     * @param piece to add
+     */
+    public void add(Pieza piece) {
+        this.pieces.add(piece);
+    }
+    
+    /**
+     * Gets the area occupied by all the pieces in this list.
+     * @return the area occupied by all the pieces.
+     */
+    public int piecesArea() {
+        int area = 0;
+        for(Pieza piece : this.pieces) {
+            area += piece.getArea();
+        }
+        
+        return area;
+    }
+
+    @Override
+    public Iterator<Pieza> iterator() {
+        return this.pieces.iterator();
+    }
 }
