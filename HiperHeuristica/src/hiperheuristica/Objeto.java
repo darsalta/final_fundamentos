@@ -21,30 +21,20 @@ class Objeto extends Figure {
     }
 
     /**
-     * Adds a piece to this Objeto
+     * Puts a piece into this Objeto
      *
      * @param pieza to add.
      */
-    public void addPiece(Pieza pieza) {
+    public void putPiece(Pieza pieza) {
         this.pieces.add(pieza);
     }
-
+    
     /**
-     * TODO: Pending implementation. TODO: What is removeCandidate?
-     *
-     * @param pieza
+     * Removes a piece from this Objeto.
+     * @param piece 
      */
-    public void removeCandidate(Pieza pieza) {
-        int x = 1 / 0;
-    }
-
-    /**
-     * TODO: Pending implementation. TODO: What is addCandidate?
-     *
-     * @param pieza
-     */
-    public void addCandidate(Pieza pieza) {
-        int x = 1 / 0;
+    public void removePiece(Pieza piece) {
+        this.pieces.remove(piece);
     }
 
     /**
@@ -163,7 +153,7 @@ class Objeto extends Figure {
     public Objeto getCopy() {
         Objeto copy = new Objeto(this.getWidth(), this.getHeight());
         for (Pieza piece : this.pieces) {
-            copy.addPiece(piece.getCopy());
+            copy.putPiece(piece.getCopy());
         }
 
         return copy;

@@ -12,7 +12,7 @@ public class HiperHeuristica {
      * @param piece
      * @return true if the piece fits, false otherwise.
      */
-    private static boolean tryAllocateInBottomLeft(Objeto container, Pieza piece) {
+    private static boolean tryPlaceInBottomLeft(Objeto container, Pieza piece) {
         /**
          * Coloca la piece en la parte superior derecha del container, justo
          * afuera del container.
@@ -24,7 +24,7 @@ public class HiperHeuristica {
                 container.getTopBound() - piece.getBottBound(),
                 Direction.UP);
 
-        return movePieceToObjectLowerLeft(container, piece);
+        return movePieceToLowerLeft(container, piece);
     }
 
     /**
@@ -37,17 +37,15 @@ public class HiperHeuristica {
      * @param piece to move.
      * @return true if the piece was moved, false otherwise.
      */
-    private static boolean movePieceToObjectLowerLeft(Objeto container, Pieza piece) {
-        int totalVertDistanceMoved = 0;
-        int totalHorDistanceMoved = 0;
-        int distToBott;
-        int distToLeft;
+    private static boolean movePieceToLowerLeft(Objeto container, Pieza piece) {
+        int totalVertDistance = 0, totalHorDistance = 0;
+        int distToBott, distToLeft;
         do {
             /// Distancia hacia abajo que puede moverse la piece hasta topar.            
             distToBott = container.distanceToBottBound(piece);
             if (distToBott > 0) {
                 piece.moveDistance(distToBott, Direction.DOWN);
-                totalVertDistanceMoved += distToBott;
+                totalVertDistance += distToBott;
             }
             /**
              * Distancia hacia la izquierda que puede moverse la piece hasta
@@ -56,7 +54,7 @@ public class HiperHeuristica {
             distToLeft = container.distanceToLeftBound(piece);
             if (distToLeft > 0) {
                 piece.moveDistance(distToLeft, Direction.LEFT);
-                totalHorDistanceMoved += distToLeft;
+                totalHorDistance += distToLeft;
             }
             // Por qué while? No debería moverse el máximo con una sola
             // iteración? No, porque va intentar mover el objeto hacia abajo e
@@ -65,14 +63,13 @@ public class HiperHeuristica {
 
         // Si la pieza no cupo dentro del Objeto, debemos regresarla a su lugar.
         if (!container.isWithinBounds(piece)) {
-            piece.moveDistance(totalHorDistanceMoved, Direction.RIGHT);
-            piece.moveDistance(totalVertDistanceMoved, Direction.UP);
-            totalHorDistanceMoved = 0;
-            totalVertDistanceMoved = 0;
+            piece.moveDistance(totalHorDistance, Direction.RIGHT);
+            piece.moveDistance(totalVertDistance, Direction.UP);
+            totalHorDistance = totalVertDistance = 0;
         }
 
         /// Si no reacomoda la piece (si no cambió de posición)
-        return totalHorDistanceMoved > 0 || totalVertDistanceMoved > 0;
+        return totalHorDistance > 0 || totalVertDistance > 0;
     }
 
     /**
@@ -104,9 +101,9 @@ public class HiperHeuristica {
                         /* *
                          * true o false, dependiendo si se puede acomodar 
                          * la piece.                        
-                         * */
-                        if (tryAllocateInBottomLeft(container, piece)) {
-                            container.addPiece(piece);
+                         */
+                        if (tryPlaceInBottomLeft(container, piece)) {
+                            container.putPiece(piece);
                             inputPieces.remove(piece);
                             return;
                         }
@@ -142,7 +139,8 @@ public class HiperHeuristica {
                 if (tryFitPieces(inputPieces, container, waste)) {
                     // ¿Se sale a la primera que encuentra piezas que puede
                     // meter en un objeto? No tiene sentido, ¿qué pasa si quedan
-                    // más piezas?
+                    // más piezas? 
+                    // CAREFUL: Creo que aquí es break, no return.
                     return;
                 }
 
@@ -150,13 +148,12 @@ public class HiperHeuristica {
             }
         }
 
-
         Objeto newObject = openNewObject(containers, xObjeto, yObjeto);
         Pieza biggest = inputPieces.getBiggest();
         /// Si el container es nuevo, siempre debería poder acomodar la piece.
-        /// ¿A menos que la piece sea más ancha o alta que el objeto?
-        if (tryAllocateInBottomLeft(newObject, biggest)) {
-            newObject.addPiece(biggest);
+        /// ¿A menos que la piece sea más ancha o alta que el objeto?!
+        if (tryPlaceInBottomLeft(newObject, biggest)) {
+            newObject.putPiece(biggest);
             inputPieces.remove(biggest);
         } else {
             throw new Exception("A new Objeto should always be empty and every\n"
@@ -184,10 +181,12 @@ public class HiperHeuristica {
         if (tryFitOnePiece(descOrderPieces, container, maxWaste)) {
             return true;
         }
+
         if (descOrderPieces.size() > 1
                 && tryFitTwoPieces(descOrderPieces, container, maxWaste)) {
             return true;
         }
+
         if (descOrderPieces.size() > 2
                 && tryFitThreePieces(descOrderPieces, container, maxWaste)) {
             return true;
@@ -197,20 +196,19 @@ public class HiperHeuristica {
     }
 
     /**
-     * Indica si puede o no poner una piece en el container, dejando un máximo
-     * de desperdicio maxWaste. SE ASUME QUE LA LISTA ESTÁ DADA ORDENADA DE
-     * MAYOR A MENOR
+     * TODO: Needs testing, this method is high risk. Indica si puede o no poner
+     * una piece en el container, dejando un máximo de desperdicio maxWaste. SE
+     * ASUME QUE LA LISTA ESTÁ DADA ORDENADA DE MAYOR A MENOR
      */
     private static boolean tryFitOnePiece(
             PieceList descOrderPieces,
             Objeto container,
             int maxWaste) {
         assert (descOrderPieces.get(0).equals(descOrderPieces.getBiggest()));
-        int freeArea = container.getFreeArea();
 
         for (int i = 0; i < descOrderPieces.size(); i++) {
             Pieza piece = descOrderPieces.get(i);
-            if ((freeArea - piece.getArea()) > maxWaste) {
+            if (container.getFreeArea() - piece.getArea() > maxWaste) {
                 /**
                  * Si con una piece deja más desperdicio que maxWaste, con las
                  * demás también lo hará (dado q están ordenadas).
@@ -218,8 +216,8 @@ public class HiperHeuristica {
                 break;
             }
 
-            if (tryAllocateInBottomLeft(container, piece)) {
-                container.addPiece(piece);
+            if (tryPlaceInBottomLeft(container, piece)) {
+                container.putPiece(piece);
                 descOrderPieces.remove(piece);
                 // Indica que ya acomodó piece.
                 return true;
@@ -230,9 +228,9 @@ public class HiperHeuristica {
     }
 
     /**
-     * Indica si puede o no poner dos pieces en el container, dejando un máximo
-     * de desperdicio maxWaste. SE ASUME QUE LA LISTA ESTÁ DADA ORDENADA DE
-     * MAYOR A MENOR
+     * TODO: Needs testing, this method is high risk. Indica si puede o no poner
+     * dos pieces en el container, dejando un máximo de desperdicio maxWaste. SE
+     * ASUME QUE LA LISTA ESTÁ DADA ORDENADA DE MAYOR A MENOR
      */
     private static boolean tryFitTwoPieces(
             PieceList descOrderPieces,
@@ -245,10 +243,9 @@ public class HiperHeuristica {
         int largestSz, secondLargeSz;
         /// Guardará el área de la piece más pequeña.
         int smallestSz;
-        int freeArea;
+
         smallestSz = descOrderPieces.get(descOrderPieces.size() - 1)
                 .getArea();
-        freeArea = container.getFreeArea();
 
         largestSz = descOrderPieces.get(0).getArea();
         secondLargeSz = descOrderPieces.get(1).getArea();
@@ -260,14 +257,17 @@ public class HiperHeuristica {
          * REFACTOR: Este método podría ir en Object, algo como: int
          * calculateWaste(int addedArea)
          */
-        if ((freeArea - largestSz - secondLargeSz) > maxWaste) {
+        if ((container.getFreeArea() - largestSz - secondLargeSz) > maxWaste) {
             return false;
         }
 
+        Objeto tempContainer = container.getCopy();
         for (int i = 0; i < descOrderPieces.size(); i++) {
-            Pieza pieceI = descOrderPieces.get(i);
+            Pieza candidateI = descOrderPieces.get(i);
 
-            if (freeArea - pieceI.getArea() - largestSz > maxWaste) {
+            if (tempContainer.getFreeArea()
+                    - candidateI.getArea()
+                    - largestSz > maxWaste) {
                 /**
                  * Con pieceI y la más grande dejan más w, ya no tiene caso
                  * probar + pieces1.
@@ -275,7 +275,7 @@ public class HiperHeuristica {
                 break;
             }
 
-            if (pieceI.getArea() + smallestSz > freeArea) {
+            if (candidateI.getArea() + smallestSz > tempContainer.getFreeArea()) {
                 /**
                  * A la siguiente pieceI. pieceI + la mas chica se pasarían del
                  * área disponible.
@@ -283,7 +283,7 @@ public class HiperHeuristica {
                 continue;
             }
 
-            if (tryAllocateInBottomLeft(container, pieceI)) {
+            if (tryPlaceInBottomLeft(tempContainer, candidateI)) {
                 /**
                  * Se añade piece como 'borrador' Se utiliza para poder estimar
                  * si cabrán dos piezas en el contenedor, sin solapar entre sí,
@@ -294,11 +294,11 @@ public class HiperHeuristica {
                  * el área libre, sino que se trata de un acomodo hipotético
                  * dentro del contendor (un intento de permutación).
                  */
-                container.addCandidate(pieceI);
+                tempContainer.putPiece(candidateI);
                 /// No altera el FreeArea de container.
 
                 /**
-                 * Si puede acomodar pieceI, prueba con cuál pieceJ entra
+                 * Si puede acomodar pieceI, prueba con cuál candidateJ entra
                  * simultáneamente.
                  */
                 for (int j = 0; j < descOrderPieces.size(); j++) {
@@ -306,40 +306,38 @@ public class HiperHeuristica {
                         continue;
                     }
 
-                    Pieza pieceJ = descOrderPieces.get(j);
+                    Pieza candidateJ = descOrderPieces.get(j);
 
-                    if (freeArea
-                            - pieceI.getArea()
-                            - pieceJ.getArea() > maxWaste) {
+                    if (tempContainer.getFreeArea()
+                            - candidateJ.getArea() > maxWaste) {
                         /**
-                         * If current pieceJ already wastes more spaces than
+                         * If current candidateJ already wastes more spaces than
                          * maxWaste, then the next pieces will also waste even
                          * more space, so break the loop.
                          */
                         break;
                     }
 
-                    if (pieceI.getArea()
-                            + pieceJ.getArea() > freeArea) {
+                    if (tempContainer.getFreeArea() < candidateJ.getArea()) {
                         /// Try with next piece, this one is too big.
                         continue;
                     }
 
-                    if (tryAllocateInBottomLeft(container, pieceJ)) {
-                        /// Se borra el pegado preliminar.
-                        container.removeCandidate(pieceI);
+                    if (tryPlaceInBottomLeft(container, candidateJ)) {
+//                        Se borra el pegado preliminar.
+//                        container.removeCandidate(candidateI);
                         /// Se añade definitivamente.
-                        container.addPiece(pieceI);
-                        container.addPiece(pieceJ);
-                        descOrderPieces.remove(pieceI);
-                        descOrderPieces.remove(pieceJ);
+                        container.putPiece(candidateI);
+                        container.putPiece(candidateJ);
+                        descOrderPieces.remove(candidateI);
+                        descOrderPieces.remove(candidateJ);
                         // Indica que ya acomodó 2 pieces.
                         return true;
                     }
                 } /// Termina de revisar posibles pieces 2.
 
-                /// Ninguna pieceJ entró con la posible pieceI.  
-                container.removeCandidate(pieceI);
+                /// Ninguna candidateJ entró con la posible pieceI.  
+                tempContainer.removePiece(candidateI);
                 /// Se borra el preliminar de pieceI.
             }
         }  /// Termina de revisar posibles pieces 1.
@@ -348,9 +346,9 @@ public class HiperHeuristica {
     }
 
     /**
-     * Indica si puede o no poner tres pieces en el container, dejando un máximo
-     * de desperdicio maxWaste. SE ASUME QUE LA LISTA ESTÁ DADA ORDENADA DE
-     * MAYOR A MENOR
+     * TODO: Needs testing, this method is high risk. Indica si puede o no poner
+     * tres pieces en el container, dejando un máximo de desperdicio maxWaste.
+     * SE ASUME QUE LA LISTA ESTÁ DADA ORDENADA DE MAYOR A MENOR
      */
     private static boolean tryFitThreePieces(
             PieceList descOrderPieces,
@@ -363,13 +361,6 @@ public class HiperHeuristica {
         int largestSz, secondLargeSz, thirdLargeSz;
         /// Guardará el área de las 2 pieces más pequeñas.
         int smallestSz, secondSmallSz;
-        /**
-        * Utilizó la variable freeArea, porque se sintió insegura de que
-        * al agregar una pieza 'preliminar', se modificaría el freeArea
-        * calculado del Objeto
-        */ 
-        int freeArea;
-        freeArea = container.getFreeArea();
 
         smallestSz = descOrderPieces.get(descOrderPieces.size() - 1)
                 .getArea();
@@ -379,127 +370,117 @@ public class HiperHeuristica {
         largestSz = descOrderPieces.get(0).getArea();
         secondLargeSz = descOrderPieces.get(1).getArea();
         thirdLargeSz = descOrderPieces.get(2).getArea();
+        
         /**
          * Verificando si cabrían 3 pieces con ese desperdicio máximo permitido.
          *
          * SE SUPONE QUE ESTÁN ORDENADAS DE MAYOR A MENOR (se revisan las pieces
          * más grandes).
          */
-        if ((freeArea
+        if (container.getFreeArea()
                 - largestSz
                 - secondLargeSz
-                - thirdLargeSz) > maxWaste) {
+                - thirdLargeSz > maxWaste) {
             return false;
         }
 
+        /**
+         * Container used for calculating how the pieces will be placed in the
+         * actual container.
+         *
+         * Se utilizar una copia de container, y se opera *directamente* sobre
+         * ese, y si se encuentra que sí caben, entonces se modifica el
+         * contenedor original (container).
+         */
+        Objeto tempContainer = container.getCopy();
         for (int i = 0; i < descOrderPieces.size(); i++) {
             Pieza candidateI = descOrderPieces.get(i);
-            if (freeArea
+            if (tempContainer.getFreeArea()
                     - candidateI.getArea()
                     - largestSz
                     - secondLargeSz > maxWaste) {
                 /**
-                 * Esa pieceI no es 'compatible' con ningun otro par de pieces
-                 * sin pasarse del desperdicio máximo permitido.
+                 * Esa candidato I no es 'compatible' con ningun otro par de
+                 * piezas sin pasarse del desperdicio máximo permitido.
                  */
                 break;
             }
 
-            if (candidateI.getArea()
-                    + smallestSz
-                    + secondSmallSz > freeArea) {
+            if (tempContainer.getFreeArea()
+                    < candidateI.getArea() + smallestSz + secondSmallSz) {
                 /**
-                 * A la siguiente pieceI. pieceI + las2 más chicas se pasarían
-                 * del área libre.
+                 * A la siguiente candidato I. candidato I + las 2 más chicas se
+                 * pasarían del área libre disponible.
                  */
                 continue;
             }
 
-            /**
-             * Antes decía: acomodo1 = (nextObject1, pieceI, H_acomodo1);
-             */
-            if (tryAllocateInBottomLeft(container, candidateI)) {
-                /// Se añade pieceI como 'borrador'
-                /// No altera el FreeArea de container.
-                /**
-                * Tal vez sea mejor utilizar una copia del Objeto, y llamarlo
-                * hypotheticContainer, y operar *directamente* sobre ese, y
-                * si se encuentra que sí caben, entonces se modifica el
-                * contenedor original (container).
-                */ 
-                container.addCandidate(candidateI);
+            if (tryPlaceInBottomLeft(tempContainer, candidateI)) {
+                tempContainer.putPiece(candidateI);
 
                 /**
-                 * Si puede acomodar pieceI, prueba con cuál pieceJ entra
-                 * simultáneamente.
+                 * Si puede acomodar candidato I, prueba con cuál candidato J
+                 * entra simultáneamente.
                  */
                 for (int j = 0; j < descOrderPieces.size(); j++) {
-                    if (i == j) {
+                    if (j == i) {
                         continue;
                     }
 
                     Pieza candidateJ = descOrderPieces.get(j);
 
-                    if (freeArea
-                            - candidateI.getArea()
+                    if (tempContainer.getFreeArea()
                             - candidateJ.getArea()
                             - largestSz > maxWaste) {
                         /**
-                         * Las pieces I y J no son 'compatibles' con ninguna
-                         * otra piece sin pasarse del desperdicio máximo
+                         * Los candidatos I y J no son 'compatibles' con ningun
+                         * otra pieza sin pasarse del desperdicio máximo
                          * permitido.
                          */
                         break;
                     }
 
-                    if (candidateI.getArea()
-                            + candidateJ.getArea()
-                            + smallestSz > freeArea) {
+                    if (tempContainer.getFreeArea()
+                            < candidateJ.getArea() + smallestSz) {
                         /**
-                         * A la siguiente pieceJ: pieceI + pieceJ + MásChica se
+                         * A la siguiente candidato J: candidato J + MásChica se
                          * pasarían del área libre.
                          */
                         continue;
                     }
 
-                    if (tryAllocateInBottomLeft(container, candidateJ)) {
-                        container.addCandidate(candidateJ);
+                    if (tryPlaceInBottomLeft(tempContainer, candidateJ)) {
+                        tempContainer.putPiece(candidateJ);
                         for (int k = 0; k < descOrderPieces.size(); k++) {
                             if (k == i || k == j) {
                                 continue;
                             }
-                            
+
                             Pieza candidateK = descOrderPieces.get(k);
 
-                            if (freeArea
-                                    - candidateI.getArea()
-                                    - candidateJ.getArea()
+                            if (tempContainer.getFreeArea()
                                     - candidateK.getArea() > maxWaste) {
                                 /**
-                                 * Si con pieceK elegida se deja más waste, con 
-                                 * las siguiente piecesK (más chicas) también lo
-                                 * haría. Deja de revisar piecesK y se pasa a la
-                                 * siguiente pieceJ.
+                                 * Si con pieceK elegida se deja más waste, con
+                                 * las siguiente candidatesK (más chicas)
+                                 * también lo haría. Deja de revisar candidatos
+                                 * K y se pasa al siguiente candidato J.
                                  */
                                 break;
                             }
 
                             /// Misma advertencia que en función 'dospieces'
-                            if (candidateI.getArea()
-                                    + candidateJ.getArea()
-                                    + candidateK.getArea() > freeArea) {
+                            if (tempContainer.getFreeArea()
+                                    < candidateK.getArea()) {
                                 /// A la siguiente piece 3.					
                                 continue;
                             }
 
-                            if (tryAllocateInBottomLeft(container, candidateK)) {
-                                /// Se borra el pegado preliminar.
-                                container.removeCandidate(candidateI);
-                                container.removeCandidate(candidateJ);
+                            if (tryPlaceInBottomLeft(tempContainer, candidateK)) {
                                 /// Se añaden definitivamente.
-                                container.addPiece(candidateI);
-                                container.addPiece(candidateJ);
-                                container.addPiece(candidateK);
+                                container.putPiece(candidateI);
+                                container.putPiece(candidateJ);
+                                container.putPiece(candidateK);
                                 descOrderPieces.remove(candidateI);
                                 descOrderPieces.remove(candidateJ);
                                 descOrderPieces.remove(candidateK);
@@ -508,15 +489,16 @@ public class HiperHeuristica {
                             }
                         } /// Termina de revisar posibles pieces 3.
 
-                        /// Ninguna pieceK entró con la posible pieceI y pieceJ.  
-                        container.removeCandidate(candidateJ);
+                        /// Ningun candidato K entró con los candidatos I y J
+                        /// Se quita le candidato J
+                        tempContainer.removePiece(candidateJ);
                     }
 
                 } /// Termina de revisar posibles pieces 2.
 
-                /// Ningun par de pieces 2 y 3 entró con la posible pieceI.  
-                container.removeCandidate(candidateI);
-                /// Se borra el preliminar de pieceI
+                /// Ningun par de candidatos J y K entró con la posible pieceI.  
+                /// Se quita el candidato I
+                tempContainer.removePiece(candidateI);
             }
         }  /// termina de revisar posibles pieces 1.
 

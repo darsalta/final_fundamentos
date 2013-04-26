@@ -81,6 +81,7 @@ public class Figure implements Comparable<Figure> {
         return minY;
     }
 
+    
     public int getWidth() {
         return this.getRightBound() - this.getLeftBound();
     }
