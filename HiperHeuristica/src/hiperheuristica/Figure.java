@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package hiperheuristica;
 
 /**
@@ -81,7 +77,6 @@ public class Figure implements Comparable<Figure> {
         return minY;
     }
 
-    
     public int getWidth() {
         return this.getRightBound() - this.getLeftBound();
     }
@@ -123,8 +118,8 @@ public class Figure implements Comparable<Figure> {
     }
 
     /**
-     * TODO: Test this method, it is high risk method.
-     * Determines if a figure is within the bounds of another.
+     * TODO: Test this method, it is high risk method. Determines if a figure is
+     * within the bounds of another.
      *
      * @param figure to check that is within the bounds of this Figure
      * @return true if it is within the bounds of this Figure, false otherwise.

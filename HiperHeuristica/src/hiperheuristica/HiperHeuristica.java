@@ -370,7 +370,7 @@ class HiperHeuristica {
         largestSz = descOrderPieces.get(0).getArea();
         secondLargeSz = descOrderPieces.get(1).getArea();
         thirdLargeSz = descOrderPieces.get(2).getArea();
-        
+
         /**
          * Verificando si cabrían 3 pieces con ese desperdicio máximo permitido.
          *

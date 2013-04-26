@@ -1,4 +1,3 @@
-
 package hiperheuristica;
 
 import static hiperheuristica.Direction.DOWN;
@@ -8,6 +7,7 @@ import static hiperheuristica.Direction.UP;
 
 /**
  * Represents a piece that can be stored inside a Container.
+ *
  * @author Marcel
  */
 class Piece extends Figure {
@@ -44,10 +44,11 @@ class Piece extends Figure {
             }
         }
     }
-    
+
     /**
      * Gets a copy of this Piece, but keep in mind that:
      * this.getCopy().equals(this) == false
+     *
      * @return A deep copy of this Piece
      */
     public Piece getCopy() {

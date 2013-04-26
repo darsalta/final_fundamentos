@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package hiperheuristica;
 
 import java.util.ArrayList;
@@ -39,15 +35,15 @@ class PieceList implements Iterable<Piece> {
     public boolean remove(Piece piece) {
         return this.pieces.remove(piece);
     }
-    
+
     /**
      * Gets the number of items in this PieceList
-     * @return  the number of items in this PieceList
+     *
+     * @return the number of items in this PieceList
      */
     public int size() {
         return this.pieces.size();
     }
-            
 
     /**
      * Sorts this PieceList according to a specified order
@@ -60,49 +56,54 @@ class PieceList implements Iterable<Piece> {
             java.util.Collections.<Piece>reverse(this.pieces);
         }
     }
-    
+
     /**
      * Gets the biggest Piece in this PieceList
+     *
      * @return the biggest Piece
      */
     public Piece getBiggest() {
         return java.util.Collections.<Piece>max(this.pieces);
     }
-    
+
     /**
      * Determines if all pieces in this PieceList are bigger than the
      * sizeThreshold
+     *
      * @param sizeThreshold to compare all pieces against
-     * @return true if all pieces are bigger than sizeThreshold, false otherwise.
+     * @return true if all pieces are bigger than sizeThreshold, false
+     * otherwise.
      */
     public boolean areAllBiggerThan(int sizeThreshold) {
-        for(Piece piece : this.pieces) {
-            if(piece.getArea() <= sizeThreshold) {
+        for (Piece piece : this.pieces) {
+            if (piece.getArea() <= sizeThreshold) {
                 return false;
             }
         }
-        
+
         return true;
-    }   
+    }
 
     /**
      * Adds a Piece to this PieceList
+     *
      * @param piece to add
      */
     public void add(Piece piece) {
         this.pieces.add(piece);
     }
-    
+
     /**
      * Gets the area occupied by all the pieces in this list.
+     *
      * @return the area occupied by all the pieces.
      */
     public int piecesArea() {
         int area = 0;
-        for(Piece piece : this.pieces) {
+        for (Piece piece : this.pieces) {
             area += piece.getArea();
         }
-        
+
         return area;
     }
 
