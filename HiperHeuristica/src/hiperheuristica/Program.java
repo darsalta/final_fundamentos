@@ -5,8 +5,8 @@
 package hiperheuristica;
 
 /**
- *
- * @author Marcel
+ * Get problem instances
+ * @author Marcel, Priscila
  */
 public class Program {
     public static void main(String[] args) throws Exception {

@@ -14,7 +14,7 @@ import static hiperheuristica.Direction.UP;
  *
  * @author Marcel
  */
-class Pieza extends Figure {
+public class Pieza extends Figure {
 
     public Pieza(Point[] vertices) {
         super(vertices);

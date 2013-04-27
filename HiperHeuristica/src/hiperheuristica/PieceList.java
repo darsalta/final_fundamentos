@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Marcel
  */
-class PieceList implements Iterable<Pieza> {
+public class PieceList implements Iterable<Pieza> {
 
     private List<Pieza> pieces;
 
