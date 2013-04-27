@@ -4,7 +4,7 @@ package hiperheuristica;
  *
  * @author Marcel
  */
-public class Figure implements Comparable<Figure> {
+public abstract class Figure implements Comparable<Figure> {
 
   protected Point[] vertices;
 

@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author Marcel
  */
-class PieceList implements Iterable<Piece> {
+public class PieceList implements Iterable<Piece> {
 
   private List<Piece> pieces;
 
