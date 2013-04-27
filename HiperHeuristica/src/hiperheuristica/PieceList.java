@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package hiperheuristica;
 
 import java.util.ArrayList;
@@ -12,102 +8,106 @@ import java.util.List;
  *
  * @author Marcel
  */
-public class PieceList implements Iterable<Pieza> {
+public class PieceList implements Iterable<Piece> {
 
-    private List<Pieza> pieces;
+  private List<Piece> pieces;
 
-    public PieceList() {
-        this.pieces = new ArrayList<>();
-    }
+  public PieceList() {
+    this.pieces = new ArrayList<>();
+  }
 
-    /**
-     * Gets the Pieza at the given index
-     *
-     * @param index of the Pieza
-     * @return the Pieza at the given index
-     */
-    public Pieza get(int index) {
-        return this.pieces.get(index);
-    }
+  /**
+   * Gets the Piece at the given index
+   *
+   * @param index of the Piece
+   * @return the Piece at the given index
+   */
+  public Piece get(int index) {
+    return this.pieces.get(index);
+  }
 
-    /**
-     * Removes a given piece
-     *
-     * @param piece to remove
-     * @return true if the piece was found and removed, false otherwise.
-     */
-    public boolean remove(Pieza piece) {
-        return this.pieces.remove(piece);
-    }
-    
-    /**
-     * Gets the number of items in this PieceList
-     * @return  the number of items in this PieceList
-     */
-    public int size() {
-        return this.pieces.size();
-    }
-            
+  /**
+   * Removes a given piece
+   *
+   * @param piece to remove
+   * @return true if the piece was found and removed, false otherwise.
+   */
+  public boolean remove(Piece piece) {
+    return this.pieces.remove(piece);
+  }
 
-    /**
-     * Sorts this PieceList according to a specified order
-     *
-     * @param sort according to an order
-     */
-    public void sort(Order order) {
-        java.util.Collections.<Pieza>sort(this.pieces);
-        if (order.equals(Order.DESCENDING)) {
-            java.util.Collections.<Pieza>reverse(this.pieces);
-        }
-    }
-    
-    /**
-     * Gets the biggest Pieza in this PieceList
-     * @return the biggest Pieza
-     */
-    public Pieza getBiggest() {
-        return java.util.Collections.<Pieza>max(this.pieces);
-    }
-    
-    /**
-     * Determines if all pieces in this PieceList are bigger than the
-     * sizeThreshold
-     * @param sizeThreshold to compare all pieces against
-     * @return true if all pieces are bigger than sizeThreshold, false otherwise.
-     */
-    public boolean areAllBiggerThan(int sizeThreshold) {
-        for(Pieza piece : this.pieces) {
-            if(piece.getArea() <= sizeThreshold) {
-                return false;
-            }
-        }
-        
-        return true;
-    }   
+  /**
+   * Gets the number of items in this PieceList
+   *
+   * @return the number of items in this PieceList
+   */
+  public int size() {
+    return this.pieces.size();
+  }
 
-    /**
-     * Adds a Pieza to this PieceList
-     * @param piece to add
-     */
-    public void add(Pieza piece) {
-        this.pieces.add(piece);
+  /**
+   * Sorts this PieceList according to a specified order
+   *
+   * @param sort according to an order
+   */
+  public void sort(Order order) {       
+    java.util.Collections.<Piece>sort(this.pieces);
+    if (order.equals(Order.DESCENDING)) {
+      java.util.Collections.<Figure>reverse(this.pieces);
     }
-    
-    /**
-     * Gets the area occupied by all the pieces in this list.
-     * @return the area occupied by all the pieces.
-     */
-    public int piecesArea() {
-        int area = 0;
-        for(Pieza piece : this.pieces) {
-            area += piece.getArea();
-        }
-        
-        return area;
+  }
+
+  /**
+   * Gets the biggest Piece in this PieceList
+   *
+   * @return the biggest Piece
+   */
+  public Piece getBiggest() {
+    return java.util.Collections.<Piece>max(this.pieces);
+  }
+
+  /**
+   * Determines if all pieces in this PieceList are bigger than the
+   * sizeThreshold
+   *
+   * @param sizeThreshold to compare all pieces against
+   * @return true if all pieces are bigger than sizeThreshold, false otherwise.
+   */
+  public boolean areAllBiggerThan(int sizeThreshold) {
+    for (Piece piece : this.pieces) {
+      if (piece.getArea() <= sizeThreshold) {
+        return false;
+      }
     }
 
-    @Override
-    public Iterator<Pieza> iterator() {
-        return this.pieces.iterator();
+    return true;
+  }
+
+  /**
+   * Adds a Piece to this PieceList
+   *
+   * @param piece to add
+   */
+  public void add(Piece piece) {
+    this.pieces.add(piece);
+  }
+
+  /**
+   * Gets the area occupied by all the pieces in this list.
+   *
+   * @return the area occupied by all the pieces.
+   */
+  public int piecesArea() {
+    int area = 0;
+    for (Piece piece : this.pieces) {
+      area += piece.getArea();
     }
+
+    return area;
+  }
+
+  @Override
+  public Iterator<Piece> iterator() {
+    return this.pieces.iterator();
+  }
 }
