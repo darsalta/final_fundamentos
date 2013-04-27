@@ -118,8 +118,7 @@ public abstract class Figure implements Comparable<Figure> {
   }
 
   /**
-   * TODO: Test this method, it is high risk method. Determines if a figure is
-   * within the bounds of another.
+   * Determines if a figure is within the bounds of another.
    *
    * @param figure to check that is within the bounds of this Figure
    * @return true if it is within the bounds of this Figure, false otherwise.
@@ -135,7 +134,7 @@ public abstract class Figure implements Comparable<Figure> {
   }
 
   /**
-   * TODO: Needs tests, this is a high risk method.
+   * Checks if this Figure intersects with another.
    *
    * @param figure to check if it intersects with.
    * @return true if it intersects, false otherwise.
@@ -145,8 +144,7 @@ public abstract class Figure implements Comparable<Figure> {
   }
 
   /**
-   * TODO: Test this method, it is high risk method. Determines if a figure
-   * intersects on the X axis with another.
+   * Determines if a figure intersects on the X axis with another.
    *
    * @param figure to check for intersection
    * @return true if they intersect on the X axis, false otherwise.
@@ -155,12 +153,11 @@ public abstract class Figure implements Comparable<Figure> {
     Figure left = figure.getLeftBound() < this.getLeftBound() ? figure : this;
     Figure right = left == this ? figure : this;
 
-    return left.getRightBound() <= right.getLeftBound();
+    return left.getRightBound() >= right.getLeftBound();
   }
 
   /**
-   * TODO: Test this method, it is high risk method. Determines if a figure
-   * intersects with another on the Y axis.
+   * Determines if a figure intersects with another on the Y axis.
    *
    * @param figure to check for intersection
    * @return true if they intersect on the Y axis, false otherwise.
@@ -169,6 +166,6 @@ public abstract class Figure implements Comparable<Figure> {
     Figure lower = figure.getBottBound() < this.getBottBound() ? figure : this;
     Figure upper = lower == this ? figure : this;
 
-    return lower.getTopBound() <= upper.getBottBound();
+    return lower.getTopBound() >= upper.getBottBound();
   }
 }

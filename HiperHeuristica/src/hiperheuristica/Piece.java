@@ -7,7 +7,7 @@ import static hiperheuristica.Direction.*;
  *
  * @author Marcel
  */
-class Piece extends Figure {
+public class Piece extends Figure {
 
   public Piece(Point[] vertices) {
     super(vertices);
