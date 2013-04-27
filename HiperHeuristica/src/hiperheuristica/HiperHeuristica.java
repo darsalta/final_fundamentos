@@ -458,7 +458,7 @@ class HiperHeuristica {
               if (tempContainer.getFreeArea()
                       - candidateK.getArea() > maxWaste) {
                 /**
-                 * Si con pieceK elegida se deja más waste, con las siguiente
+                 * Si con candidatoK elegida se deja más waste, con las siguiente
                  * candidatesK (más chicas) también lo haría. Deja de revisar
                  * candidatos K y se pasa al siguiente candidato J.
                  */
