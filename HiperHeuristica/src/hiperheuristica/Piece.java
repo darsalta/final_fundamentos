@@ -1,9 +1,6 @@
 package hiperheuristica;
 
-import static hiperheuristica.Direction.DOWN;
-import static hiperheuristica.Direction.LEFT;
-import static hiperheuristica.Direction.RIGHT;
-import static hiperheuristica.Direction.UP;
+import static hiperheuristica.Direction.*;
 
 /**
  * Represents a piece that can be stored inside a Container.

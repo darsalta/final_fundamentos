@@ -50,10 +50,10 @@ class PieceList implements Iterable<Piece> {
    *
    * @param sort according to an order
    */
-  public void sort(Order order) {
+  public void sort(Order order) {       
     java.util.Collections.<Piece>sort(this.pieces);
     if (order.equals(Order.DESCENDING)) {
-      java.util.Collections.<Piece>reverse(this.pieces);
+      java.util.Collections.<Figure>reverse(this.pieces);
     }
   }
 
