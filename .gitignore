@@ -16,3 +16,6 @@ tmp
 .yardoc
 _yardoc
 
+/HiperHeuristica/nbproject/private/
+/HiperHeuristica/dist/
+/HiperHeuristica/build/
