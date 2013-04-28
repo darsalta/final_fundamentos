@@ -16,7 +16,7 @@ public class PieceList implements Iterable<Piece> {
   private int piecesArea = 0;
 
   public PieceList() {
-    this.pieces = new ArrayList<>();
+    this.pieces = new ArrayList<Piece>();
   }
 
   /**
@@ -41,7 +41,7 @@ public class PieceList implements Iterable<Piece> {
 
     if (this.pieces.size() > 0) {
       if (piece == this.biggest) {
-        this.biggest = Collections.max(this.pieces);
+        this.biggest = Collections.<Piece>max(this.pieces);
       }
     } else {
       this.biggest = null;
@@ -122,7 +122,7 @@ public class PieceList implements Iterable<Piece> {
 
   @Override
   public Iterator<Piece> iterator() {
-    return this.pieces.iterator();
+    return this.pieces.<Piece>iterator();
   }
   
   public void clear() {

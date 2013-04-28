@@ -24,7 +24,7 @@ class HiperHeuristica {
     int increment = (widthContainer * heightContainer) / 20;
     /// De mayor a menor
     inputPieces.sort(Order.DESCENDING);
-    List<Container> containers = new ArrayList<>();
+    List<Container> containers = new ArrayList<Container>();
     while (inputPieces.size() > 0) {
       Container newContainer = 
               openNewContainer(containers, widthContainer, heightContainer);
