@@ -23,11 +23,10 @@ public class Program {
     
     for (final File fileEntry : folder.listFiles()) {
         if (fileEntry.isFile()) {
-            ProblemInstance problemInstance = null;
+            ProblemInstance problemInstance;
             problemInstance = parser.processFile(folderName + "\\" + fileEntry.getName());
-            hiperHeuristica.DJD(
-                    problemInstance.pieceList, 
-                    problemInstance.containers, 
+            problemInstance.containers = hiperHeuristica.DJD(
+                    problemInstance.pieceList,                     
                     (problemInstance.containers.get(0)).getWidth(), 
                     (problemInstance.containers.get(0)).getHeight(), 
                     initialCapacity);

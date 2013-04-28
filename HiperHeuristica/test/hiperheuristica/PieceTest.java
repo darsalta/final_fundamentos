@@ -32,13 +32,13 @@ public class PieceTest {
     for (Object[] testcase : moveDistanceData) {
       System.out.println("Piece.moveDistance: " + testcase[4]);
       // Arrange
-      int distance = (int) testcase[1];
+      int distance = (Integer) testcase[1];
       Direction dir = (Direction) testcase[0];
       Piece target = new Piece(
               new Point[]{Point.At(1, 0), Point.At(2, 1), Point.At(3, 2)
       });
-      int expectedLeftBound = target.getLeftBound() + (int) testcase[2];
-      int expectedBottBound = target.getBottBound() + (int) testcase[3];
+      int expectedLeftBound = target.getLeftBound() + (Integer) testcase[2];
+      int expectedBottBound = target.getBottBound() + (Integer) testcase[3];
 
       // Act
       target.moveDistance(distance, dir);

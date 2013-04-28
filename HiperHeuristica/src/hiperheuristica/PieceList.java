@@ -16,7 +16,7 @@ public class PieceList implements Iterable<Piece> {
   private int piecesArea = 0;
 
   public PieceList() {
-    this.pieces = new ArrayList<>();
+    this.pieces = new ArrayList<Piece>();
   }
 
   /**
@@ -38,10 +38,14 @@ public class PieceList implements Iterable<Piece> {
   public boolean remove(Piece piece) {
     boolean removed = this.pieces.remove(piece);
     this.piecesArea -= piece.getArea();
-    
-    if (piece == this.biggest) {
-      this.biggest = Collections.max(this.pieces);
-    }    
+
+    if (this.pieces.size() > 0) {
+      if (piece == this.biggest) {
+        this.biggest = Collections.<Piece>max(this.pieces);
+      }
+    } else {
+      this.biggest = null;
+    }
 
     return removed;
   }
@@ -88,7 +92,7 @@ public class PieceList implements Iterable<Piece> {
    */
   public Piece getBiggest() {
     return this.biggest;
-  }   
+  }
 
   /**
    * Determines if all pieces in this PieceList are bigger than the
@@ -118,6 +122,12 @@ public class PieceList implements Iterable<Piece> {
 
   @Override
   public Iterator<Piece> iterator() {
-    return this.pieces.iterator();
+    return this.pieces.<Piece>iterator();
+  }
+  
+  public void clear() {
+    this.pieces.clear();
+    this.piecesArea = 0;
+    this.biggest = null;
   }
 }
