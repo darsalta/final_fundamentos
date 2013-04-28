@@ -14,7 +14,6 @@ public class Piece extends Figure {
   }
 
   /**
-   * TODO: High risk method. Needs testing.
    * Moves this piece in a direction for a given distance
    *
    * @param distance to move the Piece

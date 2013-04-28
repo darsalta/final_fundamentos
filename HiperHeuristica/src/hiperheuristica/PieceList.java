@@ -93,6 +93,7 @@ public class PieceList implements Iterable<Piece> {
   }
 
   /**
+   * TODO: Needs testing. High risk method.
    * Gets the area occupied by all the pieces in this list.
    *
    * @return the area occupied by all the pieces.

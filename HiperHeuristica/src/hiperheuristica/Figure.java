@@ -10,6 +10,7 @@ public abstract class Figure implements Comparable<Figure> {
 
   public Figure(Point[] vertices) {
     assert (vertices != null);
+    assert (vertices.length >= 3);
     this.vertices = vertices;
   }
 

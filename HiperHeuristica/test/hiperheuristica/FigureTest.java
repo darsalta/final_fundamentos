@@ -167,7 +167,7 @@ public class FigureTest {
   public void testGetRightBound() {
     // Arrange    
     for (Object[] data : rightBoundData) {
-      System.out.println("getRightBound " + getTestCaseName(data));
+      System.out.println("Figure.getRightBound " + getTestCaseName(data));
 
       int expected = getExpectedValue(data);
       Figure target = new FigureStub(getVertices(data));
@@ -187,7 +187,7 @@ public class FigureTest {
   public void testGetLeftBound() {
     // Arrange    
     for (Object[] data : leftBoundData) {
-      System.out.println("getLeftBound " + getTestCaseName(data));
+      System.out.println("Figure.getLeftBound " + getTestCaseName(data));
       int expected = getExpectedValue(data);
       Figure target = new FigureStub(getVertices(data));
 
@@ -206,7 +206,7 @@ public class FigureTest {
   public void testGetTopBound() {
     // Arrange    
     for (Object[] data : topBoundData) {
-      System.out.println("getTopBound " + getTestCaseName(data));
+      System.out.println("Figure.getTopBound " + getTestCaseName(data));
       int expected = getExpectedValue(data);
       Figure target = new FigureStub(getVertices(data));
 
@@ -225,7 +225,7 @@ public class FigureTest {
   public void testGetBottBound() {
     // Arrange    
     for (Object[] data : bottBoundData) {
-      System.out.println("getBottBound " + getTestCaseName(data));
+      System.out.println("Figure.getBottBound " + getTestCaseName(data));
       int expected = getExpectedValue(data);
       Figure target = new FigureStub(getVertices(data));
 
@@ -244,7 +244,7 @@ public class FigureTest {
   public void testGetWidth() {
     // Arrange    
     for (Object[] data : widthData) {
-      System.out.println("getWidth " + getTestCaseName(data));
+      System.out.println("Figure.getWidth " + getTestCaseName(data));
 
       int expected = getExpectedValue(data);
       Figure target = new FigureStub(getVertices(data));
@@ -264,7 +264,7 @@ public class FigureTest {
   public void testGetHeight() {
     // Arrange    
     for (Object[] data : heightData) {
-      System.out.println("getHeight " + getTestCaseName(data));
+      System.out.println("Figure.getHeight " + getTestCaseName(data));
       int expected = getExpectedValue(data);
       Figure target = new FigureStub(getVertices(data));
 
@@ -283,7 +283,7 @@ public class FigureTest {
   public void testGetArea() {
     // Arrange    
     for (Object[] data : areaData) {
-      System.out.println("getArea " + getTestCaseName(data));
+      System.out.println("Figure.getArea " + getTestCaseName(data));
       int expected = getExpectedValue(data);
       Figure target = new FigureStub(getVertices(data));
 
@@ -302,7 +302,7 @@ public class FigureTest {
   public void testCompareTo() {
     // Arrange    
     for (Object[] data : compareToData) {
-      System.out.println("compareTo " + getTestCaseName(data));
+      System.out.println("Figure.compareTo " + getTestCaseName(data));
       int expected = getExpectedValue(data);
       Figure targetFigure = new FigureStub(getVertices(data));
       Figure otherFigure = new FigureStub(getOtherVertices(data));
@@ -322,7 +322,7 @@ public class FigureTest {
   public void testIsWithinBounds() {
     // Arrange    
     for (Object[] data : isWithinBoundsData) {
-      System.out.println("isWithinBounds " + getTestCaseName(data));
+      System.out.println("Figure.isWithinBounds " + getTestCaseName(data));
       boolean expected = getExpectedValue(data);
       Figure targetFigure = new FigureStub(getVertices(data));
       Figure otherFigure = new FigureStub(getOtherVertices(data));
@@ -341,30 +341,30 @@ public class FigureTest {
   @Test
   public void testIntersectsWith_fails_when_x_axis_not_intersects() {
     // Arrange    
-    FigureIntersectsStub target = new FigureIntersectsStub();    
+    FigureIntersectsStub target = new FigureIntersectsStub();
     target.setIntersectsOnXAxis(false);
     boolean expectedResult = false;
-    
+
     // Act
     boolean result = target.intersectsWith(null);
-    
+
     // Assert
     assertEquals(expectedResult, result);
   }
-  
-    /**
+
+  /**
    * Test of intersectsWith method, of class Figure.
    */
   @Test
   public void testIntersectsWith_fails_when_y_axis_not_intersects() {
     // Arrange    
-    FigureIntersectsStub target = new FigureIntersectsStub();    
+    FigureIntersectsStub target = new FigureIntersectsStub();
     target.setIntersectsOnYAxis(false);
     boolean expectedResult = false;
-    
+
     // Act
     boolean result = target.intersectsWith(null);
-    
+
     // Assert
     assertEquals(expectedResult, result);
   }
@@ -376,7 +376,7 @@ public class FigureTest {
   public void testIntersectsOnXAxis() {
 // Arrange    
     for (Object[] data : intersectsOnXAxisData) {
-      System.out.println("intersecsOnXAxis " + getTestCaseName(data));
+      System.out.println("Figure.intersecsOnXAxis " + getTestCaseName(data));
       boolean expected = getExpectedValue(data);
       Figure targetFigure = new FigureStub(getVertices(data));
       Figure otherFigure = new FigureStub(getOtherVertices(data));
@@ -395,7 +395,7 @@ public class FigureTest {
   @Test
   public void testIntersectsOnYAxis() {
     for (Object[] data : intersectsOnYAxisData) {
-      System.out.println("intersecsOnYAxis " + getTestCaseName(data));
+      System.out.println("Figure.intersecsOnYAxis " + getTestCaseName(data));
       boolean expected = getExpectedValue(data);
       Figure targetFigure = new FigureStub(getVertices(data));
       Figure otherFigure = new FigureStub(getOtherVertices(data));
@@ -422,8 +422,6 @@ public class FigureTest {
 
   private String getTestCaseName(Object[] data) {
     return data[2].toString();
-
-
   }
 
   class FigureStub extends Figure {
@@ -439,7 +437,7 @@ public class FigureTest {
     private boolean intersectsOnXAxis;
 
     public FigureIntersectsStub() {
-      super(new Point[]{});
+      super(new Point[]{null, null, null});
     }
 
     public void setIntersectsOnYAxis(boolean intersects) {
