@@ -5,7 +5,7 @@ package hiperheuristica;
  *
  * @author Marcel
  */
-class Container extends Figure {
+public class Container extends Figure {
 
   PieceList pieces;
 
