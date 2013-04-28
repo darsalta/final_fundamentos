@@ -178,15 +178,14 @@ public class ContainerTest {
    * Test of intersectsWith method, of class Container.
    */
   @Test
-  public void testIntersectsWith() {
-    System.out.println("Container.intersectsWith");
-    // TODO: Test not implemented.
-    fail("Test not implemented yet.");
-    Figure figure = null;
-    Container instance = null;
-    boolean expResult = false;
-    boolean result = instance.intersectsWith(figure);
-    assertEquals(expResult, result);
+  public void testIntersectsWith_empty_container() {
+    System.out.println("Container.intersectsWith : empty container");        
+    // Arrange
+    Piece piece = makePiece(0, 10, 0, 10);
+    boolean shouldIntersect = false;
+    int width = 10, height = 10;    
+    // Act & Assert
+    checkIntersectsWith(width, height, new Piece[]{}, piece, shouldIntersect);
   }
 
   /**
@@ -236,6 +235,19 @@ public class ContainerTest {
     int result = target.distanceToLeftBound(piece);
     // Assert   
     assertEquals(expResult, result);
+  }
+
+  private void checkIntersectsWith(
+          int width,
+          int height,
+          Piece[] previousPieces,
+          Piece piece,
+          boolean shouldIntersect) {
+    Container target = initContainer(width, height, previousPieces);
+    // Act
+    boolean intersects = target.intersectsWith(piece);
+    // Assert   
+    assertEquals(shouldIntersect, intersects);
   }
 
   private Container initContainer(int width, int height, Piece[] previousPieces) {

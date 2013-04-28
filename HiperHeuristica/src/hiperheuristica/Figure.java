@@ -6,7 +6,7 @@ package hiperheuristica;
  */
 public abstract class Figure implements Comparable<Figure> {
 
-  protected Point[] vertices;
+  private Point[] vertices;
   private int rightBound = Integer.MIN_VALUE;
   private int leftBound = Integer.MAX_VALUE;
   private int bottBound = Integer.MAX_VALUE;
@@ -15,7 +15,10 @@ public abstract class Figure implements Comparable<Figure> {
   public Figure(Point[] vertices) {
     assert (vertices != null);
     assert (vertices.length >= 3);
-    this.vertices = vertices;
+    this.vertices = new Point[vertices.length];
+    for (int i = 0; i < vertices.length; i++) {
+      this.setVertex(i, vertices[i].getX(), vertices[i].getY());
+    }
   }
 
   /**
@@ -24,14 +27,6 @@ public abstract class Figure implements Comparable<Figure> {
    * @return the right bounds.
    */
   public int getRightBound() {
-    if (this.rightBound == Integer.MIN_VALUE) {
-      for (Point point : this.vertices) {
-        if (point.getX() > this.rightBound) {
-          this.rightBound = point.getX();
-        }
-      }
-    }
-
     return this.rightBound;
   }
 
@@ -41,14 +36,6 @@ public abstract class Figure implements Comparable<Figure> {
    * @return the left bounds
    */
   public int getLeftBound() {
-    if (this.leftBound == Integer.MAX_VALUE) {
-      for (Point point : this.vertices) {
-        if (point.getX() < this.leftBound) {
-          this.leftBound = point.getX();
-        }
-      }
-    }
-
     return this.leftBound;
   }
 
@@ -58,14 +45,6 @@ public abstract class Figure implements Comparable<Figure> {
    * @return top bounds
    */
   public int getTopBound() {
-    if (this.topBound == Integer.MIN_VALUE) {
-      for (Point point : this.vertices) {
-        if (point.getY() > this.topBound) {
-          this.topBound = point.getY();
-        }
-      }
-    }
-
     return this.topBound;
   }
 
@@ -75,14 +54,6 @@ public abstract class Figure implements Comparable<Figure> {
    * @return the bottom bounds.
    */
   public int getBottBound() {
-    if (this.bottBound == Integer.MAX_VALUE) {
-      for (Point point : this.vertices) {
-        if (point.getY() < this.bottBound) {
-          this.bottBound = point.getY();
-        }
-      }
-    }
-
     return this.bottBound;
   }
 
@@ -162,7 +133,7 @@ public abstract class Figure implements Comparable<Figure> {
     Figure left = figure.getLeftBound() < this.getLeftBound() ? figure : this;
     Figure right = left == this ? figure : this;
 
-    return left.getRightBound() >= right.getLeftBound();
+    return left.getRightBound() > right.getLeftBound();
   }
 
   /**
@@ -175,14 +146,43 @@ public abstract class Figure implements Comparable<Figure> {
     Figure lower = figure.getBottBound() < this.getBottBound() ? figure : this;
     Figure upper = lower == this ? figure : this;
 
-    return lower.getTopBound() >= upper.getBottBound();
+    return lower.getTopBound() > upper.getBottBound();
   }
-  
+
   /**
    * Gets the vertices that make up this figure.
+   *
    * @return The vertices of this Figure.
    */
   public Point[] getVertices() {
     return this.vertices.clone();
+  }
+
+  protected final void setVertex(int index, int x, int y) {
+    Point original = this.vertices[index];
+    this.vertices[index] = Point.At(x, y);
+    if (original != null && original.getX() == this.leftBound) {
+      this.leftBound = Point.getSmallestX(vertices).getX();
+    } else if (x < this.leftBound) {
+      this.leftBound = x;
+    }
+
+    if (original != null && original.getX() == this.rightBound) {
+      this.leftBound = Point.getBiggestX(vertices).getX();
+    } else if (x > this.rightBound) {
+      this.rightBound = x;
+    }
+
+    if (original != null && original.getY() == this.bottBound) {
+      this.bottBound = Point.getSmallestY(vertices).getY();
+    } else if (y < this.bottBound) {
+      this.bottBound = y;
+    }
+
+    if (original != null && original.getY() == this.topBound) {
+      this.topBound = Point.getBiggestY(vertices).getY();
+    } else if (y > this.topBound) {
+      this.topBound = y;
+    }
   }
 }

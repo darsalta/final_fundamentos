@@ -119,10 +119,10 @@ public class PieceListTest {
     target.add(new PieceStub(1));
     target.add(new PieceStub(1));
     int expected = 2;
-    
+
     // Act
-    int area = target.piecesArea();    
-    
+    int area = target.piecesArea();
+
     // Assert
     assertEquals(expected, area);
   }
@@ -142,7 +142,7 @@ public class PieceListTest {
     private int area;
 
     public PieceStub(int area) {
-      super(new Point[]{null, null, null});
+      super(new Point[]{Point.At(1, 1), Point.At(2, 2), Point.At(3, 3)});
 
       this.area = area;
     }
