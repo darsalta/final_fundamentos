@@ -6,8 +6,8 @@ package hiperheuristica;
  */
 public class Point {
 
-  private final int x;
-  private final int y;
+  private int x;
+  private int y;
 
   /**
    * Creates a new point with coordinates at (x,y)

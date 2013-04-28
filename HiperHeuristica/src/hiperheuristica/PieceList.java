@@ -124,4 +124,10 @@ public class PieceList implements Iterable<Piece> {
   public Iterator<Piece> iterator() {
     return this.pieces.iterator();
   }
+  
+  public void clear() {
+    this.pieces.clear();
+    this.piecesArea = 0;
+    this.biggest = null;
+  }
 }

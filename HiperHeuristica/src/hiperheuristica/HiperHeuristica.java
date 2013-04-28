@@ -18,7 +18,7 @@ class HiperHeuristica {
           PieceList inputPieces,
           int widthContainer,
           int heightContainer,
-          double initialCapacity) throws Exception {
+          double initialCapacity) {
 
     /// El desperdicio se incrementa en 1/20 del container.
     int increment = (widthContainer * heightContainer) / 20;

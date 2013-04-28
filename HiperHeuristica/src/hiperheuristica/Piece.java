@@ -9,7 +9,7 @@ import static hiperheuristica.Direction.*;
  */
 public class Piece extends Figure {
 
-  public Piece(Point[] vertices) {
+  public Piece(Point... vertices) {
     super(vertices);
   }
 
