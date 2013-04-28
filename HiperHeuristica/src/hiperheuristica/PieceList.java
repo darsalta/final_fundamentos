@@ -11,6 +11,8 @@ import java.util.List;
 public class PieceList implements Iterable<Piece> {
 
   private List<Piece> pieces;
+  private Piece biggest = null;
+  private int piecesArea = 0;
 
   public PieceList() {
     this.pieces = new ArrayList<>();
@@ -33,7 +35,27 @@ public class PieceList implements Iterable<Piece> {
    * @return true if the piece was found and removed, false otherwise.
    */
   public boolean remove(Piece piece) {
+    if (piece == this.biggest) {
+      this.biggest = this.getBiggest();
+    }
+
+    this.piecesArea -= piece.getArea();
+
     return this.pieces.remove(piece);
+  }
+
+  /**
+   * Adds a Piece to this PieceList
+   *
+   * @param piece to add
+   */
+  public void add(Piece piece) {
+    if (this.biggest == null || piece.getArea() > this.biggest.getArea()) {
+      this.biggest = piece;
+    }
+
+    this.piecesArea += piece.getArea();
+    this.pieces.add(piece);
   }
 
   /**
@@ -50,7 +72,7 @@ public class PieceList implements Iterable<Piece> {
    *
    * @param sort according to an order
    */
-  public void sort(Order order) {       
+  public void sort(Order order) {
     java.util.Collections.<Piece>sort(this.pieces);
     if (order.equals(Order.DESCENDING)) {
       java.util.Collections.<Figure>reverse(this.pieces);
@@ -58,12 +80,12 @@ public class PieceList implements Iterable<Piece> {
   }
 
   /**
-   * Gets the biggest Piece in this PieceList
+   * Gets the biggest Piece in this PieceList.
    *
-   * @return the biggest Piece
+   * @return the biggest Piece. Gives null if the PieceList is empty.
    */
   public Piece getBiggest() {
-    return java.util.Collections.<Piece>max(this.pieces);
+    return this.biggest;
   }
 
   /**
@@ -84,27 +106,12 @@ public class PieceList implements Iterable<Piece> {
   }
 
   /**
-   * Adds a Piece to this PieceList
-   *
-   * @param piece to add
-   */
-  public void add(Piece piece) {
-    this.pieces.add(piece);
-  }
-
-  /**
-   * TODO: Needs testing. High risk method.
    * Gets the area occupied by all the pieces in this list.
    *
    * @return the area occupied by all the pieces.
    */
   public int piecesArea() {
-    int area = 0;
-    for (Piece piece : this.pieces) {
-      area += piece.getArea();
-    }
-
-    return area;
+    return this.piecesArea;
   }
 
   @Override

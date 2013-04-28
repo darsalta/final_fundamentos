@@ -24,19 +24,19 @@ public class Piece extends Figure {
       Point cPoint = this.vertices[i];
       switch (dir) {
         case UP:
-          this.vertices[i] = new Point(cPoint.getX(), cPoint.getY() + distance);
+          this.vertices[i] = Point.At(cPoint.getX(), cPoint.getY() + distance);
           break;
 
         case DOWN:
-          this.vertices[i] = new Point(cPoint.getX(), cPoint.getY() - distance);
+          this.vertices[i] = Point.At(cPoint.getX(), cPoint.getY() - distance);
           break;
 
         case LEFT:
-          this.vertices[i] = new Point(cPoint.getX() - distance, cPoint.getY());
+          this.vertices[i] = Point.At(cPoint.getX() - distance, cPoint.getY());
           break;
 
         case RIGHT:
-          this.vertices[i] = new Point(cPoint.getX() + distance, cPoint.getY());
+          this.vertices[i] = Point.At(cPoint.getX() + distance, cPoint.getY());
           break;
       }
     }

@@ -9,6 +9,7 @@ import java.util.List;
  * @author Dra. Eunice Lopez, modifications by Marcel Valdez
  */
 class HiperHeuristica {
+  
   /**
    * Implementa DJD. REFACTOR: Needs simplification and method extraction.
    */
@@ -166,7 +167,7 @@ class HiperHeuristica {
 
     /// Si no reacomoda la piece (si no cambió de posición)
     return totalHorDistance > 0 || totalVertDistance > 0;
-  }
+  }  
 
   /**
    * Tries to fit one, two or three pieces with a given maximum waste.
