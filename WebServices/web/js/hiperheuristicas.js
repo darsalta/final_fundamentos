@@ -43,16 +43,14 @@
                 var vertice = this.vertices[i];
                 json += vertice.toJson();
                 if (i < this.vertices.length - 1) {
-                    json += ", "
+                    json += ", ";
                 }
-                ;
             }
             json += " ] }";
 
             return json;
         };
     }
-    ;
 
     Piece.fromJson = function(json) {
         var jsonPiece = JSON.parse(json);
@@ -85,6 +83,10 @@
 
     Point.fromJsonCoords = function(jsonCoords) {
         return new Point(jsonCoords.x, jsonCoords.y);
+    };
+    
+    Point.At = function(x, y) {
+        return new Point(x, y);
     };
 
     hiper = {};
