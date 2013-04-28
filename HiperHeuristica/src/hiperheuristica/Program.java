@@ -1,8 +1,8 @@
 package hiperheuristica;
 
 /**
- *
- * @author Marcel
+ * Get problem instances
+ * @author Marcel, Priscila
  */
 public class Program {
 
