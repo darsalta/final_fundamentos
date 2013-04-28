@@ -1,7 +1,7 @@
 package hiperheuristica;
 
 /**
- * TODO: Pending implementation.
+ * Contenedor para las piezas a acomodar en una heuristica.
  *
  * @author Marcel
  */
@@ -53,6 +53,9 @@ public class Container extends Figure {
    * @return area used up by pieces in this Container.
    */
   public int getUsedArea() {
+    /**
+     * NOTA: Puede que sea util utilizar un cache para acelerar este calculo.
+     */
     return this.pieces.piecesArea();
   }
 
@@ -67,7 +70,7 @@ public class Container extends Figure {
    */
   public int distanceToBottBound(Piece piece) {
     assert (piece != null);
-    assert (piece.getBottBound() > this.getBottBound());
+    assert (piece.getBottBound() >= this.getBottBound());
 
     // get biggest maxY
     int bottomBounds = 0;
