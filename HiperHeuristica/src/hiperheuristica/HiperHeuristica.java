@@ -45,7 +45,10 @@ class HiperHeuristica {
             if (tryPlaceInBottomLeft(container, piece)) {
               container.putPiece(piece);
               inputPieces.remove(piece);
-              return;
+              //synchronize i counter with inputPieces size
+              //SO IT DOESN'T SKIPS PIECES
+              i--;
+              //return;
             }
           }
         }
@@ -82,7 +85,8 @@ class HiperHeuristica {
           // meter en un objeto? No tiene sentido, ¿qué pasa si quedan
           // más piezas? 
           // CAREFUL: Creo que aquí es break, no return.
-          return;
+          //return;
+          break;
         }
 
         maxAllowedWaste += increment;

@@ -31,12 +31,14 @@ public class Program {
                     (problemInstance.containers.get(0)).getWidth(), 
                     (problemInstance.containers.get(0)).getHeight(), 
                     initialCapacity);
+            System.out.println(fileEntry.getName());
             for (int i=0; i<(problemInstance.containers).size(); i++)
             {
               System.out.println("Contenedor: " + i);
               for (Piece piece : (problemInstance.containers).get(i)){
+                final Point[] pieceVertices = piece.getVertices();
                 for(int j = 0; j < 4; j++){
-                  System.out.print(((piece.getVertices())[i]).getX() + " " + ((piece.getVertices())[i]).getY() + " ");
+                  System.out.print("(" + pieceVertices[j].getX() + "," + pieceVertices[j].getY() + ") ");
                 }
                 System.out.println();
               }
