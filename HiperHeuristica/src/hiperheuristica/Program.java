@@ -3,6 +3,7 @@ package hiperheuristica;
 import java.io.File;
 import parsing.Parser;
 import parsing.ProblemInstance;
+import hiperheuristica.Point;
 
 /**
  * Get problem instances
@@ -34,8 +35,12 @@ public class Program {
             {
               System.out.println("Contenedor: " + i);
               for (Piece piece : (problemInstance.containers).get(i)){
-                for()
-              } 
+                for(int j = 0; j < 4; j++){
+                  System.out.print(((piece.getVertices())[i]).getX() + " " + ((piece.getVertices())[i]).getY() + " ");
+                }
+                System.out.println();
+              }
+              System.out.println();
             }
         } 
     }
