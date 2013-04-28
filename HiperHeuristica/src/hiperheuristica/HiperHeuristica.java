@@ -30,13 +30,17 @@ class HiperHeuristica {
      * alguna HH podría ser necesario revisar varios containers.
      */
     //for (int j = containers.size() - 1; j < containers.size(); j++) {
-    for (int j = 0; j < containers.size(); j++) {
-      Container container = containers.get(j);
+    for (int i = 0; i < containers.size(); i++) {
+      Container container = containers.get(i);
       // initialCapacity = 1/4 o 1/3
-      if (container.getUsedArea() < container.getArea() * initialCapacity) {
+      //if (container.getUsedArea() < container.getArea() * initialCapacity) {
         /// Recorre de mayor a menor, dado que pieces está en orden DESC
-        for (int i = 0; i < inputPieces.size(); i++) {
-          Piece piece = inputPieces.get(i);
+        for (int j = 0; j < inputPieces.size(); j++) {
+          // initialCapacity = 1/4 o 1/3
+          if (container.getUsedArea() >= container.getArea() * initialCapacity)
+            break;
+          
+          Piece piece = inputPieces.get(j);
           if (piece.getArea() <= container.getFreeArea()) {
             /* *
              * true o false, dependiendo si se puede acomodar 
@@ -45,14 +49,14 @@ class HiperHeuristica {
             if (tryPlaceInBottomLeft(container, piece)) {
               container.putPiece(piece);
               inputPieces.remove(piece);
-              //synchronize i counter with inputPieces size
+              //synchronize j counter with inputPieces size
               //SO IT DOESN'T SKIPS PIECES
-              i--;
+              j--;
               //return;
             }
           }
         }
-      }
+      //}
     }
 
     /**
