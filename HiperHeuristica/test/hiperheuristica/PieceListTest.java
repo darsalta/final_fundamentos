@@ -62,6 +62,31 @@ public class PieceListTest {
     // Assert
     assertEquals(biggest, result);
   }
+  
+  /**
+   * Test of getBiggest method, of class PieceList.
+   */
+  @Test
+  public void testGetBiggest_updates_after_removing_biggest() {
+    System.out.println("PieceList.getBiggest");
+    // Arrange    
+    PieceList target = new PieceList();
+    Piece biggest = new PieceStub(2);
+    final PieceStub secondBiggest = new PieceStub(1);
+    target.add(secondBiggest);
+    target.add(new PieceStub(0));
+    target.add(biggest);
+
+    // Assure
+    assertSame(biggest, target.getBiggest());
+    target.remove(biggest);
+    
+    // Act
+    Piece newBiggest = target.getBiggest();
+    
+    // Assert
+    assertEquals(secondBiggest, newBiggest);
+  }
 
   /**
    * Test of areAllBiggerThan method, of class PieceList.
