@@ -6,7 +6,7 @@ package hiperheuristica;
  */
 public abstract class Figure implements Comparable<Figure> {
 
-  protected Point[] vertices;
+  private Point[] vertices;
   private int rightBound = Integer.MIN_VALUE;
   private int leftBound = Integer.MAX_VALUE;
   private int bottBound = Integer.MAX_VALUE;
@@ -25,11 +25,7 @@ public abstract class Figure implements Comparable<Figure> {
    */
   public int getRightBound() {
     if (this.rightBound == Integer.MIN_VALUE) {
-      for (Point point : this.vertices) {
-        if (point.getX() > this.rightBound) {
-          this.rightBound = point.getX();
-        }
-      }
+      this.refreshRightBound();
     }
 
     return this.rightBound;
@@ -42,11 +38,7 @@ public abstract class Figure implements Comparable<Figure> {
    */
   public int getLeftBound() {
     if (this.leftBound == Integer.MAX_VALUE) {
-      for (Point point : this.vertices) {
-        if (point.getX() < this.leftBound) {
-          this.leftBound = point.getX();
-        }
-      }
+      this.refreshLeftBound();
     }
 
     return this.leftBound;
@@ -59,13 +51,9 @@ public abstract class Figure implements Comparable<Figure> {
    */
   public int getTopBound() {
     if (this.topBound == Integer.MIN_VALUE) {
-      for (Point point : this.vertices) {
-        if (point.getY() > this.topBound) {
-          this.topBound = point.getY();
-        }
-      }
+      this.refreshTopBound();
     }
-
+    
     return this.topBound;
   }
 
@@ -75,14 +63,10 @@ public abstract class Figure implements Comparable<Figure> {
    * @return the bottom bounds.
    */
   public int getBottBound() {
-    if (this.bottBound == Integer.MAX_VALUE) {
-      for (Point point : this.vertices) {
-        if (point.getY() < this.bottBound) {
-          this.bottBound = point.getY();
-        }
-      }
+    if(this.bottBound == Integer.MAX_VALUE) {
+      this.refreshBottBound();
     }
-
+    
     return this.bottBound;
   }
 
@@ -162,7 +146,7 @@ public abstract class Figure implements Comparable<Figure> {
     Figure left = figure.getLeftBound() < this.getLeftBound() ? figure : this;
     Figure right = left == this ? figure : this;
 
-    return left.getRightBound() >= right.getLeftBound();
+    return left.getRightBound() > right.getLeftBound();
   }
 
   /**
@@ -175,14 +159,59 @@ public abstract class Figure implements Comparable<Figure> {
     Figure lower = figure.getBottBound() < this.getBottBound() ? figure : this;
     Figure upper = lower == this ? figure : this;
 
-    return lower.getTopBound() >= upper.getBottBound();
+    return lower.getTopBound() > upper.getBottBound();
   }
-  
+
   /**
    * Gets the vertices that make up this figure.
+   *
    * @return The vertices of this Figure.
    */
   public Point[] getVertices() {
     return this.vertices.clone();
+  }
+
+  protected final void setVertex(int index, int x, int y) {
+    this.vertices[index] = Point.At(x, y);
+    if (x < this.leftBound) {
+      this.leftBound = x;
+    } else {
+      refreshLeftBound();
+    }
+
+    if (y < this.bottBound) {
+      this.bottBound = y;
+    } else {
+      refreshBottBound();
+    }
+
+
+    if (x > this.rightBound) {
+      this.rightBound = x;
+    } else {
+      refreshRightBound();
+    }
+
+    if (y > this.topBound) {
+      this.topBound = y;
+    } else {
+      refreshTopBound();
+    }
+  }
+
+  private void refreshLeftBound() {
+    this.leftBound = Point.getMinX(vertices).getX();
+  }
+
+  private void refreshBottBound() {
+    this.bottBound = Point.getMinX(vertices).getY();
+  }
+
+  private void refreshRightBound() {
+    this.rightBound = Point.getMaxX(vertices).getX();
+  }
+
+  private void refreshTopBound() {
+    this.topBound = Point.getMaxY(vertices).getY();
   }
 }

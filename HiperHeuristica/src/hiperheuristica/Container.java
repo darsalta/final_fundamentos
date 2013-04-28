@@ -139,7 +139,7 @@ public class Container extends Figure implements Iterable<Piece> {
   @Override
   public boolean intersectsWith(Figure figure) {
     assert (figure != null);
-    if (figure.intersectsWith(this)) {
+    if (figure.intersectsWith(this) && !super.isWithinBounds(figure)) {
       return true;
     }
 

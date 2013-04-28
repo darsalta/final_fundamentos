@@ -107,23 +107,29 @@ public class FigureTest {
   };
   static Object[][] intersectsOnXAxisData = new Object[][]{
     new Object[]{
+      new Point[]{Point.At(3, 3), Point.At(3, 5), Point.At(5, 3), Point.At(5, 5)},
+      true,
+      "Two figures with same width and overlaping height should intersect.",
+      new Point[]{Point.At(3, 0), Point.At(3, 4), Point.At(5, 0), Point.At(5, 4)}
+    },
+    new Object[]{
       BIG_SQUARE_AT_0_0, true,
-      "Big square on left intersects on X axis with other square by an unit.",
+      "Big square on left intersects on X axis with other square by one unit.",
       BIG_SQUARE_AT_3_3
     },
     new Object[]{
       BIG_SQUARE_AT_3_3, true,
-      "Big square on right intersects on X axis with other square by an unit.",
+      "Big square on right intersects on X axis with other square by one unit.",
       BIG_SQUARE_AT_0_0
     },
     new Object[]{
-      MEDIUM_SQUARE_AT_1_1, true,
-      "Medium square @(1,1) intersects on X axis with big square @(3,3).",
+      MEDIUM_SQUARE_AT_1_1, false,
+      "Medium square @(1,1) does not intersect on X axis with big square @(3,3).",
       BIG_SQUARE_AT_3_3
     },
     new Object[]{
-      BIG_SQUARE_AT_3_3, true,
-      "Big square @(3,3) intersects on X axis with medium square @(1,1).",
+      BIG_SQUARE_AT_3_3, false,
+      "Big square @(3,3) does not intersect on X axis with medium square @(1,1).",
       MEDIUM_SQUARE_AT_1_1
     },
     new Object[]{
@@ -437,7 +443,7 @@ public class FigureTest {
     private boolean intersectsOnXAxis;
 
     public FigureIntersectsStub() {
-      super(new Point[]{null, null, null});
+      super(new Point[]{Point.At(0, 0), Point.At(1, 1), Point.At(2, 2)});
     }
 
     public void setIntersectsOnYAxis(boolean intersects) {

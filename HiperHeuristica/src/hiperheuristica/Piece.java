@@ -20,23 +20,24 @@ public class Piece extends Figure {
    * @param dir in which to move.
    */
   public void moveDistance(int distance, Direction dir) {
-    for (int i = 0; i < this.vertices.length; i++) {
-      Point cPoint = this.vertices[i];
+    Point[] vertices = this.getVertices();
+    for (int i = 0; i < this.getVertices().length; i++) {
+      Point point = vertices[i];
       switch (dir) {
         case UP:
-          this.vertices[i] = Point.At(cPoint.getX(), cPoint.getY() + distance);
+          this.setVertex(i, point.getX(), point.getY() + distance);
           break;
 
         case DOWN:
-          this.vertices[i] = Point.At(cPoint.getX(), cPoint.getY() - distance);
+          this.setVertex(i, point.getX(), point.getY() - distance);
           break;
 
         case LEFT:
-          this.vertices[i] = Point.At(cPoint.getX() - distance, cPoint.getY());
+          this.setVertex(i, point.getX() - distance, point.getY());
           break;
 
         case RIGHT:
-          this.vertices[i] = Point.At(cPoint.getX() + distance, cPoint.getY());
+          this.setVertex(i, point.getX() + distance, point.getY());
           break;
       }
     }
@@ -49,6 +50,6 @@ public class Piece extends Figure {
    * @return A deep copy of this Piece
    */
   public Piece getCopy() {
-    return new Piece(this.vertices.clone());
+    return new Piece(this.getVertices());
   }
 }
