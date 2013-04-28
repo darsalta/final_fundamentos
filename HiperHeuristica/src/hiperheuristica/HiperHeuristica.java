@@ -9,74 +9,7 @@ import java.util.List;
  * @author Dra. Eunice Lopez, modifications by Marcel Valdez
  */
 class HiperHeuristica {
-
-  /**
-   * HeurísticaBL, trata de colocar piece en container abajo a la izquierda,
-   * empezando a intentar desde arriba a la derecha.
-   *
-   * @param container
-   * @param piece
-   * @return true if the piece fits, false otherwise.
-   */
-  private static boolean tryPlaceInBottomLeft(Container container, Piece piece) {
-    /**
-     * Coloca la piece en la parte superior derecha del container, justo afuera
-     * del container.
-     */
-    piece.moveDistance(
-            container.getRightBound() - piece.getRightBound(),
-            Direction.RIGHT);
-    piece.moveDistance(
-            container.getTopBound() - piece.getBottBound(),
-            Direction.UP);
-
-    return movePieceToLowerLeft(container, piece);
-  }
-
-  /**
-   * TODO: Needs testing, high risk method. Mueve la piece hasta una posicion
-   * estable lo más abajo y a la izquierda posible. Devuelve TRUE si hubo
-   * movimiento y FALSE si no hubo. REFACTOR: Mover este método a Container o
-   * Piece.
-   *
-   * @param container whose bounds are used.
-   * @param piece to move.
-   * @return true if the piece was moved, false otherwise.
-   */
-  private static boolean movePieceToLowerLeft(Container container, Piece piece) {
-    int totalVertDistance = 0, totalHorDistance = 0;
-    int distToBott, distToLeft;
-    do {
-      /// Distancia hacia abajo que puede moverse la piece hasta topar.            
-      distToBott = container.distanceToBottBound(piece);
-      if (distToBott > 0) {
-        piece.moveDistance(distToBott, Direction.DOWN);
-        totalVertDistance += distToBott;
-      }
-      /**
-       * Distancia hacia la izquierda que puede moverse la piece hasta topar.
-       */
-      distToLeft = container.distanceToLeftBound(piece);
-      if (distToLeft > 0) {
-        piece.moveDistance(distToLeft, Direction.LEFT);
-        totalHorDistance += distToLeft;
-      }
-      // Por qué while? No debería moverse el máximo con una sola
-      // iteración? No, porque va intentar mover el objeto hacia abajo e
-      // izquierda hasta que ya no pueda moverse más.
-    } while (distToLeft > 0 || distToBott > 0);
-
-    // Si la pieza no cupo dentro del Container, debemos regresarla a su lugar.
-    if (!container.isWithinBounds(piece)) {
-      piece.moveDistance(totalHorDistance, Direction.RIGHT);
-      piece.moveDistance(totalVertDistance, Direction.UP);
-      totalHorDistance = totalVertDistance = 0;
-    }
-
-    /// Si no reacomoda la piece (si no cambió de posición)
-    return totalHorDistance > 0 || totalVertDistance > 0;
-  }
-
+  
   /**
    * Implementa DJD. REFACTOR: Needs simplification and method extraction.
    */
@@ -165,6 +98,73 @@ class HiperHeuristica {
               + " Pieza should always be smaller than an Container.");
     }
   }
+  
+  /**
+   * HeurísticaBL, trata de colocar piece en container abajo a la izquierda,
+   * empezando a intentar desde arriba a la derecha.
+   *
+   * @param container
+   * @param piece
+   * @return true if the piece fits, false otherwise.
+   */
+  private static boolean tryPlaceInBottomLeft(Container container, Piece piece) {
+    /**
+     * Coloca la piece en la parte superior derecha del container, justo afuera
+     * del container.
+     */
+    piece.moveDistance(
+            container.getRightBound() - piece.getRightBound(),
+            Direction.RIGHT);
+    piece.moveDistance(
+            container.getTopBound() - piece.getBottBound(),
+            Direction.UP);
+
+    return movePieceToLowerLeft(container, piece);
+  }
+
+  /**
+   * TODO: Needs testing, high risk method. Mueve la piece hasta una posicion
+   * estable lo más abajo y a la izquierda posible. Devuelve TRUE si hubo
+   * movimiento y FALSE si no hubo. REFACTOR: Mover este método a Container o
+   * Piece.
+   *
+   * @param container whose bounds are used.
+   * @param piece to move.
+   * @return true if the piece was moved, false otherwise.
+   */
+  private static boolean movePieceToLowerLeft(Container container, Piece piece) {
+    int totalVertDistance = 0, totalHorDistance = 0;
+    int distToBott, distToLeft;
+    do {
+      /// Distancia hacia abajo que puede moverse la piece hasta topar.            
+      distToBott = container.distanceToBottBound(piece);
+      if (distToBott > 0) {
+        piece.moveDistance(distToBott, Direction.DOWN);
+        totalVertDistance += distToBott;
+      }
+      /**
+       * Distancia hacia la izquierda que puede moverse la piece hasta topar.
+       */
+      distToLeft = container.distanceToLeftBound(piece);
+      if (distToLeft > 0) {
+        piece.moveDistance(distToLeft, Direction.LEFT);
+        totalHorDistance += distToLeft;
+      }
+      // Por qué while? No debería moverse el máximo con una sola
+      // iteración? No, porque va intentar mover el objeto hacia abajo e
+      // izquierda hasta que ya no pueda moverse más.
+    } while (distToLeft > 0 || distToBott > 0);
+
+    // Si la pieza no cupo dentro del Container, debemos regresarla a su lugar.
+    if (!container.isWithinBounds(piece)) {
+      piece.moveDistance(totalHorDistance, Direction.RIGHT);
+      piece.moveDistance(totalVertDistance, Direction.UP);
+      totalHorDistance = totalVertDistance = 0;
+    }
+
+    /// Si no reacomoda la piece (si no cambió de posición)
+    return totalHorDistance > 0 || totalVertDistance > 0;
+  }  
 
   /**
    * Tries to fit one, two or three pieces with a given maximum waste.

@@ -57,13 +57,22 @@ public class PieceList implements Iterable<Piece> {
     }
   }
 
-  /**
-   * Gets the biggest Piece in this PieceList
+  /**   
+   * Gets the biggest Piece in this PieceList.
    *
-   * @return the biggest Piece
+   * @return the biggest Piece. Gives null if the PieceList is empty.
    */
   public Piece getBiggest() {
-    return java.util.Collections.<Piece>max(this.pieces);
+    int maxArea = Integer.MIN_VALUE;
+    Piece biggest = null;
+    for(Piece piece : this.pieces) {
+      if(piece.getArea() > maxArea) {
+        biggest = piece;
+        maxArea = piece.getArea();
+      }
+    }
+    
+    return biggest;
   }
 
   /**
@@ -93,7 +102,6 @@ public class PieceList implements Iterable<Piece> {
   }
 
   /**
-   * TODO: Needs testing. High risk method.
    * Gets the area occupied by all the pieces in this list.
    *
    * @return the area occupied by all the pieces.
