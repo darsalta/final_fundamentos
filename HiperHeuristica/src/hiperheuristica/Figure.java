@@ -177,4 +177,12 @@ public abstract class Figure implements Comparable<Figure> {
 
     return lower.getTopBound() >= upper.getBottBound();
   }
+  
+  /**
+   * Gets the vertices that make up this figure.
+   * @return The vertices of this Figure.
+   */
+  public Point[] getVertices() {
+    return this.vertices.clone();
+  }
 }
