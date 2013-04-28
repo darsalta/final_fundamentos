@@ -39,7 +39,7 @@ public class Point {
    * @param points to search
    * @return the Point with the biggest X value
    */
-  public static Point getBiggestX(Point[] points) {
+  public static Point getMaxX(Point[] points) {
     assert (points != null);
     assert (points.length > 0);
 
@@ -61,7 +61,7 @@ public class Point {
    * @param points to search
    * @return the Point with the smallest X value
    */
-  public static Point getSmallestX(Point[] points) {
+  public static Point getMinX(Point[] points) {
     assert (points != null);
     assert (points.length > 0);
 
@@ -83,7 +83,7 @@ public class Point {
    * @param points to search
    * @return the Point with the smallest Y value
    */
-  public static Point getSmallestY(Point[] points) {
+  public static Point getMinY(Point[] points) {
     assert (points != null);
     assert (points.length > 0);
 
@@ -105,7 +105,7 @@ public class Point {
    * @param points to search
    * @return the Point with the biggest Y value
    */
-  public static Point getBiggestY(Point[] points) {
+  public static Point getMaxY(Point[] points) {
     assert (points != null);
     assert (points.length > 0);
 

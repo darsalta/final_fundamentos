@@ -22,22 +22,22 @@ public class Piece extends Figure {
   public void moveDistance(int distance, Direction dir) {
     Point[] vertices = this.getVertices();
     for (int i = 0; i < this.getVertices().length; i++) {
-      Point cPoint = vertices[i];
+      Point point = vertices[i];
       switch (dir) {
         case UP:
-          this.setVertex(i, cPoint.getX(), cPoint.getY() + distance);
+          this.setVertex(i, point.getX(), point.getY() + distance);
           break;
 
         case DOWN:
-          this.setVertex(i, cPoint.getX(), cPoint.getY() - distance);
+          this.setVertex(i, point.getX(), point.getY() - distance);
           break;
 
         case LEFT:
-          this.setVertex(i, cPoint.getX() - distance, cPoint.getY());
+          this.setVertex(i, point.getX() - distance, point.getY());
           break;
 
         case RIGHT:
-          this.setVertex(i, cPoint.getX() + distance, cPoint.getY());
+          this.setVertex(i, point.getX() + distance, point.getY());
           break;
       }
     }

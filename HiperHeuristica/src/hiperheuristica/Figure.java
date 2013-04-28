@@ -15,10 +15,7 @@ public abstract class Figure implements Comparable<Figure> {
   public Figure(Point[] vertices) {
     assert (vertices != null);
     assert (vertices.length >= 3);
-    this.vertices = new Point[vertices.length];
-    for (int i = 0; i < vertices.length; i++) {
-      this.setVertex(i, vertices[i].getX(), vertices[i].getY());
-    }
+    this.vertices = vertices;
   }
 
   /**
@@ -27,6 +24,10 @@ public abstract class Figure implements Comparable<Figure> {
    * @return the right bounds.
    */
   public int getRightBound() {
+    if (this.rightBound == Integer.MIN_VALUE) {
+      this.refreshRightBound();
+    }
+
     return this.rightBound;
   }
 
@@ -36,6 +37,10 @@ public abstract class Figure implements Comparable<Figure> {
    * @return the left bounds
    */
   public int getLeftBound() {
+    if (this.leftBound == Integer.MAX_VALUE) {
+      this.refreshLeftBound();
+    }
+
     return this.leftBound;
   }
 
@@ -45,6 +50,10 @@ public abstract class Figure implements Comparable<Figure> {
    * @return top bounds
    */
   public int getTopBound() {
+    if (this.topBound == Integer.MIN_VALUE) {
+      this.refreshTopBound();
+    }
+    
     return this.topBound;
   }
 
@@ -54,6 +63,10 @@ public abstract class Figure implements Comparable<Figure> {
    * @return the bottom bounds.
    */
   public int getBottBound() {
+    if(this.bottBound == Integer.MAX_VALUE) {
+      this.refreshBottBound();
+    }
+    
     return this.bottBound;
   }
 
@@ -159,30 +172,46 @@ public abstract class Figure implements Comparable<Figure> {
   }
 
   protected final void setVertex(int index, int x, int y) {
-    Point original = this.vertices[index];
     this.vertices[index] = Point.At(x, y);
-    if (original != null && original.getX() == this.leftBound) {
-      this.leftBound = Point.getSmallestX(vertices).getX();
-    } else if (x < this.leftBound) {
+    if (x < this.leftBound) {
       this.leftBound = x;
+    } else {
+      refreshLeftBound();
     }
 
-    if (original != null && original.getX() == this.rightBound) {
-      this.leftBound = Point.getBiggestX(vertices).getX();
-    } else if (x > this.rightBound) {
-      this.rightBound = x;
-    }
-
-    if (original != null && original.getY() == this.bottBound) {
-      this.bottBound = Point.getSmallestY(vertices).getY();
-    } else if (y < this.bottBound) {
+    if (y < this.bottBound) {
       this.bottBound = y;
+    } else {
+      refreshBottBound();
     }
 
-    if (original != null && original.getY() == this.topBound) {
-      this.topBound = Point.getBiggestY(vertices).getY();
-    } else if (y > this.topBound) {
-      this.topBound = y;
+
+    if (x > this.rightBound) {
+      this.rightBound = x;
+    } else {
+      refreshRightBound();
     }
+
+    if (y > this.topBound) {
+      this.topBound = y;
+    } else {
+      refreshTopBound();
+    }
+  }
+
+  private void refreshLeftBound() {
+    this.leftBound = Point.getMinX(vertices).getX();
+  }
+
+  private void refreshBottBound() {
+    this.bottBound = Point.getMinX(vertices).getY();
+  }
+
+  private void refreshRightBound() {
+    this.rightBound = Point.getMaxX(vertices).getX();
+  }
+
+  private void refreshTopBound() {
+    this.topBound = Point.getMaxY(vertices).getY();
   }
 }

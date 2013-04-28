@@ -107,6 +107,12 @@ public class FigureTest {
   };
   static Object[][] intersectsOnXAxisData = new Object[][]{
     new Object[]{
+      new Point[]{Point.At(3, 3), Point.At(3, 5), Point.At(5, 3), Point.At(5, 5)},
+      true,
+      "Two figures with same width and overlaping height should intersect.",
+      new Point[]{Point.At(3, 0), Point.At(3, 4), Point.At(5, 0), Point.At(5, 4)}
+    },
+    new Object[]{
       BIG_SQUARE_AT_0_0, true,
       "Big square on left intersects on X axis with other square by one unit.",
       BIG_SQUARE_AT_3_3

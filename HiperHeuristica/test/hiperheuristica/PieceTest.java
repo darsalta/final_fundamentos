@@ -21,7 +21,8 @@ public class PieceTest {
     new Object[]{Direction.LEFT, 1, -1, 0, "Left movement."},
     new Object[]{Direction.RIGHT, 1, 1, 0, "Right movement."},
     new Object[]{Direction.DOWN, 1, 0, -1, "Down movement."},
-    new Object[]{Direction.UP, 1, 0, 1, "Up movement."},};
+    new Object[]{Direction.UP, 1, 0, 1, "Up movement."}
+  };
 
   /**
    * Test of moveDistance method, of class Piece.
@@ -56,28 +57,28 @@ public class PieceTest {
     System.out.println("Piece.getCopy");
     // Arrange
     Piece target = new Piece(new Point[]{
-      Point.At(0, 0), Point.At(1, 0), Point.At(1, 1)});    
+      Point.At(0, 0), Point.At(1, 0), Point.At(1, 1)});
     // Act
     Piece copy = target.getCopy();
     // Assert
     assertEquals(target.getBottBound(), copy.getBottBound());
     assertEquals(target.getHeight(), copy.getHeight());
     assertEquals(target.getLeftBound(), copy.getLeftBound());
-    assertEquals(target.getWidth(), copy.getWidth());        
+    assertEquals(target.getWidth(), copy.getWidth());
   }
-  
+
   @Test
   public void testGetCopy_does_not_share_state() {
     System.out.println("Piece.GetCopy: does not share state");
     // Arrange
     Piece target = new Piece(new Point[]{
-      Point.At(0, 0), Point.At(1, 0), Point.At(1, 1)});        
+      Point.At(0, 0), Point.At(1, 0), Point.At(1, 1)});
     // Act
     Piece copy = target.getCopy();
     copy.moveDistance(1, Direction.UP);
     copy.moveDistance(1, Direction.RIGHT);
     // Assert        
     assertThat(target.getBottBound(), is(not(copy.getBottBound())));
-    assertThat(target.getLeftBound(), is(not(copy.getLeftBound())));    
+    assertThat(target.getLeftBound(), is(not(copy.getLeftBound())));
   }
 }
