@@ -1,6 +1,7 @@
 package hiperheuristica;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,13 +36,14 @@ public class PieceList implements Iterable<Piece> {
    * @return true if the piece was found and removed, false otherwise.
    */
   public boolean remove(Piece piece) {
-    if (piece == this.biggest) {
-      this.biggest = this.getBiggest();
-    }
-
+    boolean removed = this.pieces.remove(piece);
     this.piecesArea -= piece.getArea();
+    
+    if (piece == this.biggest) {
+      this.biggest = Collections.max(this.pieces);
+    }    
 
-    return this.pieces.remove(piece);
+    return removed;
   }
 
   /**
@@ -86,7 +88,7 @@ public class PieceList implements Iterable<Piece> {
    */
   public Piece getBiggest() {
     return this.biggest;
-  }
+  }   
 
   /**
    * Determines if all pieces in this PieceList are bigger than the

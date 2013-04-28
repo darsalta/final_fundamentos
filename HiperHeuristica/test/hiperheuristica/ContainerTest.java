@@ -342,8 +342,8 @@ public class ContainerTest {
     Container target = new Container(10, 10);
     Piece piece = makePiece(0, 1, 0, 1);
     target.putPiece(piece);
-    target.putPiece(makePiece(2, 3, 2, 3));    
-    Container copy = target.getCopy();    
+    target.putPiece(makePiece(2, 3, 2, 3));
+    Container copy = target.getCopy();
     
     // Assure
     assertThat(target.getFreeArea(), is(copy.getFreeArea()));
@@ -351,7 +351,7 @@ public class ContainerTest {
     // Act
     target.removePiece(piece);
     
-    // Assert    
+    // Assert
     assertThat(target.getFreeArea(), is(not(copy.getFreeArea())));
   }
 
