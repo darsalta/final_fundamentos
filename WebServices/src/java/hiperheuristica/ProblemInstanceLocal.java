@@ -12,7 +12,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface ProblemInstanceLocal {
-    void addFigures(Point[] vertices);
+    void addPieces(Piece[] pieces);
     
     void setContainerDimensions(int width, int height);
     

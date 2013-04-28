@@ -44,10 +44,23 @@ public class MappingResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public void putConfiguration(@QueryParam("vertices") String verticesJson,
             @QueryParam("dimensions") String dimensionsJson) {
-        Point[] _vertices = gson.fromJson(verticesJson, Point[].class);
-        int[] _dimensions = gson.fromJson(dimensionsJson, int[].class);
+        Piece[] pieces = gson.fromJson(verticesJson, FourSidedPiece[].class);
+        for(Piece piece : pieces) {
+            ((FourSidedPiece) piece).update();
+        }
         
-        this.problem.addFigures(_vertices);        
+        int[] _dimensions = gson.fromJson(dimensionsJson, int[].class);        
+        this.problem.addPieces(pieces);        
         this.problem.setContainerDimensions(_dimensions[0], _dimensions[1]);
+    }
+    
+    class FourSidedPiece extends Piece {
+        public FourSidedPiece() {
+            super(Point.At(0, 0), Point.At(0, 0), Point.At(0, 0), Point.At(0, 0));
+        }
+        
+        public void update() {
+            this.moveDistance(0, Direction.UP);
+        }
     }
 }

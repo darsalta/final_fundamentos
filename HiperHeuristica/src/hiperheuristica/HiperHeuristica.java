@@ -24,14 +24,16 @@ class HiperHeuristica {
     int increment = (widthContainer * heightContainer) / 20;
     /// De mayor a menor
     inputPieces.sort(Order.DESCENDING);
-    List<Container> containers = new ArrayList<Container>();
+    List<Container> containers = new ArrayList<Container>();    
     while (inputPieces.size() > 0) {
-      Container newContainer = 
-              openNewContainer(containers, widthContainer, heightContainer);
+      Container currentContainer = openNewContainer(
+              containers, 
+              widthContainer, 
+              heightContainer);
       /// Fills the container with the minimum pieces to fill the initialCapacity
-      placeWithInitialCapacity(inputPieces, newContainer, initialCapacity);
+      placeWithInitialCapacity(inputPieces, currentContainer, 1);// !!! initialCapacity);
       /// Fills the remaining space with best fit of pieces possible.
-      fillContainerRemainder(inputPieces, newContainer, increment);
+      fillContainerRemainder(inputPieces, currentContainer, increment);            
     }
 
     return containers;
@@ -448,8 +450,8 @@ class HiperHeuristica {
    * @return
    */
   Container openNewContainer(
-          List<Container> containers, 
-          int widthContainer, 
+          List<Container> containers,
+          int widthContainer,
           int heightContainer) {
     Container container = new Container(widthContainer, heightContainer);
     containers.add(container);
@@ -470,7 +472,7 @@ class HiperHeuristica {
     /// Recorre de mayor a menor, dado que pieces está en orden DESC
     for (int i = 0; i < inputPieces.size(); i++) {
       // initialCapacity = 1/4 o 1/3
-      if (container.getUsedArea() < container.getArea() * initialCapacity) {
+      if (container.getUsedArea() > container.getArea() * initialCapacity) {
         break;
       }
 
@@ -501,8 +503,8 @@ class HiperHeuristica {
    * @param increment
    */
   private void fillContainerRemainder(
-          PieceList descOrderPieces, 
-          Container container, 
+          PieceList descOrderPieces,
+          Container container,
           int increment) {
     if (descOrderPieces.areAllBiggerThan(container.getFreeArea())) {
       /**

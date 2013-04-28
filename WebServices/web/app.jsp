@@ -19,9 +19,12 @@
 
         <link rel="stylesheet" href="css/normalize.min.css">
         <link rel="stylesheet" href="css/main.css">
-
+        <script src="js/json2.js"></script>
+        <script src="js/jquery-2.0.0.js"></script>
+        <script src="js/hiperheuristicas.js"></script>
+        <script src="js/webservices.js"></script>        
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
-        
+
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -49,88 +52,144 @@
                         <h1>Mapa</h1>
                         <p></p>
                     </header>
-                   
+
                     <div id="container" style="background: url(campus.gif) no-repeat; background-size: 100%; height:400px; width:700px;"></div>
                     <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.4.3.min.js"></script>
                     <script defer="defer">
-                    var stage = new Kinetic.Stage({
-                      container: 'container',
-                      width: 700,
-                      height: 400
-                    });
+                        var stage = new Kinetic.Stage({
+                            container: 'container',
+                            width: 720,
+                            height: 369
+                        });
 
-                    var layer = new Kinetic.Layer();
+                        var layer = new Kinetic.Layer();
+                        var drawRect = function(x1, y1, x2, y2, _layer) {
+                            //alert('drawRect:' + x1 + ', ' + y1 + ', ' + x2 + ', ' + y2);
+                            var rect = new Kinetic.Rect({
+                                x: Math.min(x1, x2),
+                                y: Math.min(y1, y2),
+                                width: Math.abs(x1 - x2),
+                                height: Math.abs(y1 - y2),
+                                fill: 'green',
+                                opacity: 0.5,
+                                stroke: 'blue',
+                                strokeWidth: 2,
+                                draggable: true
+                            });
 
-                    var rect = new Kinetic.Rect({
-                      x: 239,
-                      y: 75,
-                      width: 100,
-                      height: 50,
-                      fill: 'green',
-                      stroke: 'black',
-                      strokeWidth: 4,
-                      draggable: true
-                    });
+                            rect.on('mouseover', function() {
+                                document.body.style.cursor = 'pointer';
+                            });
 
-                    rect.on('mouseover', function(){
-                      document.body.style.cursor = 'pointer'  
-                    });
+                            rect.on('mouseout', function() {
+                                document.body.style.cursor = 'default';
+                            });
 
-                    rect.on('mouseout', function(){
-                      document.body.style.cursor = 'default'  
-                    });
+                            // add the shape to the layer                            
+                            _layer.add(rect);                            
 
-                    // add the shape to the layer
-                    layer.add(rect);
+                            // add the layer to the stage
+                            stage.add(layer);
+                        };
 
-                    // add the layer to the stage
-                    stage.add(layer);
+                        var drawPlacing = function(pieces, _layer) {
+                            alert('drawing ' + pieces.length + ' pieces');
 
-                    function addList(rango, cantidad){
-                        document.getElementById('lista').value += rango;
-                        document.getElementById('lista').value += ",";
-                        document.getElementById('lista').value += cantidad;
-                        document.getElementById('lista').value += "\n";
-                        cleanInputs();
-                    }
-                    function cleanInputs(){
-                        document.getElementById('rango').value = "";
-                        document.getElementById('cantidad').value = "";
-                    }
+                            for (var i = 0; i < pieces.length; i++) {
+                                var vertices = pieces[i].vertices;
+                                var x1 = vertices[0].x;
+                                var x2 = vertices[1].x;
+                                if (x1 === x2) {
+                                    x2 = vertices[2].x;
+                                }
 
-                    function enviarData(datos){
-                        var ctx = canvas.getContext('2d');
-                        ctx.beginPath();
-                        ctx.rect(0,0,200,200)
-                        ctx.fillStyle = 'rgb(10,30,160)';
-                        ctx.fill();
+                                var y1 = vertices[0].y;
+                                var y2 = vertices[1].y;
+                                if (y1 === y2) {
+                                    y2 = vertices[2].y;
+                                }
 
-                    }
-                        
-                   </script>
+                                drawRect(x1, y1, x2, y2, _layer);
+                            }
+                        };
+
+                        function addList(rango, cantidad) {
+                            document.getElementById('lista').value += rango;
+                            document.getElementById('lista').value += ",";
+                            document.getElementById('lista').value += cantidad;
+                            document.getElementById('lista').value += "\n";
+                            cleanInputs();
+                        }
+
+                        function cleanInputs() {
+                            document.getElementById('rango').value = "";
+                            document.getElementById('cantidad').value = "";
+                            layer.removeChildren();
+                        }
+
+                        function enviarData(datos) {
+                            cleanInputs();
+                            datos = datos.split('\n');
+                            var layerWidth = 700;
+                            var layerHeight = 400;
+                            var containerHeight = layerHeight;// layerWidth;// / 2;
+                            var containerWidth = layerWidth; //layerHeight;// / 4;
+                            var pieceList = new hiper.PieceList();
+                            for (var i = 0; i < datos.length; i++) {
+                                if (datos[i] === "") {
+                                    continue;
+                                }
+
+                                var tokens = datos[i].split(',');
+                                var radius = parseInt(tokens[0]);
+                                var cantidad = parseInt(tokens[1]);
+                                var width = radius * 2;
+                                var height = radius * 2;
+                                for (var j = 0; j < cantidad; j++) {
+                                    pieceList.addPiece(
+                                            hiper.Point.At(0, 0),
+                                            hiper.Point.At(0, width),
+                                            hiper.Point.At(width, height),
+                                            hiper.Point.At(0, height));
+                                }
+                            }
+
+                            ws.CallSetProblemConfig(
+                                    pieceList,
+                                    containerWidth,
+                                    containerHeight,
+                                    function(arg) {
+                                        ws.CallGetBestFit(function(arg) {
+                                            //alert(JSON.stringify(arg));
+                                            drawPlacing(arg.pieces, layer);
+                                        });
+                                    });
+                        }
+
+                    </script>
 
                 </article>
 
                 <aside>
                     <h3>Configuracion:</h3>
-                    Rango en metros: <input type="number" min="20" id="rango">
+                    Radio de alcance en metros: <input type="number" min="20" id="rango">
                     Cantidad Access Points: <input type="number" min="1" id="cantidad">
                     <input type="button" 
                            onclick="addList(document.getElementById('rango').value, document.getElementById('cantidad').value);" value="Agregar"/>
                     <p> </p>
                     Rango,Cantidad APs:
-                    <textarea id="lista" readonly="readonly" cols ="23" rows="6"></textarea>
+                    <textarea id="lista" cols ="23" rows="6"></textarea>
                     <input type="button" onclick="enviarData(document.getElementById('lista').value);" value="Calcular"/> 
                 </aside>
 
             </div> <!-- #main -->
-            
-            
-            </div> <!-- #main-container -->
+
+
+        </div> <!-- #main-container -->
 
         <div class="footer-container">
             <footer class="wrapper">
-                <h3>footer</h3>
+                <h3>HyperTech</h3>
             </footer>
         </div>
 
@@ -140,10 +199,12 @@
         <script src="js/main.js"></script>
 
         <script>
-            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
-            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-            s.parentNode.insertBefore(g,s)}(document,'script'));
+                        var _gaq = [['_setAccount', 'UA-XXXXX-X'], ['_trackPageview']];
+                        (function(d, t) {
+                            var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+                            g.src = ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+                            s.parentNode.insertBefore(g, s)
+                        }(document, 'script'));
         </script>
     </body>
 </html>

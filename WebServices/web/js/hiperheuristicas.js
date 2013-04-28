@@ -3,14 +3,17 @@
     function PieceList() {
         this.pieces = [];
         this.addPiece = function(botLeft, topLeft, botRight, topRight) {
-            this.pieces.push(Piece(botLeft, topLeft, botRight, topRight));
+            this.pieces.push(new Piece(botLeft, topLeft, botRight, topRight));
         };
 
         this.toJson = function() {
             var json = "[ ";
             for (var i = 0; i < this.pieces.length; i++) {
                 var piece = this.pieces[i];
-                json += piece.toJson() + ", ";
+                json += piece.toJson();
+                if (i < this.pieces.length - 1) {
+                    json += ", ";
+                }
             }
 
             json += " ]";
@@ -84,7 +87,7 @@
     Point.fromJsonCoords = function(jsonCoords) {
         return new Point(jsonCoords.x, jsonCoords.y);
     };
-    
+
     Point.At = function(x, y) {
         return new Point(x, y);
     };

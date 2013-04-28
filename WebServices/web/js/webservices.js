@@ -17,26 +17,26 @@
 
     var setProblemConfig = function(pieces, width, height, callback) {
         var piecesJson = pieces.toJson();
-        var dimensions = '{' + width + ',' + height + '}';
+        var dimensions = '[' + width + ',' + height + ']';
         if (callback === null) {
             callback = function() {
             };
         }
-        
-        ws.Call('/mapping/resources/mapping?vertices=' + pieceJson + '&dimensions=' + dimensions,
+
+        ws.Call('/mapping/resources/mapping?vertices=' + piecesJson + '&dimensions=' + dimensions,
                 '{}',
                 'PUT',
                 function(arg) {
-                    callback();
+                    callback(arg);
                 });
     };
-    
+
     var getPieces = function(callback) {
         ws.Call('/mapping/resources/mapping',
                 '{}',
                 'GET',
                 function(arg) {
-                    var pieces = hyper.PieceList.fromJsonPieces(arg);
+                    var pieces = hiper.PieceList.fromJsonPieces(arg);
                     callback(pieces);
                 });
     };
@@ -53,9 +53,9 @@
             alert("failure: " + msg);
         }
     };
-    
+
     var testCallPutConfiguration = function() {
-        var pieceJson = '[{"x":1,"y":1},{"x":1,"y":3},{"x":3,"y":3},{"x":3,"y":1}]';
+        var pieceJson = '[ { vertices: [ {"x":1,"y":1},{"x":1,"y":3},{"x":3,"y":3},{"x":3,"y":1} ] } ]';
         var dimensions = '[10,10]';
         ws.Call('/mapping/resources/mapping?vertices=' + pieceJson + '&dimensions=' + dimensions,
                 '{}',
@@ -73,25 +73,23 @@
                     $("body").append('<br/> Success: ' + JSON.stringify(arg));
                 });
     };
-    
+
     var testWebServiceAbstractions = function() {
         // Arrange
-        var pieces = null;
-        var pieceJson = '[{"x":1,"y":1},{"x":1,"y":3},{"x":3,"y":3},{"x":3,"y":1}]';
+        var pieceJson = '[ { vertices: [{"x":1,"y":1},{"x":1,"y":3},{"x":3,"y":3},{"x":3,"y":1}] } ]';
         var dimensions = '[10,10]';
-        
+
         // Act
-        ws.CallSetProblemConfig(pieceJson, dimensions, function(arg) { 
+        ws.CallSetProblemConfig(pieceJson, dimensions, function(arg) {
             ws.CallGetBestFit(function(arg) {
-                pieces = arg;
+
+                // Assert
+                assert(arg !== null && args[0] !== null,
+                        "testWebServiceAbstractions: It does not have pieces!");
+                assert(arg[0].vertices !== null,
+                        "testWebServiceAbstractions: pieces[0].vertices does not have vertices.");
             });
         });
-        
-        // Assert
-        assert(arg !== null && args[0] !== null, 
-                "testWebServiceAbstractions: It does not have pieces!");
-        assert(arg[0].vertices !== null, 
-                "testWebServiceAbstractions: pieces[0].vertices does not have vertices.");
     };
 
     ws.Test = function() {

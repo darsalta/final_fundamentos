@@ -23,40 +23,34 @@ public class ProblemInstance implements ProblemInstanceLocal {
     private int containerWidth = 0;
     private int containerHeight = 0;
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
-    public void addFigures(Point[] vertices) {
+    @Override
+    public void addPieces(Piece[] pieces) {
+        assert (pieces != null);
+
         this.pieces.clear();
-        assert (vertices.length > 0);
-        assert (vertices.length % 4 == 0);
-        for (int i = 0; i < vertices.length; i += 4) {
-            this.pieces.add(
-                    new Piece(
-                    vertices[i],
-                    vertices[i + 1],
-                    vertices[i + 2],
-                    vertices[i + 3]));
+        for (int i = 0; i < pieces.length; i++) {
+            this.pieces.add(pieces[i]);
         }
     }
 
     public void setContainerDimensions(int width, int height) {
-        this.containerHeight = height;
         this.containerWidth = width;
+        this.containerHeight = height;
     }
 
     public PieceList getBestFit() {
         List<Container> containers = algorithm.DJD(
-                this.pieces, 
-                this.containerWidth, 
-                this.containerHeight, 
+                this.pieces,
+                this.containerWidth,
+                this.containerHeight,
                 0.25d);
         PieceList pieceArrangement = new PieceList();
-        for(Container container : containers) {
-            for(Piece piece : container) {
+        for (Container container : containers) {
+            for (Piece piece : container) {
                 pieceArrangement.add(piece);
             }
         }
-                
+
         return pieceArrangement;
     }
 }

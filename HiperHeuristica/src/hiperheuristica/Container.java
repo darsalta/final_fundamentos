@@ -87,10 +87,9 @@ public class Container extends Figure implements Iterable<Piece> {
   }
 
   /**
-   * TODO: Needs testings, it is a high risk method. Dado un objeto (con sus
-   * piezas ya colocadas), indica cuál es la distincia horizontal que una pieza
-   * candidata puede desplazarse verticalmente hacia la izquierda hasta topar
-   * con otra pieza o con la base del objeto.
+   * Dado un objeto (con sus piezas ya colocadas), indica cuál es la distincia 
+   * horizontal que una pieza candidata puede desplazarse verticalmente hacia la
+   * izquierda hasta topar con otra pieza o con la base del objeto.
    *
    * @param piece to determine its left bound within this Container
    * @return the distance to the left bound within this Container for a piece.
@@ -101,10 +100,10 @@ public class Container extends Figure implements Iterable<Piece> {
 
     // get biggest maxY
     int leftBounds = 0;
-    for (Piece _piece : this.pieces) {
-      if (_piece.intersectsOnYAxis(piece)
-              && _piece.getRightBound() > leftBounds) {
-        leftBounds = _piece.getRightBound();
+    for (Piece other : this.pieces) {
+      if (other.intersectsOnYAxis(piece)
+              && other.getRightBound() > leftBounds) {
+        leftBounds = other.getRightBound();
       }
     }
 
