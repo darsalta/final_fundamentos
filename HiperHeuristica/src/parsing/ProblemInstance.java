@@ -6,17 +6,22 @@ package parsing;
 
 import hiperheuristica.PieceList;
 import hiperheuristica.Container;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Priscila Angulo
  */
 public class ProblemInstance {
-  public Container container = null;
+  public List<Container> containers = null;
+  //public Container container = null;
   public PieceList pieceList = null;
   
   public ProblemInstance(Container container, PieceList pieceList){
-    this.container = container;
+    containers = new ArrayList<Container>();
+    containers.add(container);
+    //this.container = container;
     this.pieceList = pieceList;
   }
   

@@ -1,11 +1,13 @@
 package hiperheuristica;
 
+import java.util.Iterator;
+
 /**
  * Contenedor para las piezas a acomodar en una heuristica.
  *
  * @author Marcel
  */
-public class Container extends Figure {
+public class Container extends Figure implements Iterable<Piece> {
 
   PieceList pieces;
 
@@ -163,5 +165,10 @@ public class Container extends Figure {
     }
 
     return copy;
+  }
+
+  @Override
+  public Iterator<Piece> iterator() {
+    return this.pieces.iterator();
   }
 }

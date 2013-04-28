@@ -6,7 +6,6 @@ package parsing;
 
 import hiperheuristica.Container;
 import hiperheuristica.Piece;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,8 +59,8 @@ public class ParserTest {
 
       // Assert        
       assertNotNull(problemInstance);
-      assertNotNull(problemInstance.container);
-      assertEquals(100, problemInstance.container.getHeight());
+      assertNotNull(problemInstance.containers.get(0));
+      assertEquals(100, (problemInstance.containers.get(0)).getHeight());
       assertNotNull(problemInstance.pieceList.get(0));
       assertEquals(100, (problemInstance.pieceList.get(0)).getHeight());
       assertEquals(54, (problemInstance.pieceList.get(0)).getWidth());

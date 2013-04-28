@@ -13,6 +13,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import parsing.ProblemInstance;
 
 /**
@@ -25,34 +27,45 @@ public class Parser {
         
     }
     
-    public ProblemInstance processFile(String file) throws FileNotFoundException, IOException{
-        FileReader fileReader = new FileReader(file);
-        BufferedReader bufReader = new BufferedReader(fileReader);
-        try {
-            ProblemInstance problemInstance = null;
-            Container container = null;
-            PieceList pieceList = new PieceList();
-            //Skip the first line
-            String line = bufReader.readLine();
-            line = bufReader.readLine();
-            
-            //Get container dimmensions
-            container = getContainerDim(line);
-            
-            //Get pieces
-            line = bufReader.readLine();
-            while (line != null) {
-              Piece piece = getPiece(line);
-              pieceList.add(piece);
-              line = bufReader.readLine();
-            }
-          
-            problemInstance = new ProblemInstance(container, pieceList);
-            return problemInstance;
-            
-        } finally {
-            bufReader.close();
+    public ProblemInstance processFile(String file) throws IOException{
+      FileReader fileReader;
+      BufferedReader bufReader = null;
+      ProblemInstance problemInstance = null;
+      
+      try {
+        fileReader = new FileReader(file);
+        bufReader = new BufferedReader(fileReader);
+      } catch (FileNotFoundException ex) {
+        Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex);
+      }
+        
+      try {      
+        Container container = null;
+        PieceList pieceList = new PieceList();
+        //Skip the first line
+        String line = bufReader.readLine();
+        line = bufReader.readLine();
+
+        //Get container dimmensions
+        container = getContainerDim(line);
+
+        //Get pieces
+        line = bufReader.readLine();
+        while (line != null) {
+          Piece piece = getPiece(line);
+          pieceList.add(piece);
+          line = bufReader.readLine();
         }
+
+        problemInstance = new ProblemInstance(container, pieceList);
+        
+
+      } catch (IOException ex) {
+        Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex);
+      } finally {
+          bufReader.close();
+      }
+      return problemInstance;
     }
     
     public Container getContainerDim(String line){
