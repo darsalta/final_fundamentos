@@ -2,14 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package hiperheuristica;
+package web;
 
-import hiperheuristica.Piece;
-import hiperheuristica.Point;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.ejb.Stateful;
+import hiperheuristica.PieceList;
+import hiperheuristica.HiperHeuristica;
+import hiperheuristica.Piece;
+import hiperheuristica.Container;
 
 /**
  *
@@ -18,10 +18,14 @@ import javax.ejb.Stateful;
 @Stateful
 public class ProblemInstance implements ProblemInstanceLocal {
 
-    private final PieceList pieces = new PieceList();
-    private static final HiperHeuristica algorithm = new HiperHeuristica();
+    private PieceList pieces;
+    private static HiperHeuristica algorithm = new HiperHeuristica();
     private int containerWidth = 0;
     private int containerHeight = 0;
+
+  public ProblemInstance() {
+    this.pieces = new PieceList();
+  }
 
     @Override
     public void addPieces(Piece[] pieces) {
@@ -33,11 +37,13 @@ public class ProblemInstance implements ProblemInstanceLocal {
         }
     }
 
+    @Override
     public void setContainerDimensions(int width, int height) {
         this.containerWidth = width;
         this.containerHeight = height;
     }
 
+    @Override
     public PieceList getBestFit() {
         List<Container> containers = algorithm.DJD(
                 this.pieces,

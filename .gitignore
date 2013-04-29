@@ -16,6 +16,9 @@ tmp
 .yardoc
 _yardoc
 
+# Editor backup files
+.xml~
+
 /HiperHeuristica/nbproject/private/
 /HiperHeuristica/dist/
 /HiperHeuristica/build/

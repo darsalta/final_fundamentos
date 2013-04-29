@@ -1,7 +1,6 @@
 package hiperheuristica;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -41,7 +40,7 @@ public class PieceList implements Iterable<Piece> {
 
     if (this.pieces.size() > 0) {
       if (piece == this.biggest) {
-        this.biggest = Collections.<Piece>max(this.pieces);
+        this.biggest = java.util.Collections.<Piece>max(this.pieces);
       }
     } else {
       this.biggest = null;
@@ -124,7 +123,7 @@ public class PieceList implements Iterable<Piece> {
   public Iterator<Piece> iterator() {
     return this.pieces.<Piece>iterator();
   }
-  
+
   public void clear() {
     this.pieces.clear();
     this.piecesArea = 0;

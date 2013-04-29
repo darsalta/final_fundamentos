@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author Dra. Eunice Lopez, modifications by Priscila Angulo and Marcel Valdez
  */
-class HiperHeuristica {
+public class HiperHeuristica {
 
   /**
    * Implementa DJD. REFACTOR: Needs simplification and method extraction.

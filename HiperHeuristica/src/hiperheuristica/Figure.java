@@ -115,7 +115,7 @@ public abstract class Figure implements Comparable<Figure> {
    *
    * @param figure to check that is within the bounds of this Figure
    * @return true if it is within the bounds of this Figure, false otherwise.
-   */
+   */  
   public boolean isWithinBounds(Figure figure) {
     // Si la piece no se sale de los límites del object.
     // REFACTOR: Mover este método a Objeto
