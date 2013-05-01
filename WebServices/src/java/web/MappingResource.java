@@ -14,10 +14,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import hiperheuristica.PieceList;
-import hiperheuristica.Piece;
-import hiperheuristica.Point;
-import hiperheuristica.Direction;
+import hiper.PieceList;
+import hiper.Piece;
+import hiper.Point;
+import hiper.Direction;
 
 /**
  *
@@ -47,7 +47,7 @@ public class MappingResource {
   @PUT
   @Consumes(MediaType.APPLICATION_JSON)
   public void putConfiguration(@QueryParam("vertices") String verticesJson,
-          @QueryParam("dimensions") String dimensionsJson) {
+          @QueryParam("dimensions") String dimensionsJson) throws Exception {
     Piece[] pieces = gson.fromJson(verticesJson, FourSidedPiece[].class);
     for (Piece piece : pieces) {
       ((FourSidedPiece) piece).update();
@@ -67,7 +67,7 @@ public class MappingResource {
               Point.At(0, 0));
     }
 
-    public void update() {
+    public void update() throws Exception {
       this.moveDistance(0, Direction.UP);
     }
   }

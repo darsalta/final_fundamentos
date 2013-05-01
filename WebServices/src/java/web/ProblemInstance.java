@@ -6,10 +6,10 @@ package web;
 
 import java.util.List;
 import javax.ejb.Stateful;
-import hiperheuristica.PieceList;
-import hiperheuristica.HiperHeuristica;
-import hiperheuristica.Piece;
-import hiperheuristica.Container;
+import hiper.PieceList;
+import hiper.Heuristica;
+import hiper.Piece;
+import hiper.PieceContainer;
 
 /**
  *
@@ -19,7 +19,7 @@ import hiperheuristica.Container;
 public class ProblemInstance implements ProblemInstanceLocal {
 
     private PieceList pieces;
-    private static HiperHeuristica algorithm = new HiperHeuristica();
+    private static Heuristica algorithm = new Heuristica();
     private int containerWidth = 0;
     private int containerHeight = 0;
 
@@ -45,13 +45,13 @@ public class ProblemInstance implements ProblemInstanceLocal {
 
     @Override
     public PieceList getBestFit() {
-        List<Container> containers = algorithm.DJD(
+        List<PieceContainer> containers = algorithm.DJD(
                 this.pieces,
                 this.containerWidth,
                 this.containerHeight,
                 0.25d);
         PieceList pieceArrangement = new PieceList();
-        for (Container container : containers) {
+        for (PieceContainer container : containers) {
             for (Piece piece : container) {
                 pieceArrangement.add(piece);
             }

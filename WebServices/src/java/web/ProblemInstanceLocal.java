@@ -5,8 +5,8 @@
 package web;
 
 import javax.ejb.Local;
-import hiperheuristica.Piece;
-import hiperheuristica.PieceList;
+import hiper.Piece;
+import hiper.PieceList;
 
 /**
  *
