@@ -3,4 +3,4 @@ language: java
 jdk:
   -oraclejdk7
 
-script: "ant -file HiperHeuristica/build.xml && ant -file WebServices/build.xml build test"
+script: "ant -file HiperHeuristica/build.xml && ant -file WebServices/build.xml compile test"
