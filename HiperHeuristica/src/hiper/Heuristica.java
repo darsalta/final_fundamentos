@@ -37,9 +37,9 @@ public class Heuristica {
               containerHeight);
       containers.add(container);
       /// Fills the container with the least pieces to fill the initialCapacity
-      placeWithInitialCapacity(inputPieces, container, initialCapacity);
+      fillInitialCapacity(inputPieces, container, initialCapacity);
       /// Fills the remaining space with best fit of pieces possible.
-      fillPieceContainerRemainder(inputPieces, container, increment);
+      fillRemainingCapacity(inputPieces, container, increment);
     }
 
     return containers;
@@ -52,7 +52,7 @@ public class Heuristica {
    * @param container in which to place the pieces
    * @param thresholdCapacity after which to stop placing pieces.
    */
-  private static void placeWithInitialCapacity(
+  private static void fillInitialCapacity(
           PieceList descOrderPieces,
           PieceContainer container,
           double thresholdCapacity) throws Exception {
@@ -82,7 +82,7 @@ public class Heuristica {
    * @param container
    * @param wasteIncrement
    */
-  private static void fillPieceContainerRemainder(
+  private static void fillRemainingCapacity(
           PieceList descOrderPieces,
           PieceContainer container,
           int wasteIncrement) throws Exception {
