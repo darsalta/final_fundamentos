@@ -217,7 +217,7 @@ public class Heuristica {
 
       if (tempContainer.getFreeArea()
               - candidateI.getArea()
-              - largestSz > maxWaste && i != 0) {
+              - largestSz > maxWaste) {
         /**
          * Con pieceI y la más grande dejan más waste, ya no tiene caso probar
          * las siguientes candidatas I.
@@ -225,8 +225,7 @@ public class Heuristica {
         break;
       }
 
-      if (tempContainer.getFreeArea() < candidateI.getArea() + smallestSz
-              && i != descOrderPieces.size() - 1) {
+      if (tempContainer.getFreeArea() < candidateI.getArea() + smallestSz) {
         /**
          * Try with next (smaller) candidate I, because the current one + the
          * smallest one is too big for the available free area.
@@ -343,7 +342,7 @@ public class Heuristica {
       if (tempContainer.getFreeArea()
               - candidateI.getArea()
               - largestSz
-              - secondLargeSz > maxWaste && i > 1) {
+              - secondLargeSz > maxWaste) {
         /**
          * Esa candidato I no es 'compatible' con ningun otro par de piezas sin
          * pasarse del desperdicio máximo permitido.
@@ -352,8 +351,7 @@ public class Heuristica {
       }
 
       if (tempContainer.getFreeArea()
-              < candidateI.getArea() + smallestSz + secondSmallSz
-              && i < descOrderPieces.size() - 2) {
+              < candidateI.getArea() + smallestSz + secondSmallSz) {
         /**
          * A la siguiente candidato I. candidato I + las 2 más chicas se
          * pasarían del área libre disponible.
@@ -377,7 +375,7 @@ public class Heuristica {
 
           if (tempContainer.getFreeArea()
                   - candidateJ.getArea()
-                  - largestSz > maxWaste && i > 0) {
+                  - largestSz > maxWaste) {
             /**
              * Los candidatos I y J no son 'compatibles' con ningun otra pieza
              * sin pasarse del desperdicio máximo permitido.
@@ -386,8 +384,7 @@ public class Heuristica {
           }
 
           if (tempContainer.getFreeArea()
-                  < candidateJ.getArea() + smallestSz
-                  && i != descOrderPieces.size() - 1) {
+                  < candidateJ.getArea() + smallestSz) {
             /**
              * A la siguiente candidato J: candidato J + MásChica se pasarían
              * del área libre.
