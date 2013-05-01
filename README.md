@@ -8,9 +8,9 @@ de la computación; así como el ensayo con formato de artículo con una
 introducción, metodología, discusión y conclusión tratando el desarollo de la 
 solución a los ejercicios.
 
+#### Build Status: [![Build Status](https://travis-ci.org/marcel-valdez/final_fundamentos.png?branch=master)](https://travis-ci.org/marcel-valdez/final_fundamentos)
+
 ### Integrantes
 
 1. Priscila Angulo
 2. Marcel valdez
-
-#### [![Build Status](https://secure.travis-ci.org/marcel-valdez/final-fundamentos.png?branch=master)](https://travis-ci.org/marcel-valdez/final-fundamentos)  
