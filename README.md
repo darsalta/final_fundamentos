@@ -13,3 +13,4 @@ solución a los ejercicios.
 1. Priscila Angulo
 2. Marcel valdez
 
+#### [![Build Status](https://secure.travis-ci.org/marcel-valdez/final-fundamentos.png?branch=master)](https://travis-ci.org/marcel-valdez/final-fundamentos)  
