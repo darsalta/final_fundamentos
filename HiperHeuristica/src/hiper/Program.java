@@ -38,10 +38,9 @@ public class Program {
         System.out.println(fileEntry.getName());
         int i = 0;
         for (PieceContainer container : pieceContainers) {
-          System.out.println("\nContenedor #" + ++i
-                  + ": " + container.toString());
+          System.out.println("\nContenedor #" + ++i + ": " + container);
           for (Piece piece : container) {
-            System.out.println("  " + piece.toString());
+            System.out.println("  " + piece);
           }
         }
       }

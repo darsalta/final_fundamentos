@@ -159,7 +159,7 @@ public class Heuristica {
 
     // If the are no more pieces to fit in the container.
     if (piecesToFit == 0) {
-      /// Inform we are done placing pieces
+      /// Inform all pieces were successfully placed
       return true;
     }
 
@@ -183,7 +183,6 @@ public class Heuristica {
 
       /// If can place the current piece without colisioning
       if (tryPlaceInBottomLeft(container, candidate)) {
-        /// Place the piece
         container.putPiece(candidate);
         /// Remove the piece, so a recursive call won't reconsider it
         descOrderPieces.remove(candidate);
@@ -192,17 +191,16 @@ public class Heuristica {
                 descOrderPieces,
                 container,
                 piecesToFit - 1, maxWaste)) {
-          /// Successfully placed candidate piece and remaining pieces!
+          /// Inform we successfully placed candidate piece and remaining pieces
           return true;
-        } else {/// Unsuccessful at fitting the remaining pieces.          
-          /// Remove the candidate from the container.
+        } else {/// Unsuccessful at fitting the remaining pieces.
+          /// Undo changes made to the container and piece list.
           container.removePiece(candidate);
-          /// Re-insert the candidate to the list in the order it was.
           descOrderPieces.insertAt(i, candidate);
         }
       }
     }
-    /// Could not fit any pieces
+    /// Inform that we could not fit any pieces
     return false;
   }
 
