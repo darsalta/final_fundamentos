@@ -33,7 +33,7 @@ public class MappingResource {
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public String getVertices() {
+  public String getVertices() throws Exception {
     final PieceList bestFit = this.problem.getBestFit();
     Piece[] result = new Piece[bestFit.size()];
     int i = 0;
