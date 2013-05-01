@@ -27,7 +27,7 @@ public class ParserTest {
   }
 
   @Test
-  public void testProcessFile() {
+  public void testProcessFile() throws IOException {
     System.out.println("parser.processFile");
     // Arrange
     // System.out.println((new java.io.File( "." )).getCanonicalPath());
