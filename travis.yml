@@ -1,3 +1,6 @@
+rvm:
+  - jruby
+
 language: java
 
 jdk:
