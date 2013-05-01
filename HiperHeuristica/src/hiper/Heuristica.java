@@ -46,8 +46,8 @@ public class Heuristica {
   }
 
   /**
-   * HeurísticaBL, trata de colocar piece en container abajo a la izquierda,
-   * empezando a intentar desde arriba a la derecha.
+   * Trata de colocar piece en container abajo a la izquierda, empezando a
+   * intentar desde arriba a la derecha.
    *
    * @param container
    * @param piece
@@ -73,8 +73,8 @@ public class Heuristica {
   /**
    * Mueve la piece hasta una posicion estable lo más abajo y a la izquierda
    * posible. Devuelve TRUE si hubo movimiento y FALSE si no hubo. Este metodo
-   * permanece en esta clase, porque es parte de la inteligencia del dominiop
-   * ara esta heuristica.
+   * permanece en esta clase, porque es parte de la inteligencia del dominio
+   * para esta heuristica.
    *
    * @param container whose bounds are used.
    * @param piece to move.
@@ -131,17 +131,17 @@ public class Heuristica {
           PieceContainer container,
           int maxWaste) throws Exception {
 
-    if (tryFitOnePiece(descOrderPieces, container, maxWaste)) {
+    if (tryFitPiecesRec(descOrderPieces, container, 1, maxWaste)) {
       return true;
     }
 
     if (descOrderPieces.size() > 1
-            && tryFitTwoPieces(descOrderPieces, container, maxWaste)) {
+            && tryFitPiecesRec(descOrderPieces, container, 2, maxWaste)) {
       return true;
     }
 
     if (descOrderPieces.size() > 2
-            && tryFitThreePieces(descOrderPieces, container, maxWaste)) {
+            && tryFitPiecesRec(descOrderPieces, container, 3, maxWaste)) {
       return true;
     }
 
@@ -153,296 +153,62 @@ public class Heuristica {
    * una piece en el container, dejando un máximo de desperdicio maxWaste. SE
    * ASUME QUE LA LISTA ESTÁ DADA ORDENADA DE MAYOR A MENOR
    */
-  private static boolean tryFitOnePiece(
+  private static boolean tryFitPiecesRec(
           PieceList descOrderPieces,
           PieceContainer container,
+          int piecesToFit,
           int maxWaste) throws Exception {
+    /// Assert descending order for the first piece (at least)
     assert (descOrderPieces.get(0).equals(descOrderPieces.getBiggest()));
 
+    if (piecesToFit == 0) {
+      // Done placing pieces
+      return true;
+    }
+
+    int bigPiecesArea = descOrderPieces.getAreaOfFirst(piecesToFit - 1);
+    int smallPiecesArea = descOrderPieces.getAreaOfLast(piecesToFit - 1);
+
     for (int i = 0; i < descOrderPieces.size(); i++) {
-      Piece piece = descOrderPieces.get(i);
-      if (container.getFreeArea() - piece.getArea() > maxWaste) {
-        /**
-         * Si con la piece actual deja más desperdicio que maxWaste, con las
-         * demás también lo hará (dado q están ordenadas descendientemente).
-         */
+      Piece candidate = descOrderPieces.get(i);
+
+      /// If the area(candidate) + area(biggest pieces) leaves too much waste
+
+      if (container.getFreeArea()
+              - candidate.getArea()
+              - bigPiecesArea > maxWaste) {
+        /// Stop because the rest of the pieces will also leave too much waste.
         break;
       }
 
-      if (tryPlaceInBottomLeft(container, piece)) {
-        container.putPiece(piece);
-        descOrderPieces.remove(piece);
-        // Indica que ya acomodó piece.
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  /**
-   * TODO: Needs testing, this method is high risk. Indica si puede o no poner
-   * dos pieces en el container, dejando un máximo de desperdicio maxWaste. SE
-   * ASUME QUE LA LISTA ESTÁ DADA ORDENADA DE MAYOR A MENOR
-   */
-  private static boolean tryFitTwoPieces(
-          PieceList descOrderPieces,
-          PieceContainer container,
-          int maxWaste) throws Exception {
-    /// Assert descOrderPieces are actually in descending order.
-    assert (descOrderPieces.get(0).equals(descOrderPieces.getBiggest()));
-
-    /// Guardará el área de las 2 pieces más grandes.
-    int largestSz, secondLargeSz;
-    /// Guardará el área de la piece más pequeña.
-    int smallestSz;
-
-    smallestSz = descOrderPieces.get(descOrderPieces.size() - 1)
-            .getArea();
-
-    largestSz = descOrderPieces.get(0).getArea();
-    secondLargeSz = descOrderPieces.get(1).getArea();
-    /**
-     * Verificando si cabrían 2 pieces con ese desperdicio máximo permitido. SE
-     * SUPONE QUE ESTÁN ORDENADAS DE MAYOR A MENOR (se revisan las 2 pieces más
-     * grandes).
-     */
-    if ((container.getFreeArea() - largestSz - secondLargeSz) > maxWaste) {
-      return false;
-    }
-
-    PieceContainer tempContainer = container.getCopy();
-    for (int i = 0; i < descOrderPieces.size(); i++) {
-      Piece candidateI = descOrderPieces.get(i);
-
-      if (tempContainer.getFreeArea()
-              - candidateI.getArea()
-              - largestSz > maxWaste) {
-        /**
-         * Con pieceI y la más grande dejan más waste, ya no tiene caso probar
-         * las siguientes candidatas I.
-         */
-        break;
-      }
-
-      if (tempContainer.getFreeArea() < candidateI.getArea() + smallestSz) {
-        /**
-         * Try with next (smaller) candidate I, because the current one + the
-         * smallest one is too big for the available free area.
-         */
+      /// If area(current candidate) + area(smallest pieces) does not fit
+      if (container.getFreeArea() < candidate.getArea() + smallPiecesArea) {
+        /// Try with a smaller piece
         continue;
       }
 
-      if (tryPlaceInBottomLeft(tempContainer, candidateI)) {
-        /**
-         * Se añade piece como 'borrador'. Se utiliza para poder estimar si
-         * cabrán dos piezas en el contenedor, sin solapar entre sí, ni con las
-         * demás ya dentro.
-         *
-         * Se trata de un acomodo hipotético dentro del contendor.
-         */
-        tempContainer.putPiece(candidateI);
-
-        /**
-         * Si puede acomodar pieceI, prueba con cuál candidateJ entra
-         * simultáneamente.
-         */
-        for (int j = 0; j < descOrderPieces.size(); j++) {
-          if (i == j) {
-            continue;
-          }
-
-          Piece candidateJ = descOrderPieces.get(j);
-
-          if (tempContainer.getFreeArea()
-                  - candidateJ.getArea() > maxWaste) {
-            /**
-             * If current candidateJ already wastes more space than maxWaste,
-             * then the next pieces will also waste even more space, so break
-             * the loop.
-             */
-            break;
-          }
-
-          if (tempContainer.getFreeArea() < candidateJ.getArea()) {
-            /// Try with next piece, this one is too big.
-            continue;
-          }
-
-          if (tryPlaceInBottomLeft(tempContainer, candidateJ)) {
-            /// Add the piece to the actual container.
-            container.putPiece(candidateI);
-            container.putPiece(candidateJ);
-            descOrderPieces.remove(candidateI);
-            descOrderPieces.remove(candidateJ);
-            // Return true, we found two pieces that fit.
-            return true;
-          }
-        } /// Termina de revisar posibles pieces 2.
-
-        /// Ninguna candidateJ entró con la posible pieceI.  
-        tempContainer.removePiece(candidateI);
-        /// Se borra el preliminar de pieceI.
+      /// If can place the current piece without colisioning
+      if (tryPlaceInBottomLeft(container, candidate)) {
+        /// Place the piece
+        container.putPiece(candidate);
+        descOrderPieces.remove(candidate);
+        /// If successful at fitting the remaining pieces
+        if (tryFitPiecesRec(
+                descOrderPieces,
+                container,
+                piecesToFit - 1, maxWaste)) {
+          /// Could place candidate piece!
+          return true;
+        } else {
+          /// Unsuccessful at fitting the candidate with the remaining pieces.
+          /// Remove the candidate from the container.
+          container.removePiece(candidate);
+          /// Re-insert in the piece list in the same order it previously was.
+          descOrderPieces.insertAt(i, candidate);
+        }
       }
-    }  /// Termina de revisar posibles pieces 1.
-
-    return false;
-  }
-
-  /**
-   * TODO: Needs testing, this method is high risk. Indica si puede o no poner
-   * tres pieces en el container, dejando un máximo de desperdicio maxWaste. SE
-   * ASUME QUE LA LISTA ESTÁ DADA ORDENADA DE MAYOR A MENOR
-   */
-  private static boolean tryFitThreePieces(
-          PieceList descOrderPieces,
-          PieceContainer container,
-          int maxWaste) throws Exception {
-    /// Assert descOrderPieces are actually in descending order.
-    assert (descOrderPieces.get(0).equals(descOrderPieces.getBiggest()));
-
-    /// Guardará el área de las 3 pieces más grandes.
-    int largestSz, secondLargeSz, thirdLargeSz;
-    /// Guardará el área de las 2 pieces más pequeñas.
-    int smallestSz, secondSmallSz;
-
-    smallestSz = descOrderPieces.get(descOrderPieces.size() - 1)
-            .getArea();
-    secondSmallSz = descOrderPieces.get(descOrderPieces.size() - 2)
-            .getArea();
-
-    largestSz = descOrderPieces.get(0).getArea();
-    secondLargeSz = descOrderPieces.get(1).getArea();
-    thirdLargeSz = descOrderPieces.get(2).getArea();
-
-    /**
-     * Verificando si cabrían 3 pieces con ese desperdicio máximo permitido.
-     *
-     * SE SUPONE QUE ESTÁN ORDENADAS DE MAYOR A MENOR (se revisan las pieces más
-     * grandes).
-     */
-    if (container.getFreeArea()
-            - largestSz
-            - secondLargeSz
-            - thirdLargeSz > maxWaste) {
-      return false;
     }
-
-    /**
-     * PieceContainer used for calculating how the pieces will be placed in the
-     * actual container.
-     *
-     * Se utilizar una copia de container, y se opera *directamente* sobre ese,
-     * y si se encuentra que sí caben, entonces se modifica el contenedor
-     * original (container).
-     */
-    PieceContainer tempContainer = container.getCopy();
-    for (int i = 0; i < descOrderPieces.size(); i++) {
-      Piece candidateI = descOrderPieces.get(i);
-      if (tempContainer.getFreeArea()
-              - candidateI.getArea()
-              - largestSz
-              - secondLargeSz > maxWaste) {
-        /**
-         * Esa candidato I no es 'compatible' con ningun otro par de piezas sin
-         * pasarse del desperdicio máximo permitido.
-         */
-        break;
-      }
-
-      if (tempContainer.getFreeArea()
-              < candidateI.getArea() + smallestSz + secondSmallSz) {
-        /**
-         * A la siguiente candidato I. candidato I + las 2 más chicas se
-         * pasarían del área libre disponible.
-         */
-        continue;
-      }
-
-      if (tryPlaceInBottomLeft(tempContainer, candidateI)) {
-        tempContainer.putPiece(candidateI);
-
-        /**
-         * Si puede acomodar candidato I, prueba con cuál candidato J entra
-         * simultáneamente.
-         */
-        for (int j = 0; j < descOrderPieces.size(); j++) {
-          if (j == i) {
-            continue;
-          }
-
-          Piece candidateJ = descOrderPieces.get(j);
-
-          if (tempContainer.getFreeArea()
-                  - candidateJ.getArea()
-                  - largestSz > maxWaste) {
-            /**
-             * Los candidatos I y J no son 'compatibles' con ningun otra pieza
-             * sin pasarse del desperdicio máximo permitido.
-             */
-            break;
-          }
-
-          if (tempContainer.getFreeArea()
-                  < candidateJ.getArea() + smallestSz) {
-            /**
-             * A la siguiente candidato J: candidato J + MásChica se pasarían
-             * del área libre.
-             */
-            continue;
-          }
-
-          if (tryPlaceInBottomLeft(tempContainer, candidateJ)) {
-            tempContainer.putPiece(candidateJ);
-            for (int k = 0; k < descOrderPieces.size(); k++) {
-              if (k == i || k == j) {
-                continue;
-              }
-
-              Piece candidateK = descOrderPieces.get(k);
-
-              if (tempContainer.getFreeArea()
-                      - candidateK.getArea() > maxWaste) {
-                /**
-                 * Si con candidatoK elegida se deja más waste, con las
-                 * siguiente candidatesK (más chicas) también lo haría. Deja de
-                 * revisar candidatos K y se pasa al siguiente candidato J.
-                 */
-                break;
-              }
-
-              /// If the current candidate is too big for the free rea
-              if (tempContainer.getFreeArea() < candidateK.getArea()) {
-                /// Skip the candidate, try a smaller one.
-                continue;
-              }
-
-              if (tryPlaceInBottomLeft(tempContainer, candidateK)) {
-                /// Se añaden definitivamente.
-                container.putPiece(candidateI);
-                container.putPiece(candidateJ);
-                container.putPiece(candidateK);
-                descOrderPieces.remove(candidateI);
-                descOrderPieces.remove(candidateJ);
-                descOrderPieces.remove(candidateK);
-                /// Indica que ya acomodó 3 pieces.
-                return true;
-              }
-            } /// Termina de revisar posibles pieces 3.
-
-            /// Ningun candidato K entró con los candidatos I y J
-            /// Se quita le candidato J
-            tempContainer.removePiece(candidateJ);
-          }
-
-        } /// Termina de revisar posibles pieces 2.
-
-        /// Ningun par de candidatos J y K entró con la posible pieceI.  
-        /// Se quita el candidato I
-        tempContainer.removePiece(candidateI);
-      }
-    }  /// termina de revisar posibles pieces 1.
-
+    /// Could not fit any pieces
     return false;
   }
 

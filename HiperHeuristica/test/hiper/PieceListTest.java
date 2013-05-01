@@ -175,6 +175,155 @@ public class PieceListTest {
     assertEquals(expected, area);
   }
 
+  @Test
+  public void testGetAreaOfFirst() {
+    System.out.println("PieceList.getAreaOfFirst(1)");
+    // Arrange
+    PieceList target = new PieceList();
+    target.add(new PieceStub(3));
+    target.add(new PieceStub(2));
+    target.add(new PieceStub(1));
+    int expected = 3;
+
+    // Act
+    int area = target.getAreaOfFirst(1);
+
+    // Assert
+    assertEquals(expected, area);
+  }
+
+  @Test
+  public void testGetAreaOfFirst_Zero() {
+    System.out.println("PieceList.getAreaOfFirst(0)");
+    // Arrange
+    PieceList target = new PieceList();
+    target.add(new PieceStub(3));
+    target.add(new PieceStub(2));
+    target.add(new PieceStub(1));
+    int expected = 0;
+
+    // Act
+    int area = target.getAreaOfFirst(0);
+
+    // Assert
+    assertEquals(expected, area);
+  }
+
+  @Test
+  public void testGetAreaOfFirst_More_Than_Available() {
+    System.out.println("PieceList.getAreaOfFirst(4), PieceList.size() = 3");
+    // Arrange
+    PieceList target = new PieceList();
+    target.add(new PieceStub(3));
+    target.add(new PieceStub(2));
+    target.add(new PieceStub(1));
+    int expected = 6;
+
+    // Act
+    int area = target.getAreaOfFirst(4);
+
+    // Assert
+    assertEquals(expected, area);
+  }
+  
+  @Test
+  public void testGetAreaOfFirst_More_Than_Zero_Available() {
+    System.out.println("PieceList.getAreaOfFirst(4), PieceList.size() = 0");
+    // Arrange
+    PieceList target = new PieceList();    
+    int expected = 0;
+
+    // Act
+    int area = target.getAreaOfFirst(4);
+
+    // Assert
+    assertEquals(expected, area);
+  }
+  
+  
+  @Test
+  public void testGetAreaOfLast() {
+    System.out.println("PieceList.getAreaOfLast(1)");
+    // Arrange
+    PieceList target = new PieceList();
+    target.add(new PieceStub(3));
+    target.add(new PieceStub(2));
+    target.add(new PieceStub(1));
+    int expected = 1;
+
+    // Act
+    int area = target.getAreaOfLast(1);
+
+    // Assert
+    assertEquals(expected, area);
+  }
+
+  @Test
+  public void testGetAreaOfLast_Zero() {
+    System.out.println("PieceList.getAreaOfLast(0)");
+    // Arrange
+    PieceList target = new PieceList();
+    target.add(new PieceStub(3));
+    target.add(new PieceStub(2));
+    target.add(new PieceStub(1));
+    int expected = 0;
+
+    // Act
+    int area = target.getAreaOfLast(0);
+
+    // Assert
+    assertEquals(expected, area);
+  }
+
+
+  @Test
+  public void testGetAreaOfLast_All_Available() {
+    System.out.println("PieceList.getAreaOfLast(3), PieceList.size() = 3");
+    // Arrange
+    PieceList target = new PieceList();
+    target.add(new PieceStub(3));
+    target.add(new PieceStub(2));
+    target.add(new PieceStub(1));
+    int expected = 6;
+
+    // Act
+    int area = target.getAreaOfLast(3);
+
+    // Assert
+    assertEquals(expected, area);
+  }
+
+  @Test
+  public void testGetAreaOfLast_More_Than_Available() {
+    System.out.println("PieceList.getAreaOfLast(4), PieceList.size() = 3");
+    // Arrange
+    PieceList target = new PieceList();
+    target.add(new PieceStub(3));
+    target.add(new PieceStub(2));
+    target.add(new PieceStub(1));
+    int expected = 6;
+
+    // Act
+    int area = target.getAreaOfLast(4);
+
+    // Assert
+    assertEquals(expected, area);
+  }
+  
+  @Test
+  public void testGetAreaOfLast_More_Than_Zero_Available() {
+    System.out.println("PieceList.getAreaOfLast(1), PieceList.size() = 0");
+    // Arrange
+    PieceList target = new PieceList();    
+    int expected = 0;
+
+    // Act
+    int area = target.getAreaOfLast(1);
+
+    // Assert
+    assertEquals(expected, area);
+  }  
+
   private PieceList makeSeriesPieceList(int start, int count) {
     // Arrange
     PieceList target = new PieceList();

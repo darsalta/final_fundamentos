@@ -5,8 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * It is in charge of maintaining a List of Pieces, and gathering data
- * about them.
+ * It is in charge of maintaining a List of Pieces, and gathering data about
+ * them.
+ *
  * @author Marcel
  */
 public class PieceList implements Iterable<Piece> {
@@ -68,6 +69,21 @@ public class PieceList implements Iterable<Piece> {
   }
 
   /**
+   * Inserts a piece at a specific index.
+   *
+   * @param index in which to place the piece
+   * @param piece to place at a specific index
+   */
+  public void insertAt(int index, Piece piece) {
+    if (this.biggest == null || piece.getArea() > this.biggest.getArea()) {
+      this.biggest = piece;
+    }
+
+    this.piecesArea += piece.getArea();
+    this.pieces.add(index, piece);
+  }
+
+  /**
    * Gets the number of items in this PieceList
    *
    * @return the number of items in this PieceList
@@ -123,6 +139,44 @@ public class PieceList implements Iterable<Piece> {
     return this.piecesArea;
   }
 
+  /**
+   * Gets the sum of the area of the first pieces, if the number of pieces
+   * pieceCount is bigger than the number of pieces in this list, only the sum
+   * of the number of pieces available is obtained.
+   *
+   * @param pieceCount the number of first pieces to sum their area
+   * @return the sum of the area of the first pieces.
+   */
+  public int getAreaOfFirst(int pieceCount) {
+    int result = 0;
+    int finish = validateIndex(pieceCount);
+
+    for (int i = 0; i < finish; i++) {
+      result += pieces.get(i).getArea();
+    }
+
+    return result;
+  }
+
+    /**
+   * Gets the sum of the area of the last pieces, if the number of pieces
+   * pieceCount is bigger than the number of pieces in this list, only the sum
+   * of the number of pieces available is obtained.
+   *
+   * @param pieceCount the number of last pieces to sum their area
+   * @return the sum of the area of the last pieces.
+   */
+  public int getAreaOfLast(int pieceCount) {
+    int result = 0;
+    int finish = validateIndex(pieceCount);
+    
+    for (int i = 1; i <= finish; i++) {
+      result += pieces.get(pieces.size() - i).getArea();
+    }
+
+    return result;
+  }
+
   @Override
   public Iterator<Piece> iterator() {
     return this.pieces.<Piece>iterator();
@@ -135,5 +189,19 @@ public class PieceList implements Iterable<Piece> {
     this.pieces.clear();
     this.piecesArea = 0;
     this.biggest = null;
+  }
+
+  /**
+   * Validates the piece index, to a value &lt;= this.size()
+   * @param index to validate
+   * @return a value such that result <= this.size
+   */
+  private int validateIndex(int index) {
+    int finish = index;
+    if (index > this.size()) {
+      finish = this.size();
+    }
+    
+    return finish;
   }
 }
