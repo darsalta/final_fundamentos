@@ -24,23 +24,14 @@ public class Parser {
   /**
    * Parses a file containing a problem instance specification.
    *
-   * @param file to parse as a problem instance specification.
+   * @param filepath to parse as a problem instance specification.
    * @return the ProblemInstanceSpecSpecification
    * @throws IOException
    */
-  public ProblemInstanceSpec parseFile(String file) throws IOException {
-    FileReader fileReader;
+  public ProblemInstanceSpec parseFile(String filepath) throws IOException {    
     BufferedReader bufReader = null;
     ProblemInstanceSpec problemInstance = null;
-
-    try {
-      fileReader = new FileReader(file);
-      bufReader = new BufferedReader(fileReader);
-    } catch (FileNotFoundException ex) {
-      Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex);
-      /// Fail fast
-      throw ex;
-    }
+    bufReader = getFileReader(filepath);
 
     try {
       //Skip the first line
@@ -123,5 +114,28 @@ public class Parser {
     }
 
     return vertices.toArray(new Point[]{});
+  }
+
+  /**
+   * Gets a buffered reader for reading a file's content.
+   *
+   * @param filePath of the file to read
+   * @return a buffered reader for the file.
+   * @throws FileNotFoundException
+   */
+  protected BufferedReader getFileReader(String filePath)
+          throws FileNotFoundException {
+    BufferedReader bufReader;
+    FileReader fileReader;
+    try {
+      fileReader = new FileReader(filePath);
+      bufReader = new BufferedReader(fileReader);
+    } catch (FileNotFoundException ex) {
+      Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex);
+      /// Fail fast
+      throw ex;
+    }
+
+    return bufReader;
   }
 }

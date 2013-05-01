@@ -5,9 +5,13 @@
 package parsing;
 
 import hiper.Point;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import parsing.Parser;
 import parsing.ProblemInstanceSpec;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Test;
@@ -23,17 +27,55 @@ public class ParserTest {
   }
 
   @Test
+  public void testGetFileReader() throws IOException {
+    System.out.println("parser.getFileReader");
+
+    // Arrange
+    String content = "test";
+    File tempFile = File.createTempFile("temp", "txt");
+    String filePath = tempFile.getAbsolutePath();
+    tempFile.setWritable(true);
+    try (FileWriter writer = new FileWriter(tempFile)) {
+      writer.write(content, 0, content.length());
+    }
+    Parser parser = new Parser();
+
+    // Assume
+    assertTrue(new File(filePath).exists());
+
+    // Act
+    try (BufferedReader actual = parser.getFileReader(filePath);) {
+      // Assert
+      assertEquals(content, actual.readLine());
+    } catch (Exception e) {
+      Logger.getLogger(ParserTest.class.getName()).log(Level.SEVERE, null, e);
+      /// Fail fast.
+      throw e;
+    }
+  }
+
+  @Test
   public void testProcessFile() throws IOException {
     System.out.println("parser.processFile");
     // Arrange
-    // System.out.println((new java.io.File( "." )).getCanonicalPath());
-    String file = ".\\input_data\\PF01.txt";
     ProblemInstanceSpec problemInstance;
-    Parser parser = new Parser();
+    ParserStub parser = new ParserStub();
+    parser.setProblemSpecTxt(
+            " 8\n"
+            + " 100 100 \n"
+            + " 4 0 0 54 0 54 100 0 100\n"
+            + " 4 0 0 46 0 46 100 0 100\n"
+            + " 4 0 0 56 0 56 100 0 100\n"
+            + " 4 0 0 44 0 44 100 0 100\n"
+            + " 4 0 0 100 0 100 66 0 66\n"
+            + " 4 0 0 42 0 42 100 0 100\n"
+            + " 4 0 0 100 0 100 34 0 34\n"
+            + " 4 0 0 58 0 58 100 0 100\n"
+            + "");
 
     // Act
     try {
-      problemInstance = parser.parseFile(file);
+      problemInstance = parser.parseFile("");
       // Assert        
       assertNotNull(problemInstance);
       assertEquals(100, problemInstance.getContainerHeight());
@@ -96,5 +138,22 @@ public class ParserTest {
     assertEquals(100, result[2].getY());
     assertEquals(0, result[3].getX());
     assertEquals(100, result[3].getY());
+  }
+
+  class ParserStub extends Parser {
+
+    private String problemSpecTxt = "";
+
+    @Override
+    protected BufferedReader getFileReader(String file) {
+      return new BufferedReader(new StringReader(this.problemSpecTxt));
+    }
+
+    /**
+     * @param problemSpecTxt the problemSpecTxt to set
+     */
+    public void setProblemSpecTxt(String problemSpecTxt) {
+      this.problemSpecTxt = problemSpecTxt;
+    }
   }
 }

@@ -1,10 +1,6 @@
-rvm:
-  - jruby
-
 language: java
 
 jdk:
   -oraclejdk7
-  -oraclejdk6
 
-script: ant -file HiperHeuristica/build.xml
+script: "ant -file HiperHeuristica/build.xml && ant -file WebServices/build.xml"
