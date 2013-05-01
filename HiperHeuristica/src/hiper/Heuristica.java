@@ -19,12 +19,12 @@ public class Heuristica {
    */
   public static List<PieceContainer> DJD(
           PieceList inputPieces,
-          int widthPieceContainer,
-          int heightPieceContainer,
+          int containerWidth,
+          int containerHeight,
           double initialCapacity) throws Exception {
 
     /// El desperdicio se incrementa en 1/20 del container.
-    int increment = (widthPieceContainer * heightPieceContainer) / 20;
+    int increment = (containerWidth * containerHeight) / 20;
     if (increment == 0) {
       increment = 1;
     }
@@ -32,14 +32,14 @@ public class Heuristica {
     inputPieces.sort(Order.DESCENDING);
     List<PieceContainer> containers = new ArrayList<PieceContainer>();
     while (inputPieces.size() > 0) {
-      PieceContainer currentContainer = openNewPieceContainer(
-              containers,
-              widthPieceContainer,
-              heightPieceContainer);
+      PieceContainer container = new PieceContainer(
+              containerWidth, 
+              containerHeight);
+      containers.add(container);
       /// Fills the container with the least pieces to fill the initialCapacity
-      placeWithInitialCapacity(inputPieces, currentContainer, initialCapacity);
+      placeWithInitialCapacity(inputPieces, container, initialCapacity);
       /// Fills the remaining space with best fit of pieces possible.
-      fillPieceContainerRemainder(inputPieces, currentContainer, increment);
+      fillPieceContainerRemainder(inputPieces, container, increment);
     }
 
     return containers;
@@ -202,25 +202,6 @@ public class Heuristica {
     }
     /// Inform that we could not fit any pieces
     return false;
-  }
-
-  /**
-   * Opens a new container meant to be used to add more pieces to it.
-   *
-   * @param containers
-   * @param containerWidth
-   * @param containerHeight
-   * @return the newly added PieceContainer
-   */
-  static PieceContainer openNewPieceContainer(
-          List<PieceContainer> containers,
-          int containerWidth,
-          int containerHeight) {
-    PieceContainer container = new PieceContainer(
-            containerWidth, containerHeight);
-    containers.add(container);
-
-    return container;
   }
 
   /**
