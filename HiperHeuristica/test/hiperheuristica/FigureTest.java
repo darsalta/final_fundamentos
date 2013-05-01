@@ -6,6 +6,8 @@ package hiperheuristica;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import hiperheuristica.Point;
+import hiperheuristica.Figure;
 
 /**
  *

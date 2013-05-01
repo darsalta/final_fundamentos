@@ -4,8 +4,9 @@
  */
 package parsing;
 
-import hiperheuristica.Container;
-import hiperheuristica.Piece;
+import hiperheuristica.Point;
+import parsing.Parser;
+import parsing.ProblemInstanceSpec;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,83 +22,98 @@ import static org.junit.Assert.*;
  * @author Priscila Angulo
  */
 public class ParserTest {
-    
-    public ParserTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
-    
-    @Test
-    public void testProcessFile() {
-      System.out.println("parser.processFile");    
-      // Arrange
-      //System.out.println((new java.io.File( "." )).getCanonicalPath());
-      String file = ".\\input_data\\PF01.txt";
-      ProblemInstance problemInstance = null;
-      Parser parser = new Parser();
 
-      // Act
-      try {
-        problemInstance = parser.processFile(file);
-      } catch (IOException ex) {
-        Logger.getLogger(ParserTest.class.getName()).log(Level.SEVERE, null, ex);
-      } 
+  public ParserTest() {
+  }
 
-      // Assert        
-      assertNotNull(problemInstance);
-      assertNotNull(problemInstance.containers.get(0));
-      assertEquals(100, (problemInstance.containers.get(0)).getHeight());
-      assertNotNull(problemInstance.pieceList.get(0));
-      assertEquals(100, (problemInstance.pieceList.get(0)).getHeight());
-      assertEquals(54, (problemInstance.pieceList.get(0)).getWidth());
-      
-    }
-    
-    @Test
-    public void testGetContainerDim() {
-      System.out.println("parser.getContainerDim");    
-      // Arrange
-      String line = "100 100";
-      Container container = null;
-      Parser parser = new Parser();
-      
-      // Act
-      container = parser.getContainerDim(line);
+  @BeforeClass
+  public static void setUpClass() {
+  }
 
-      // Assert        
-      assertNotNull(container);
-      assertEquals(100, container.getHeight());
-    }
-    
-    @Test
-    public void testGetPiece(){
-      System.out.println("parser.getPiece");    
-      // Arrange
-      String line = " 4 0 0 54 0 54 100 0 100";
-      Piece piece = null;
-      Parser parser = new Parser();
-      
-      // Act
-      piece = parser.getPiece(line);
+  @AfterClass
+  public static void tearDownClass() {
+  }
 
-      // Assert        
-      assertNotNull(piece);
-      assertEquals(100, piece.getHeight());
-      assertEquals(54, piece.getWidth());
+  @Before
+  public void setUp() {
+  }
+
+  @After
+  public void tearDown() {
+  }
+
+  @Test
+  public void testProcessFile() {
+    System.out.println("parser.processFile");
+    // Arrange
+    //System.out.println((new java.io.File( "." )).getCanonicalPath());
+    String file = ".\\input_data\\PF01.txt";
+    ProblemInstanceSpec problemInstance = null;
+    Parser parser = new Parser();
+
+    // Act
+    try {
+      problemInstance = parser.parseFile(file);
+    } catch (IOException ex) {
+      Logger.getLogger(ParserTest.class.getName()).log(Level.SEVERE, null, ex);
     }
-            
+
+    // Assert        
+    assertNotNull(problemInstance);
+    assertEquals(100, problemInstance.getContainerHeight());
+    assertEquals(100, problemInstance.getContainerWidth());
+    assertEquals(8, problemInstance.getInputPieces().size());
+  }
+
+  @Test
+  public void testGetContainerHeight() {
+    System.out.println("parser.testGetContainerHeight");
+    // Arrange
+    String line = "10 100";
+    Parser parser = new Parser();
+
+    // Act
+    int height = parser.parseContainerHeight(line);
+
+    // Assert        
+    assertEquals(100, height);
+  }
+
+  @Test
+  public void testGetContainerWidth() {
+    System.out.println("parser.testGetContainerWidth");
+    // Arrange
+    String line = "10 100";
+    Parser parser = new Parser();
+
+    // Act
+    int width = parser.parseContainerWidth(line);
+
+    // Assert        
+    assertEquals(10, width);
+  }
+
+  @Test
+  public void testGetPieceVertices() {
+    System.out.println("parser.testGetPieceVertices");
+    // Arrange
+    String line = " 4 0 0 54 0 54 100 0 100";
+    Point[] result;
+    Parser parser = new Parser();
+
+    // Act
+    result = parser.parsePieceVertices(line);
+
+    // Assert        
+    assertNotNull(result);
+    assertEquals(4, result.length);
+    assertEquals(0, result[0].getX());
+    assertEquals(0, result[0].getY());
+    assertEquals(54, result[1].getX());
+    assertEquals(0, result[1].getY());
+    assertEquals(54, result[2].getX());
+    assertEquals(100, result[2].getY());
+    assertEquals(0, result[3].getX());
+    assertEquals(100, result[3].getY());
+  }
 }

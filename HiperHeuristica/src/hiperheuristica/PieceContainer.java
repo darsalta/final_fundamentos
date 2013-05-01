@@ -7,11 +7,11 @@ import java.util.Iterator;
  *
  * @author Marcel
  */
-public class Container extends Figure implements Iterable<Piece> {
+public class PieceContainer extends Figure implements Iterable<Piece> {
 
-  PieceList pieces;
+  private final PieceList pieces;
 
-  public Container(int width, int height) {
+  public PieceContainer(int width, int height) {
     super(new Point[]{
       new Point(0, 0),
       new Point(width, 0),
@@ -23,7 +23,7 @@ public class Container extends Figure implements Iterable<Piece> {
   }
 
   /**
-   * Puts a piece into this Container
+   * Puts a piece into this PieceContainer
    *
    * @param pieza to add.
    */
@@ -32,7 +32,7 @@ public class Container extends Figure implements Iterable<Piece> {
   }
 
   /**
-   * Removes a piece from this Container.
+   * Removes a piece from this PieceContainer.
    *
    * @param piece
    */
@@ -41,7 +41,7 @@ public class Container extends Figure implements Iterable<Piece> {
   }
 
   /**
-   * Gets the unused area in this Container.
+   * Gets the unused area in this PieceContainer.
    *
    * @return the free area
    */
@@ -50,9 +50,9 @@ public class Container extends Figure implements Iterable<Piece> {
   }
 
   /**
-   * Gets the area used up by all pieces in this Container.
+   * Gets the area used up by all pieces in this PieceContainer.
    *
-   * @return area used up by pieces in this Container.
+   * @return area used up by pieces in this PieceContainer.
    */
   public int getUsedArea() {
     /**
@@ -67,8 +67,8 @@ public class Container extends Figure implements Iterable<Piece> {
    * candidata puede desplazarse verticalmente hacia abajo hasta topar con otra
    * pieza o con la base del objeto.
    *
-   * @param piece to determine its bottom bound within this Container
-   * @return distance to the bottom bound within this Container for a piece.
+   * @param piece to determine its bottom bound within this PieceContainer
+   * @return distance to the bottom bound within this PieceContainer for a piece.
    */
   public int distanceToBottBound(Piece piece) {
     assert (piece != null);
@@ -91,8 +91,8 @@ public class Container extends Figure implements Iterable<Piece> {
    * horizontal que una pieza candidata puede desplazarse verticalmente hacia la
    * izquierda hasta topar con otra pieza o con la base del objeto.
    *
-   * @param piece to determine its left bound within this Container
-   * @return the distance to the left bound within this Container for a piece.
+   * @param piece to determine its left bound within this PieceContainer
+   * @return the distance to the left bound within this PieceContainer for a piece.
    */
   public int distanceToLeftBound(Piece piece) {
     assert (piece != null);
@@ -112,8 +112,8 @@ public class Container extends Figure implements Iterable<Piece> {
 
   /**
    * TODO: Test this method, it is high risk method. Determines if a figure is
-   * within the bounds of this Container and does not overlap with any Figures
-   * already in this Container
+   * within the bounds of this PieceContainer and does not overlap with any Figures
+   * already in this PieceContainer
    *
    * @param figure to check
    * @returns true if the figure is within the bounds of this instance and does
@@ -132,8 +132,8 @@ public class Container extends Figure implements Iterable<Piece> {
    * límites del objeto o con alguna pieza ya colocada.
    *
    * @param figure to check for intersection.
-   * @return true if it intersects with this Container's bounds or a piece
-   * within this Container, false otherwise.
+   * @return true if it intersects with this PieceContainer's bounds or a piece
+   * within this PieceContainer, false otherwise.
    */
   @Override
   public boolean intersectsWith(Figure figure) {
@@ -157,8 +157,8 @@ public class Container extends Figure implements Iterable<Piece> {
    *
    * @return A copy of this instance.
    */
-  public Container getCopy() {
-    Container copy = new Container(this.getWidth(), this.getHeight());
+  public PieceContainer getCopy() {
+    PieceContainer copy = new PieceContainer(this.getWidth(), this.getHeight());
     for (Piece piece : this.pieces) {
       copy.putPiece(piece.getCopy());
     }

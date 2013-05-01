@@ -7,6 +7,9 @@ package hiperheuristica;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
+import hiperheuristica.Piece;
+import hiperheuristica.Container;
+import hiperheuristica.Point;
 
 /**
  *
@@ -348,7 +351,7 @@ public class ContainerTest {
     // Assure
     assertThat(target.getFreeArea(), is(copy.getFreeArea()));
     
-    // Act
+    // Act    
     target.removePiece(piece);
     
     // Assert
@@ -404,7 +407,7 @@ public class ContainerTest {
   private Container initContainer(int width, int height, Piece[] previousPieces) {
     Container target = new Container(width, height);
     for (Piece blocking : previousPieces) {
-      target.putPiece(blocking);
+      target.putPiece(blocking);      
     }
     return target;
   }

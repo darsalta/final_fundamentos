@@ -6,7 +6,7 @@ package hiperheuristica;
  */
 public abstract class Figure implements Comparable<Figure> {
 
-  private Point[] vertices;
+  private final Point[] vertices;
   private int rightBound = Integer.MIN_VALUE;
   private int leftBound = Integer.MAX_VALUE;
   private int bottBound = Integer.MAX_VALUE;
@@ -53,7 +53,7 @@ public abstract class Figure implements Comparable<Figure> {
     if (this.topBound == Integer.MIN_VALUE) {
       this.refreshTopBound();
     }
-    
+
     return this.topBound;
   }
 
@@ -63,17 +63,27 @@ public abstract class Figure implements Comparable<Figure> {
    * @return the bottom bounds.
    */
   public int getBottBound() {
-    if(this.bottBound == Integer.MAX_VALUE) {
+    if (this.bottBound == Integer.MAX_VALUE) {
       this.refreshBottBound();
     }
-    
+
     return this.bottBound;
   }
 
+  /**
+   * Gets the width of this figure.
+   *
+   * @return the width of the figure.
+   */
   public int getWidth() {
     return this.getRightBound() - this.getLeftBound();
   }
 
+  /**
+   * Gets the height of this figure.
+   *
+   * @return the height of this figure.
+   */
   public int getHeight() {
     return this.getTopBound() - this.getBottBound();
   }
@@ -115,11 +125,9 @@ public abstract class Figure implements Comparable<Figure> {
    *
    * @param figure to check that is within the bounds of this Figure
    * @return true if it is within the bounds of this Figure, false otherwise.
-   */  
+   */
   public boolean isWithinBounds(Figure figure) {
-    // Si la piece no se sale de los límites del object.
-    // REFACTOR: Mover este método a Objeto
-    // REFACTOR: Crear una interfaz común entre Objeto y Pieza
+    // Si la piece no se sale de los límites del object.        
     return figure.getTopBound() <= this.getTopBound()
             && figure.getRightBound() <= this.getRightBound()
             && figure.getLeftBound() >= this.getLeftBound()
@@ -171,47 +179,65 @@ public abstract class Figure implements Comparable<Figure> {
     return this.vertices.clone();
   }
 
-  protected final void setVertex(int index, int x, int y) {
-    this.vertices[index] = Point.At(x, y);
-    if (x < this.leftBound) {
-      this.leftBound = x;
+  /**
+   * Sets a specific vertex coordinates
+   *
+   * @param index the index of the vertex.
+   * @param newPoint the new point for the vertex
+   */
+  protected final void setVertex(int index, Point newPoint) {
+    this.vertices[index] = newPoint;
+    if (newPoint.getX() < this.leftBound) {
+      this.leftBound = newPoint.getX();
     } else {
-      refreshLeftBound();
+      this.refreshLeftBound();
     }
 
-    if (y < this.bottBound) {
-      this.bottBound = y;
+    if (newPoint.getY() < this.bottBound) {
+      this.bottBound = newPoint.getY();
     } else {
-      refreshBottBound();
+      this.refreshBottBound();
     }
 
 
-    if (x > this.rightBound) {
-      this.rightBound = x;
+    if (newPoint.getX() > this.rightBound) {
+      this.rightBound = newPoint.getX();
     } else {
-      refreshRightBound();
+      this.refreshRightBound();
     }
 
-    if (y > this.topBound) {
-      this.topBound = y;
+    if (newPoint.getY() > this.topBound) {
+      this.topBound = newPoint.getY();
     } else {
-      refreshTopBound();
+      this.refreshTopBound();
     }
   }
 
+  /**
+   * Refreshes the left bound value
+   */
   private void refreshLeftBound() {
-    this.leftBound = Point.getMinX(vertices).getX();
+    this.leftBound = Point.getMinX(this.vertices).getX();
   }
 
+  /**
+   * Refreshes the bottom bound value
+   */
   private void refreshBottBound() {
-    this.bottBound = Point.getMinX(vertices).getY();
+    this.bottBound = Point.getMinX(this.vertices).getY();
   }
 
+  /**
+   * Refreshes the right bound value.
+   */
   private void refreshRightBound() {
-    this.rightBound = Point.getMaxX(vertices).getX();
+    this.rightBound = Point.getMaxX(this.vertices).getX();
   }
 
+  /**
+   * Refreshes the top bound value.
+   */
   private void refreshTopBound() {
-    this.topBound = Point.getMaxY(vertices).getY();
+    this.topBound = Point.getMaxY(this.vertices).getY();
   }
 }

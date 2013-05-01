@@ -1,5 +1,10 @@
 package hiperheuristica;
 
+import static hiperheuristica.Direction.DOWN;
+import static hiperheuristica.Direction.LEFT;
+import static hiperheuristica.Direction.RIGHT;
+import static hiperheuristica.Direction.UP;
+
 /**
  *
  * @author Marcel
@@ -25,12 +30,49 @@ public class Point {
     this.y = y;
   }
 
+  /**
+   * Gets the X coordinate of this point.
+   *
+   * @return the x coordinate
+   */
   public int getX() {
     return this.x;
   }
 
+  /**
+   * Gets the Y coordinate of this point.
+   *
+   * @return the y coordinate.
+   */
   public int getY() {
     return this.y;
+  }
+
+  /**
+   * Creates a new point, which is this point moved in a Direction for a
+   * distance.
+   *
+   * @param dir Direction in which to move the point.
+   * @param distance distance to move the point.
+   * @return the moved point.
+   */
+  public Point move(Direction dir, int distance) throws Exception {
+    switch (dir) {
+      case UP:
+        return Point.At(this.getX(), this.getY() + distance);
+
+      case DOWN:
+        return Point.At(this.getX(), this.getY() - distance);
+
+      case LEFT:
+        return Point.At(this.getX() - distance, this.getY());
+
+      case RIGHT:
+        return Point.At(this.getX() + distance, this.getY());
+
+      default:
+        throw new Exception("No such direction.");
+    }
   }
 
   /**

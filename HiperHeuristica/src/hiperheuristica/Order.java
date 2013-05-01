@@ -1,10 +1,10 @@
 package hiperheuristica;
 
 /**
- *
+ * Enumeration to specify sorting order.
  * @author Marcel
  */
-enum Order {
+public enum Order {
 
   ASCENDING, DESCENDING
 }

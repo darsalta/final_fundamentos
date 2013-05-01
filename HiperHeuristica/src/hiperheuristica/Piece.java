@@ -1,7 +1,5 @@
 package hiperheuristica;
 
-import static hiperheuristica.Direction.*;
-
 /**
  * Represents a piece that can be stored inside a Container.
  *
@@ -19,27 +17,11 @@ public class Piece extends Figure {
    * @param distance to move the Piece
    * @param dir in which to move.
    */
-  public void moveDistance(int distance, Direction dir) {
+  public void moveDistance(int distance, Direction dir) throws Exception {
     Point[] vertices = this.getVertices();
     for (int i = 0; i < this.getVertices().length; i++) {
       Point point = vertices[i];
-      switch (dir) {
-        case UP:
-          this.setVertex(i, point.getX(), point.getY() + distance);
-          break;
-
-        case DOWN:
-          this.setVertex(i, point.getX(), point.getY() - distance);
-          break;
-
-        case LEFT:
-          this.setVertex(i, point.getX() - distance, point.getY());
-          break;
-
-        case RIGHT:
-          this.setVertex(i, point.getX() + distance, point.getY());
-          break;
-      }
+      this.setVertex(i, point.move(dir, distance));
     }
   }
 

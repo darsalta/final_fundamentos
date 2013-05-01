@@ -5,15 +5,19 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- *
+ * It is in charge of maintaining a List of Pieces, and gathering data
+ * about them.
  * @author Marcel
  */
 public class PieceList implements Iterable<Piece> {
 
-  private List<Piece> pieces;
+  private final List<Piece> pieces;
   private Piece biggest = null;
   private int piecesArea = 0;
 
+  /**
+   * Initializes this instance.
+   */
   public PieceList() {
     this.pieces = new ArrayList<Piece>();
   }
@@ -124,6 +128,9 @@ public class PieceList implements Iterable<Piece> {
     return this.pieces.<Piece>iterator();
   }
 
+  /**
+   * Clears the pieces in this instance.
+   */
   public void clear() {
     this.pieces.clear();
     this.piecesArea = 0;

@@ -7,6 +7,10 @@ package hiperheuristica;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
+import hiperheuristica.Order;
+import hiperheuristica.Piece;
+import hiperheuristica.PieceList;
+import hiperheuristica.Point;
 
 /**
  *
@@ -93,14 +97,14 @@ public class PieceListTest {
     System.out.println("PieceList.testRemove: does not break on removing last element");
     // Arrange    
     PieceList target = new PieceList();
-    Piece onlyElement = new PieceStub(2);    
+    Piece onlyElement = new PieceStub(2);
     target.add(onlyElement);
 
     // Assure
     assertSame(onlyElement, target.get(0));
 
     // Act
-    target.remove(onlyElement);    
+    target.remove(onlyElement);
 
     // Assert
     assertEquals(0, target.size());
