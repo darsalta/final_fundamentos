@@ -26,27 +26,11 @@ public class ParserTest {
   public ParserTest() {
   }
 
-  @BeforeClass
-  public static void setUpClass() {
-  }
-
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
-  @Before
-  public void setUp() {
-  }
-
-  @After
-  public void tearDown() {
-  }
-
   @Test
   public void testProcessFile() {
     System.out.println("parser.processFile");
     // Arrange
-    //System.out.println((new java.io.File( "." )).getCanonicalPath());
+    // System.out.println((new java.io.File( "." )).getCanonicalPath());
     String file = ".\\input_data\\PF01.txt";
     ProblemInstanceSpec problemInstance = null;
     Parser parser = new Parser();
@@ -54,15 +38,16 @@ public class ParserTest {
     // Act
     try {
       problemInstance = parser.parseFile(file);
+      // Assert        
+      assertNotNull(problemInstance);
+      assertEquals(100, problemInstance.getContainerHeight());
+      assertEquals(100, problemInstance.getContainerWidth());
+      assertEquals(8, problemInstance.getInputPieces().size());
     } catch (IOException ex) {
       Logger.getLogger(ParserTest.class.getName()).log(Level.SEVERE, null, ex);
+      /// Fail fast.
+      throw ex;
     }
-
-    // Assert        
-    assertNotNull(problemInstance);
-    assertEquals(100, problemInstance.getContainerHeight());
-    assertEquals(100, problemInstance.getContainerWidth());
-    assertEquals(8, problemInstance.getInputPieces().size());
   }
 
   @Test
