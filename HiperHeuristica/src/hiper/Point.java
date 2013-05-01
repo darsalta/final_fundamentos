@@ -1,9 +1,9 @@
-package hiperheuristica;
+package hiper;
 
-import static hiperheuristica.Direction.DOWN;
-import static hiperheuristica.Direction.LEFT;
-import static hiperheuristica.Direction.RIGHT;
-import static hiperheuristica.Direction.UP;
+import static hiper.Direction.DOWN;
+import static hiper.Direction.LEFT;
+import static hiper.Direction.RIGHT;
+import static hiper.Direction.UP;
 
 /**
  *
@@ -11,8 +11,8 @@ import static hiperheuristica.Direction.UP;
  */
 public class Point {
 
-  private int x;
-  private int y;
+  private final int x;
+  private final int y;
 
   /**
    * Creates a new point with coordinates at (x,y)

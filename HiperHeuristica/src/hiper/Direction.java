@@ -1,4 +1,4 @@
-package hiperheuristica;
+package hiper;
 
 /**
  *

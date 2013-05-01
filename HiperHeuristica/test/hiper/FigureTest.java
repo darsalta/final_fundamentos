@@ -1,13 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package hiperheuristica;
+package hiper;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-import hiperheuristica.Point;
-import hiperheuristica.Figure;
+import hiper.Point;
+import hiper.Figure;
 
 /**
  *
@@ -424,6 +420,7 @@ public class FigureTest {
     return (Point[]) data[3];
   }
 
+  @SuppressWarnings("unchecked")
   private <T> T getExpectedValue(Object[] data) {
     return (T) data[1];
   }

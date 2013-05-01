@@ -4,8 +4,8 @@
  */
 package parsing;
 
-import hiperheuristica.PieceList;
-import hiperheuristica.Piece;
+import hiper.PieceList;
+import hiper.Piece;
 
 /**
  *

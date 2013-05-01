@@ -1,4 +1,4 @@
-package hiperheuristica;
+package hiper;
 
 /**
  * Represents a piece that can be stored inside a Container.
@@ -9,6 +9,22 @@ public class Piece extends Figure {
 
   public Piece(Point... vertices) {
     super(vertices);
+  }
+
+  /**
+   * Creates a new piece at the lowerLeft Point, with a given width and height.
+   *
+   * @param lowerLeft the position of the lower left corner of the piece.
+   * @param width this instance width
+   * @param height this instance height.
+   */
+  Piece(Point lowerLeft, int width, int height) {
+    super(new Point[]{
+      lowerLeft,
+      Point.At(lowerLeft.getX(), lowerLeft.getY() + height),
+      Point.At(lowerLeft.getX() + width, lowerLeft.getY()),
+      Point.At(lowerLeft.getX() + width, lowerLeft.getY() + height)
+    });
   }
 
   /**

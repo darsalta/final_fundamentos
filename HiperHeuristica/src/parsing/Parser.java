@@ -1,7 +1,7 @@
 package parsing;
 
-import hiperheuristica.Piece;
-import hiperheuristica.Point;
+import hiper.Piece;
+import hiper.Point;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;

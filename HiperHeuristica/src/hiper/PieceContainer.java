@@ -1,4 +1,4 @@
-package hiperheuristica;
+package hiper;
 
 import java.util.Iterator;
 
@@ -13,31 +13,43 @@ public class PieceContainer extends Figure implements Iterable<Piece> {
 
   public PieceContainer(int width, int height) {
     super(new Point[]{
-      new Point(0, 0),
-      new Point(width, 0),
-      new Point(0, height),
-      new Point(width, height)
+      Point.At(0, 0),
+      Point.At(width, 0),
+      Point.At(0, height),
+      Point.At(width, height)
     });
 
+    assert(width > 0);
+    assert(height > 0);
+    
     this.pieces = new PieceList();
   }
 
   /**
    * Puts a piece into this PieceContainer
    *
-   * @param pieza to add.
+   * @param piece to add.
    */
-  public void putPiece(Piece pieza) {
-    this.pieces.add(pieza);
+  public void putPiece(Piece piece) throws Exception {
+    assert (piece != null);
+
+    if (!this.isWithinBounds(piece)) {
+      throw new Exception("Piece must be within bounds.");
+    }
+
+    this.pieces.add(piece);
   }
 
   /**
    * Removes a piece from this PieceContainer.
    *
    * @param piece
+   * @return true if the piece belonged in this PieceContainer and was removed,
+   * false otherwise.
    */
-  public void removePiece(Piece piece) {
-    this.pieces.remove(piece);
+  public boolean removePiece(Piece piece) {
+    assert (piece != null);
+    return this.pieces.remove(piece);
   }
 
   /**
@@ -62,17 +74,16 @@ public class PieceContainer extends Figure implements Iterable<Piece> {
   }
 
   /**
-   * TODO: Needs testings, it is a high risk method. Dado un objeto (con sus
-   * piezas ya colocadas), indica cuál es la distancia vertical que una pieza
-   * candidata puede desplazarse verticalmente hacia abajo hasta topar con otra
-   * pieza o con la base del objeto.
+   * Dado un objeto (con sus piezas ya colocadas), indica cuál es la distancia
+   * vertical que una pieza candidata puede desplazarse verticalmente hacia
+   * abajo hasta topar con otra pieza o con la base del objeto.
    *
    * @param piece to determine its bottom bound within this PieceContainer
-   * @return distance to the bottom bound within this PieceContainer for a piece.
+   * @return distance to the bottom bound within this PieceContainer for a
+   * piece.
    */
   public int distanceToBottBound(Piece piece) {
     assert (piece != null);
-    assert (piece.getBottBound() >= this.getBottBound());
 
     // get biggest maxY
     int bottomBounds = 0;
@@ -87,16 +98,16 @@ public class PieceContainer extends Figure implements Iterable<Piece> {
   }
 
   /**
-   * Dado un objeto (con sus piezas ya colocadas), indica cuál es la distincia 
+   * Dado un objeto (con sus piezas ya colocadas), indica cuál es la distincia
    * horizontal que una pieza candidata puede desplazarse verticalmente hacia la
    * izquierda hasta topar con otra pieza o con la base del objeto.
    *
    * @param piece to determine its left bound within this PieceContainer
-   * @return the distance to the left bound within this PieceContainer for a piece.
+   * @return the distance to the left bound within this PieceContainer for a
+   * piece.
    */
   public int distanceToLeftBound(Piece piece) {
     assert (piece != null);
-    assert (piece.getLeftBound() > this.getLeftBound());
 
     // get biggest maxY
     int leftBounds = 0;
@@ -111,9 +122,8 @@ public class PieceContainer extends Figure implements Iterable<Piece> {
   }
 
   /**
-   * TODO: Test this method, it is high risk method. Determines if a figure is
-   * within the bounds of this PieceContainer and does not overlap with any Figures
-   * already in this PieceContainer
+   * Determines if a figure is within the bounds of this PieceContainer and does
+   * not overlap with any Figures already in this PieceContainer
    *
    * @param figure to check
    * @returns true if the figure is within the bounds of this instance and does
@@ -127,9 +137,8 @@ public class PieceContainer extends Figure implements Iterable<Piece> {
   }
 
   /**
-   * TODO: Test this method, it is a high risk method. Dado un objeto (con sus
-   * piezas ya colocadas), indica si una pieza candidata intersecta con los
-   * límites del objeto o con alguna pieza ya colocada.
+   * Dado un objeto (con sus piezas ya colocadas), indica si una pieza candidata
+   * intersecta con los límites del objeto o con alguna pieza ya colocada.
    *
    * @param figure to check for intersection.
    * @return true if it intersects with this PieceContainer's bounds or a piece
@@ -138,6 +147,7 @@ public class PieceContainer extends Figure implements Iterable<Piece> {
   @Override
   public boolean intersectsWith(Figure figure) {
     assert (figure != null);
+
     if (figure.intersectsWith(this) && !super.isWithinBounds(figure)) {
       return true;
     }
@@ -152,15 +162,15 @@ public class PieceContainer extends Figure implements Iterable<Piece> {
   }
 
   /**
-   * TODO: Needs testing, high risk method. Gets a copy of this instance. But
-   * keep in mind that: this.getCopy().equals(this) == false
+   * Gets a copy of this instance. But keep in mind that:
+   * this.getCopy().equals(this) == false
    *
    * @return A copy of this instance.
    */
-  public PieceContainer getCopy() {
+  public PieceContainer getCopy() throws Exception {
     PieceContainer copy = new PieceContainer(this.getWidth(), this.getHeight());
     for (Piece piece : this.pieces) {
-      copy.putPiece(piece.getCopy());
+      copy.pieces.add(piece);
     }
 
     return copy;
@@ -169,5 +179,13 @@ public class PieceContainer extends Figure implements Iterable<Piece> {
   @Override
   public Iterator<Piece> iterator() {
     return this.pieces.iterator();
+  }
+
+  @Override
+  public String toString() {
+    return "{ area: " + this.getArea()
+            + ", freeArea: " + this.getFreeArea()
+            + ", width: " + this.getWidth()
+            + ", height: " + this.getHeight() + " }";
   }
 }

@@ -1,4 +1,4 @@
-package hiperheuristica;
+package hiper;
 
 /**
  *
@@ -15,7 +15,7 @@ public abstract class Figure implements Comparable<Figure> {
   public Figure(Point[] vertices) {
     assert (vertices != null);
     assert (vertices.length >= 3);
-    this.vertices = vertices;
+    this.vertices = vertices;    
   }
 
   /**
@@ -179,35 +179,44 @@ public abstract class Figure implements Comparable<Figure> {
     return this.vertices.clone();
   }
 
+  @Override
+  public String toString() {
+    return "{ origin: (" + this.getBottBound()
+            + "," + this.getLeftBound()
+            + "), width: " + this.getWidth()
+            + ", height: " + this.getHeight()
+            + ", area: " + this.getArea() + " }";
+  }
+
   /**
    * Sets a specific vertex coordinates
    *
    * @param index the index of the vertex.
-   * @param newPoint the new point for the vertex
+   * @param newVertex the new point for the vertex
    */
-  protected final void setVertex(int index, Point newPoint) {
-    this.vertices[index] = newPoint;
-    if (newPoint.getX() < this.leftBound) {
-      this.leftBound = newPoint.getX();
+  protected final void setVertex(int index, Point newVertex) {
+    this.vertices[index] = newVertex;
+    if (newVertex.getX() < this.leftBound) {
+      this.leftBound = newVertex.getX();
     } else {
       this.refreshLeftBound();
     }
 
-    if (newPoint.getY() < this.bottBound) {
-      this.bottBound = newPoint.getY();
+    if (newVertex.getY() < this.bottBound) {
+      this.bottBound = newVertex.getY();
     } else {
       this.refreshBottBound();
     }
 
 
-    if (newPoint.getX() > this.rightBound) {
-      this.rightBound = newPoint.getX();
+    if (newVertex.getX() > this.rightBound) {
+      this.rightBound = newVertex.getX();
     } else {
       this.refreshRightBound();
     }
 
-    if (newPoint.getY() > this.topBound) {
-      this.topBound = newPoint.getY();
+    if (newVertex.getY() > this.topBound) {
+      this.topBound = newVertex.getY();
     } else {
       this.refreshTopBound();
     }

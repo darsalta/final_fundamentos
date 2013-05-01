@@ -1,4 +1,4 @@
-package hiperheuristica;
+package hiper;
 
 import java.util.ArrayList;
 import java.util.Iterator;

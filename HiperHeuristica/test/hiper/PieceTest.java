@@ -2,14 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package hiperheuristica;
+package hiper;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
-import hiperheuristica.Direction;
-import hiperheuristica.Piece;
-import hiperheuristica.Point;
+import hiper.Piece;
+import hiper.Point;
+import hiper.Direction;
 
 /**
  *
@@ -31,7 +31,7 @@ public class PieceTest {
    * Test of moveDistance method, of class Piece.
    */
   @Test
-  public void testMoveDistance() {
+  public void testMoveDistance() throws Exception {
     for (Object[] testcase : moveDistanceData) {
       System.out.println("Piece.moveDistance: " + testcase[4]);
       // Arrange
@@ -71,7 +71,7 @@ public class PieceTest {
   }
 
   @Test
-  public void testGetCopy_does_not_share_state() {
+  public void testGetCopy_does_not_share_state() throws Exception {
     System.out.println("Piece.GetCopy: does not share state");
     // Arrange
     Piece target = new Piece(new Point[]{

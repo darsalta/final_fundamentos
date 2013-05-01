@@ -2,15 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package hiperheuristica;
+package hiper;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
-import hiperheuristica.Order;
-import hiperheuristica.Piece;
-import hiperheuristica.PieceList;
-import hiperheuristica.Point;
+import hiper.Order;
+import hiper.Piece;
+import hiper.PieceList;
+import hiper.Point;
+import hiper.Order;
 
 /**
  *

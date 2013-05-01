@@ -4,16 +4,12 @@
  */
 package parsing;
 
-import hiperheuristica.Point;
+import hiper.Point;
 import parsing.Parser;
 import parsing.ProblemInstanceSpec;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -32,7 +28,7 @@ public class ParserTest {
     // Arrange
     // System.out.println((new java.io.File( "." )).getCanonicalPath());
     String file = ".\\input_data\\PF01.txt";
-    ProblemInstanceSpec problemInstance = null;
+    ProblemInstanceSpec problemInstance;
     Parser parser = new Parser();
 
     // Act
