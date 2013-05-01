@@ -18,5 +18,5 @@ public interface ProblemInstanceLocal {
     
     void setContainerDimensions(int width, int height);
     
-    PieceList getBestFit();
+    PieceList getBestFit() throws Exception;
 }

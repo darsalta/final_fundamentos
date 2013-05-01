@@ -44,7 +44,7 @@ public class ProblemInstance implements ProblemInstanceLocal {
     }
 
     @Override
-    public PieceList getBestFit() {
+    public PieceList getBestFit() throws Exception {
         List<PieceContainer> containers = algorithm.DJD(
                 this.pieces,
                 this.containerWidth,
