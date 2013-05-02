@@ -108,7 +108,7 @@ public class BinTest {
         Bin instance = new Bin(2);
         instance.addPiece(1);
         instance.addPiece(1);
-        String expResult = "[ 1, 1 ]";
+        String expResult = "{\n  freeCapacity: 0,\n  pieces: [ 1, 1 ]\n}";
         // Act
         String result = instance.toString();
         // Assert

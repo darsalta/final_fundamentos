@@ -71,6 +71,8 @@ class Bin {
             msg += "" + pieces.get(i);
             if (i < this.pieces.size() - 1) {
                 msg += ", ";
+            } else {
+                msg += " ";
             }
         }
         

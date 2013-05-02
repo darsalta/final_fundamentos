@@ -36,8 +36,7 @@ public class Parser {
       String ignoredText = bufReader.readLine();
 
       //Get container dimmensions
-      String containerDimText = bufReader.readLine();
-      // container = getContainerDim(containerDimText);
+      String containerDimText = bufReader.readLine();      
       int containerWidth = parseContainerWidth(containerDimText);
       int containerHeight = parseContainerHeight(containerDimText);
 
