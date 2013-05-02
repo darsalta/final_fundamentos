@@ -3,4 +3,4 @@ language: java
 jdk:
   -oraclejdk7
 
-script: "ant -file HiperHeuristica/build.xml"
+script: "ant -file HiperHeuristica/build.xml && ant -file FirstFitDecreasing/build.xml"
