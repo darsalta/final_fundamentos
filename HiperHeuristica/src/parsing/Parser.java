@@ -28,12 +28,10 @@ public class Parser {
    * @return the ProblemInstanceSpecSpecification
    * @throws IOException
    */
-  public ProblemInstanceSpec parseFile(String filepath) throws IOException {    
-    BufferedReader bufReader = null;
+  public ProblemInstanceSpec parseFile(String filepath) throws IOException {         
     ProblemInstanceSpec problemInstance = null;
-    bufReader = getFileReader(filepath);
 
-    try {
+    try (BufferedReader bufReader = getFileReader(filepath)) {
       //Skip the first line
       String ignoredText = bufReader.readLine();
 
@@ -63,8 +61,6 @@ public class Parser {
       Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex);
       /// Fail fast
       throw ex;
-    } finally {
-      bufReader.close();
     }
 
     return problemInstance;
