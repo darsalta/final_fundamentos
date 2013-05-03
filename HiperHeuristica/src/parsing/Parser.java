@@ -1,107 +1,137 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package parsing;
 
-import hiperheuristica.Container;
-import hiperheuristica.Piece;
-import hiperheuristica.PieceList;
-import hiperheuristica.Point;
+import hiper.Piece;
+import hiper.Point;
+import hiper.ProblemInstanceSpec;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import parsing.ProblemInstance;
 
 /**
+ * This class is in charge of parsing a problem instance definition.
  *
- * @author Priscila Angulo
+ * @author Priscila Angulo, updated by Marcel Valdez
  */
 public class Parser {
-    
-    public Parser(){
-        
-    }
-    
-    public ProblemInstance processFile(String file) throws IOException{
-      FileReader fileReader;
-      BufferedReader bufReader = null;
-      ProblemInstance problemInstance = null;
-      
-      try {
-        fileReader = new FileReader(file);
-        bufReader = new BufferedReader(fileReader);
-      } catch (FileNotFoundException ex) {
-        Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex);
-      }
-        
-      try {      
-        Container container = null;
-        PieceList pieceList = new PieceList();
-        //Skip the first line
-        String line = bufReader.readLine();
-        line = bufReader.readLine();
 
-        //Get container dimmensions
-        container = getContainerDim(line);
+  public Parser() {
+  }
 
-        //Get pieces
-        line = bufReader.readLine();
-        while (line != null) {
-          Piece piece = getPiece(line);
-          pieceList.add(piece);
-          line = bufReader.readLine();
+  /**
+   * Parses a file containing a problem instance specification.
+   *
+   * @param filepath to parse as a problem instance specification.
+   * @return the ProblemInstanceSpecSpecification
+   * @throws IOException
+   */
+  public ProblemInstanceSpec parseFile(String filepath) throws IOException {         
+    ProblemInstanceSpec problemInstance = null;
+
+    try (BufferedReader bufReader = getFileReader(filepath)) {
+      //Skip the first line
+      String ignoredText = bufReader.readLine();
+
+      //Get container dimmensions
+      String containerDimText = bufReader.readLine();      
+      int containerWidth = parseContainerWidth(containerDimText);
+      int containerHeight = parseContainerHeight(containerDimText);
+
+      //Get pieces
+      List<Piece> inputPieces = new ArrayList<Piece>();
+      String pieceText = bufReader.readLine();
+      while (pieceText != null) {
+        if (!pieceText.isEmpty()) {
+          inputPieces.add(new Piece(parsePieceVertices(pieceText)));
         }
 
-        problemInstance = new ProblemInstance(container, pieceList);
-        
+        pieceText = bufReader.readLine();
+      }
 
-      } catch (IOException ex) {
-        Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex);
-      } finally {
-          bufReader.close();
-      }
-      return problemInstance;
+      problemInstance = new ProblemInstanceSpec(
+              containerWidth,
+              containerHeight,
+              inputPieces.toArray(new Piece[]{}));
+
+    } catch (IOException ex) {
+      Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex);
+      /// Fail fast
+      throw ex;
     }
-    
-    public Container getContainerDim(String line){
-      int indexSpace = line.indexOf(" ", 1);
-      int width = Integer.parseInt((line.substring(1, indexSpace)).trim());
-      int height = Integer.parseInt((line.substring(indexSpace+1)).trim());
-      Container container = new Container(width, height);
-      return container;
+
+    return problemInstance;
+  }
+
+  /**
+   * Parses a line of text corresponding to a container specification, getting
+   * its width. Expected text: '[width] [height]'
+   *
+   * @param line of text corresponding to a container specification
+   * @return the container's width
+   * @throws NumberFormatException
+   */
+  int parseContainerWidth(String line) throws NumberFormatException {
+    String trimmed = line.trim();
+    return Integer.parseInt(trimmed.split(" ")[0]);
+  }
+
+  /**
+   * Parses a line of text corresponding to a container specification, getting
+   * its height. Expected text: '[width] [height]'
+   *
+   * @param line of text corresponding to a container specification
+   * @return the container's height
+   * @throws NumberFormatException
+   */
+  int parseContainerHeight(String line) throws NumberFormatException {
+    String trimmed = line.trim();
+    return Integer.parseInt(trimmed.split(" ")[1]);
+  }
+
+  /**
+   * Parses a line corresponding to a Piece's vertices specification. Expected
+   * text: '[number of sides] [x1] [y1] [x2] [y2] .. [xN] [yN]
+   *
+   * @param line corresponding to a Piece's vertices specification.
+   * @return the Points of a Piece's vertices.
+   * @throws NumberFormatException
+   */
+  Point[] parsePieceVertices(String line) throws NumberFormatException {
+    List<Point> vertices = new ArrayList<Point>();
+    String[] tokens = line.trim().split(" ");
+    for (int i = 1; i < tokens.length; i += 2) {
+      int x = Integer.parseInt(tokens[i]);
+      int y = Integer.parseInt(tokens[i + 1]);
+      vertices.add(Point.At(x, y));
     }
-    
-    public Piece getPiece(String line){
-      int lineIndexSpace, readedLength, x, y;
-      Point[] vertices = new Point[4];
-      readedLength = 3;
-    
-      for (int i=0; i<4; i++)
-      {
-        lineIndexSpace = line.indexOf(" ", readedLength);
-        x = Integer.parseInt((line.substring(readedLength, lineIndexSpace)).trim());
-        readedLength += lineIndexSpace - readedLength + 1;
-       
-        if (i==3){
-          y = Integer.parseInt((line.substring(readedLength)).trim());
-        }
-        else{
-          lineIndexSpace = line.indexOf(" ", readedLength);
-          y = Integer.parseInt((line.substring(readedLength, lineIndexSpace)).trim());
-          readedLength += lineIndexSpace - readedLength + 1;
-        }
-        
-        Point point = new Point(x,y);
-        vertices[i] = point;
-      }
-      Piece piece = new Piece(vertices);
-      return piece;
+
+    return vertices.toArray(new Point[]{});
+  }
+
+  /**
+   * Gets a buffered reader for reading a file's content.
+   *
+   * @param filePath of the file to read
+   * @return a buffered reader for the file.
+   * @throws FileNotFoundException
+   */
+  protected BufferedReader getFileReader(String filePath)
+          throws FileNotFoundException {
+    BufferedReader bufReader;
+    FileReader fileReader;
+    try {
+      fileReader = new FileReader(filePath);
+      bufReader = new BufferedReader(fileReader);
+    } catch (FileNotFoundException ex) {
+      Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex);
+      /// Fail fast
+      throw ex;
     }
-   
-    
+
+    return bufReader;
+  }
 }
