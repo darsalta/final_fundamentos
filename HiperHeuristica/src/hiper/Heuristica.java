@@ -38,7 +38,9 @@ public class Heuristica {
       containers.add(container);
       /// Fills the container with the least pieces to fill the initialCapacity
       fillInitialCapacity(inputPieces, container, initialCapacity);
+      
       /// Fills the remaining space with best fit of pieces possible.
+      /// Complexity: O(n^5)
       fillRemainingCapacity(inputPieces, container, increment);
     }
 
@@ -94,6 +96,7 @@ public class Heuristica {
 
     /// Desperdicio máximo permitido
     int maxAllowedWaste = 0;
+        
     /// Keep increasing allowed waste until we find pieces that waste the 
     /// allowed amount or the waste has reached its max (free area).
     while (!tryFitPieces(descOrderPieces, container, maxAllowedWaste)
@@ -117,16 +120,16 @@ public class Heuristica {
           PieceContainer container,
           int maxWaste) throws Exception {
 
-    /// Complexity: O(n)
+    /// Complexity: O(n^2)
     if (tryFitPiecesRec(descOrderPieces, container, 1, maxWaste)) {
       return true;
     }
-    /// Complexity: O(n^2)
+    /// Complexity: O(n^3)
     if (descOrderPieces.size() > 1
             && tryFitPiecesRec(descOrderPieces, container, 2, maxWaste)) {
       return true;
     }
-    /// Complexity: O(n^3)
+    /// Complexity: O(n^4)
     if (descOrderPieces.size() > 2
             && tryFitPiecesRec(descOrderPieces, container, 3, maxWaste)) {
       return true;
@@ -182,6 +185,7 @@ public class Heuristica {
       }
 
       /// If can place the current piece without colisioning
+      /// Complexity: O(n)
       if (tryPlaceInBottomLeft(container, candidate)) {
         container.putPiece(candidate);
         /// Remove the piece, so a recursive call won't reconsider it

@@ -109,7 +109,7 @@ public class ProblemInstanceSpec {
     int smallestWidth = this.getSmallestWidth();
     for (Piece piece : this.inputPieces) {
       if (piece.getArea() > area
-              && this.containerWidth - piece.getWidth() < smallestWidth) {
+              && this.getContainerWidth() - piece.getWidth() < smallestWidth) {
         counter++;
       }
     }
@@ -158,17 +158,14 @@ public class ProblemInstanceSpec {
 
     if (count25 > count33) {
       return 0.25;
-    } else if (count33 > count25) {
-      return 0.33;
-
     }
 
     // Tie breaker
-    if (this.getNumberOfPieces() < 35
-     && this.getAvgPercentOfContainerArea() >= 0.2) {
-      return 0.25;
-    } else {
+    if (this.getNumberOfPieces() >= 35
+     || this.getAvgPercentOfContainerArea() < 0.2) {
       return 0.33;
+    } else {
+      return 0.25;
     }
   }
 
