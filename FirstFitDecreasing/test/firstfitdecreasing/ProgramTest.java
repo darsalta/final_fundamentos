@@ -44,4 +44,34 @@ public class ProgramTest {
         assertEquals(2, (int) result.get(1).getPieces()[0]);
         assertEquals(1, (int) result.get(1).getPieces()[1]);
     }
+
+    @Test
+    public void testFindSample() {
+        // Arrange
+        int[] pieces = new int[]{
+            // num1 = 12, num2 = 10, num3 = 9, num4 = 37, num5 = 38, nr = numero de repeticiones de num1
+            // Regla: num5 = num4+1
+            // Regla: num4 < num5
+            // Regla: num1 * [cuenta de num2] = num4 + 1
+            // Regla: num3 + num1 > num2 * 2
+            // Regla: en los renglones donde haya num2, debe haber 2x num2            
+            // Regla: Número de num1's en renglon 0 = número de renglones con num2
+            // Regla: (num2*2*nr - num1*nr) + (num3*2 - num2) + (num4 - num2*nr) + (num4 - 2*num2 - num3) = num3 - 1
+            665, 561, 12, 12, 12,
+            500, 500, 280, 10, 10,
+            500, 500, 280, 10, 10,
+            500, 500, 280, 10, 10,
+            500, 280, 280, 222, 9, 9,
+            243, 211, 200, 200, 212, 197, 37,
+            189, 162, 150, 150, 150, 150, 154, 158, 37,};
+        int capacity = 1300;
+        // Act
+        List<Bin> bins = Program.binPackFFD(pieces, capacity);
+
+
+        // Assert (visually)
+        for (Bin bin : bins) {
+            System.out.println(bin);
+        }
+    }
 }
