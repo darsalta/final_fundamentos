@@ -333,20 +333,4 @@ public class PieceListTest {
 
     return target;
   }
-
-  class PieceStub extends Piece {
-
-    private int area;
-
-    public PieceStub(int area) {
-      super(new Point[]{Point.At(1, 1), Point.At(2, 2), Point.At(3, 3)});
-
-      this.area = area;
-    }
-
-    @Override
-    public int getArea() {
-      return this.area;
-    }
-  }
 }

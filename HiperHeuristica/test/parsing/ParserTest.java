@@ -9,7 +9,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import parsing.Parser;
-import parsing.ProblemInstanceSpec;
+import hiper.ProblemInstanceSpec;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.logging.Level;

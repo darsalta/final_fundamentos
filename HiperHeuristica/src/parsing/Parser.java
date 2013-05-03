@@ -2,6 +2,7 @@ package parsing;
 
 import hiper.Piece;
 import hiper.Point;
+import hiper.ProblemInstanceSpec;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;

@@ -3,7 +3,7 @@ package hiper;
 import java.io.File;
 import java.util.List;
 import parsing.Parser;
-import parsing.ProblemInstanceSpec;
+import hiper.ProblemInstanceSpec;
 
 /**
  * Get problem instances
@@ -15,8 +15,6 @@ public class Program {
   public static void main(String[] args) throws Exception {
     Heuristica heuristica = new Heuristica();
     Parser parser = new Parser();
-
-    double initialCapacity = 0.25;
 
     String folderName = ".\\input_data";
     final File folder = new File(folderName);
@@ -33,16 +31,30 @@ public class Program {
                 problemInstance.getInputPieces(),
                 problemInstance.getContainerWidth(),
                 problemInstance.getContainerHeight(),
-                initialCapacity);
+                problemInstance.getRecommendedInitialCapacity());        
         System.out.println("\n*********************************************\n");
         System.out.println(fileEntry.getName());
+        System.out.println("Number of pieces: "
+                + problemInstance.getInputPieces().size());
+        System.out.println("Initial capacity used: "
+                + problemInstance.getRecommendedInitialCapacity());
+        System.out.println("Piece average of container area: "
+                + problemInstance.getAvgPercentOfContainerArea());
+        System.out.println("Theoretic number of containers: "
+                + problemInstance.getPerfectNumberOfContainers());
+        System.out.println("Number of wide pieces bigger than initial capacity: "
+                + problemInstance.countBaseWidePiecesBiggerThan(
+                (int) (problemInstance.getContainerHeight()
+                * problemInstance.getContainerWidth()
+                * problemInstance.getRecommendedInitialCapacity())));
         int i = 0;
-        for (PieceContainer container : pieceContainers) {
-          System.out.println("\nContenedor #" + ++i + ": " + container);
-          for (Piece piece : container) {
-            System.out.println("  " + piece);
-          }
-        }
+        System.out.println("Number of containers: " + pieceContainers.size());
+        /*for (PieceContainer container : pieceContainers) {
+         System.out.println("\nContenedor #" + ++i + ": " + container);
+         for (Piece piece : container) {
+         System.out.println("  " + piece);
+         }
+         }*/
       }
     }
   }
