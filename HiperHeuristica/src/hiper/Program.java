@@ -31,7 +31,7 @@ public class Program {
                 problemInstance.getInputPieces(),
                 problemInstance.getContainerWidth(),
                 problemInstance.getContainerHeight(),
-                problemInstance.getRecommendedInitialCapacity());        
+                problemInstance.getRecommendedInitialCapacity());
         System.out.println("\n*********************************************\n");
         System.out.println(fileEntry.getName());
         System.out.println("Number of pieces: "
@@ -49,12 +49,12 @@ public class Program {
                 * problemInstance.getRecommendedInitialCapacity())));
         int i = 0;
         System.out.println("Number of containers: " + pieceContainers.size());
-        /*for (PieceContainer container : pieceContainers) {
-         System.out.println("\nContenedor #" + ++i + ": " + container);
-         for (Piece piece : container) {
-         System.out.println("  " + piece);
-         }
-         }*/
+        for (PieceContainer container : pieceContainers) {
+          System.out.println("\nContenedor #" + ++i + ": " + container);
+          for (Piece piece : container) {
+            System.out.println("  " + piece);
+          }
+        }
       }
     }
   }
