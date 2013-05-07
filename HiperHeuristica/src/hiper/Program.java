@@ -115,6 +115,8 @@ public class Program {
         try (BufferedWriter bufWriter = new BufferedWriter(fileWriter)) {
           bufWriter.write(fileEntry.getName() + ":" + pieceContainersHH.size());
           bufWriter.write("\r\n");
+          bufWriter.write("Hiperheuristica (DJD 1/3 & DJD 1/4)");
+          bufWriter.write("\r\n");
           for (PieceContainer container : pieceContainersHH) {
             for (Piece piece : container) {
               bufWriter.write(piece.getBottBound() + "," 
@@ -165,6 +167,8 @@ public class Program {
         try (BufferedWriter bufWriter = new BufferedWriter(fileWriter)) {
           bufWriter.write(fileEntry.getName() + ":" + pieceContainersH33.size());
           bufWriter.write("\r\n");
+          bufWriter.write("Heuristica (DJD 1/3)");
+          bufWriter.write("\r\n");
           for (PieceContainer container : pieceContainersH33) {
             for (Piece piece : container) {
               bufWriter.write(piece.getBottBound() + "," 
@@ -214,6 +218,8 @@ public class Program {
         fileWriter = new FileWriter("./"+nameFolder_results_H25+"/results_" + fileEntry.getName());
         try (BufferedWriter bufWriter = new BufferedWriter(fileWriter)) {
           bufWriter.write(fileEntry.getName() + ":" + pieceContainersH25.size());
+          bufWriter.write("\r\n");
+          bufWriter.write("Heuristica (DJD 1/4)");
           bufWriter.write("\r\n");
           for (PieceContainer container : pieceContainersH25) {
             for (Piece piece : container) {

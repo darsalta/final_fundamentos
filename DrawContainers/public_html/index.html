@@ -8,34 +8,60 @@ and open the template in the editor.
         <title>Draw Containers</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <style type="text/css">
+            .header {
+                font: italic bold 22px Calibri; 
+                color: #1C89B7;
+            }
+            .header2 {
+                font: italic normal 14px Calibri; 
+            }
             .error {
                 color:red; 
-                font-family:Calibri
+                font-family:Calibri;
             }
             .normalText {
                 font-family:Calibri; 
-                font-weight:bold
+                font-weight:bold;
             }
             .input {
                 position: absolute;
-                font-family:Calibri;
-                border: 1px solid #006;
+                font: normal normal 16px Calibri;
+                border: 1px solid silver;
+                appearance: normal;
+                width: 30%;                
             }
-           
+                            
+            input[type="file"].input::-webkit-file-upload-button {
+                float: left; 
+                position: relative;
+                font: normal bold 16px Calibri;
+                color: white;
+                border: 1px solid silver;
+                background-color: #49B8E8;  
+            }
+            
             .canvas { 
                 border:1px;
                 border-style: dashed;
-                border-color: #000000;
+                border-color: #49B8E8;
+            }
+            
+            .footer {
+                font: italic normal 14px Calibri; 
             }
         </style>
     </head>
     <body>
+        <div class="header">Fundamentos de la Computación: Proyecto final<br></div> 
+        <div class="header2">Mayo 2013<br><br></div>
         <div class="normalText">
-            Problem instance results:
-            <input type="file" name="results_file" id="results_file" class="input" onchange="fileSelected(this);" />
+            Resultados de la instancia del problema: &nbsp;
+            <input type="file" name="results_file" id="results_file" class="input" onchange="fileSelected(this);"/>
         </div>
         <div id="errorMsg" class="error"></div>
+        <div>&nbsp;</div>
         <div id="instanceName" class="normalText">&nbsp;</div>
+        <div id="heuristica" class="normalText">&nbsp;</div>
         <div>
             <canvas id="myCanvas" class="canvas" width="1200" height="600" ></canvas>
         </div>
@@ -46,7 +72,7 @@ and open the template in the editor.
                 //var filename = document.getElementById('results_file').value;
                 var ext = filename.split('.').pop();
                 if(ext === filename || ext.toLowerCase() !== 'txt') 
-                    document.getElementById('errorMsg').innerHTML ="Invalid file format, must be .txt";
+                    document.getElementById('errorMsg').innerHTML ="Formato de archivo inválido, debe ser .txt";
                 else{
                     document.getElementById('errorMsg').innerHTML ="";
                     //openFile(filename);
@@ -67,6 +93,7 @@ and open the template in the editor.
                             data = data.split("\r\n");
                             var header = data[0].split(":");
                             document.getElementById('instanceName').innerHTML = header[0];
+                            document.getElementById('heuristica').innerHTML = data[1];
                             
                             var scale = 2.5;
                             var containerWidth = 100 * scale;
@@ -77,7 +104,8 @@ and open the template in the editor.
                             var cant_rows = Math.ceil(cantContainers / containersPerLine);
                             c.height = cant_rows * (containerHeight + 20);
                             
-                            var j = 1;
+                            //j are the lines, already read the first two
+                            var j = 2;
                             for (var i=0; i<cantContainers; i++)
                             {
                                 var origenContainer_x = 0;
@@ -98,7 +126,7 @@ and open the template in the editor.
                                 ctx.strokeRect(origenContainer_x,origenContainer_y,containerWidth,containerHeight);
                                 
                                 //draw settings for pieces
-                                ctx.strokeStyle="#0000ff"; //blue
+                                ctx.strokeStyle="#2E9CCB"; //blue
                                 ctx.fillStyle="#000000"; //black
                                 ctx.font="normal normal 12px Consolas";
                                 while (data[j]!=="EOC")
@@ -135,5 +163,8 @@ and open the template in the editor.
             
             
         </script>
+        <footer class="footer">
+            Marcel Valdez & Priscila Angulo<br>  
+        </footer>
     </body>
 </html>
