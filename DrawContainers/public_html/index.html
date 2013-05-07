@@ -1,0 +1,139 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Draw Containers</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style type="text/css">
+            .error {
+                color:red; 
+                font-family:Calibri
+            }
+            .normalText {
+                font-family:Calibri; 
+                font-weight:bold
+            }
+            .input {
+                position: absolute;
+                font-family:Calibri;
+                border: 1px solid #006;
+            }
+           
+            .canvas { 
+                border:1px;
+                border-style: dashed;
+                border-color: #000000;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="normalText">
+            Problem instance results:
+            <input type="file" name="results_file" id="results_file" class="input" onchange="fileSelected(this);" />
+        </div>
+        <div id="errorMsg" class="error"></div>
+        <div id="instanceName" class="normalText">&nbsp;</div>
+        <div>
+            <canvas id="myCanvas" class="canvas" width="1200" height="600" ></canvas>
+        </div>
+        <script>
+            function fileSelected(fileInput){
+                var file = fileInput.files[0];
+                var filename = file.name;
+                //var filename = document.getElementById('results_file').value;
+                var ext = filename.split('.').pop();
+                if(ext === filename || ext.toLowerCase() !== 'txt') 
+                    document.getElementById('errorMsg').innerHTML ="Invalid file format, must be .txt";
+                else{
+                    document.getElementById('errorMsg').innerHTML ="";
+                    //openFile(filename);
+                    openFile(file);
+                }
+            }
+            
+            function openFile(file){
+                
+                var reader = new FileReader();
+                reader.onload =
+                        function loaded(evt) {
+                            var c=document.getElementById("myCanvas");
+                            var ctx=c.getContext("2d");
+                            ctx.clearRect(0,0,c.width, c.height);
+                            
+                            var data = evt.target.result;
+                            data = data.split("\r\n");
+                            var header = data[0].split(":");
+                            document.getElementById('instanceName').innerHTML = header[0];
+                            
+                            var scale = 2.5;
+                            var containerWidth = 100 * scale;
+                            var containerHeight = 100 * scale;
+                            
+                            var cantContainers = parseInt(header[1]);
+                            var containersPerLine = Math.floor(c.width / (containerWidth + 10));
+                            var cant_rows = Math.ceil(cantContainers / containersPerLine);
+                            c.height = cant_rows * (containerHeight + 20);
+                            
+                            var j = 1;
+                            for (var i=0; i<cantContainers; i++)
+                            {
+                                var origenContainer_x = 0;
+                                var origenContainer_y = 0;
+                                
+                                if (i >= containersPerLine)
+                                {
+                                    var row = Math.floor((i - containersPerLine) / containersPerLine) + 1;
+                                    var col = i - (containersPerLine * row);
+                                    origenContainer_x = (containerWidth + 10) * col;
+                                    origenContainer_y = (containerHeight + 20) * row;
+                                }
+                                else
+                                    origenContainer_x = (containerWidth + 10) * i;
+                                
+                                //draw container  
+                                ctx.strokeStyle="#008080"; //teal
+                                ctx.strokeRect(origenContainer_x,origenContainer_y,containerWidth,containerHeight);
+                                
+                                //draw settings for pieces
+                                ctx.strokeStyle="#0000ff"; //blue
+                                ctx.fillStyle="#000000"; //black
+                                ctx.font="normal normal 12px Consolas";
+                                while (data[j]!=="EOC")
+                                {
+                                    var dims = data[j].split(",");
+                                    //var orignal size
+                                    var size = dims[2]+","+dims[3];
+                                    
+                                    //scale dimensions
+                                    dims[0] = parseInt(dims[0]) * scale;
+                                    dims[1] = parseInt(dims[1]) * scale;
+                                    dims[2] = parseInt(dims[2]) * scale;
+                                    dims[3] = parseInt(dims[3]) * scale;
+                                    
+                                    //invert origin values
+                                    //x value
+                                    dims[1] = (parseInt(dims[1]) + origenContainer_x);
+                                    //y value
+                                    dims[0] = origenContainer_y + containerHeight - ( parseInt(dims[0]) + dims[3] );
+                                    
+                                    //draw piece
+                                    ctx.strokeRect(dims[1],dims[0],dims[2],dims[3]);
+                                    ctx.fillText(size, dims[1], dims[0]+10);
+
+                                    j++;
+                                }
+                                j++;
+                            }     
+                        };
+                reader.readAsText(file);
+            }
+            
+            
+            
+            
+        </script>
+    </body>
+</html>
