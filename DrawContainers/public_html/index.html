@@ -1,0 +1,170 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Draw Containers</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style type="text/css">
+            .header {
+                font: italic bold 22px Calibri; 
+                color: #1C89B7;
+            }
+            .header2 {
+                font: italic normal 14px Calibri; 
+            }
+            .error {
+                color:red; 
+                font-family:Calibri;
+            }
+            .normalText {
+                font-family:Calibri; 
+                font-weight:bold;
+            }
+            .input {
+                position: absolute;
+                font: normal normal 16px Calibri;
+                border: 1px solid silver;
+                appearance: normal;
+                width: 30%;                
+            }
+                            
+            input[type="file"].input::-webkit-file-upload-button {
+                float: left; 
+                position: relative;
+                font: normal bold 16px Calibri;
+                color: white;
+                border: 1px solid silver;
+                background-color: #49B8E8;  
+            }
+            
+            .canvas { 
+                border:1px;
+                border-style: dashed;
+                border-color: #49B8E8;
+            }
+            
+            .footer {
+                font: italic normal 14px Calibri; 
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">Fundamentos de la Computación: Proyecto final<br></div> 
+        <div class="header2">Mayo 2013<br><br></div>
+        <div class="normalText">
+            Resultados de la instancia del problema: &nbsp;
+            <input type="file" name="results_file" id="results_file" class="input" onchange="fileSelected(this);"/>
+        </div>
+        <div id="errorMsg" class="error"></div>
+        <div>&nbsp;</div>
+        <div id="instanceName" class="normalText">&nbsp;</div>
+        <div id="heuristica" class="normalText">&nbsp;</div>
+        <div>
+            <canvas id="myCanvas" class="canvas" width="1200" height="600" ></canvas>
+        </div>
+        <script>
+            function fileSelected(fileInput){
+                var file = fileInput.files[0];
+                var filename = file.name;
+                //var filename = document.getElementById('results_file').value;
+                var ext = filename.split('.').pop();
+                if(ext === filename || ext.toLowerCase() !== 'txt') 
+                    document.getElementById('errorMsg').innerHTML ="Formato de archivo inválido, debe ser .txt";
+                else{
+                    document.getElementById('errorMsg').innerHTML ="";
+                    //openFile(filename);
+                    openFile(file);
+                }
+            }
+            
+            function openFile(file){
+                
+                var reader = new FileReader();
+                reader.onload =
+                        function loaded(evt) {
+                            var c=document.getElementById("myCanvas");
+                            var ctx=c.getContext("2d");
+                            ctx.clearRect(0,0,c.width, c.height);
+                            
+                            var data = evt.target.result;
+                            data = data.split("\r\n");
+                            var header = data[0].split(":");
+                            document.getElementById('instanceName').innerHTML = header[0];
+                            document.getElementById('heuristica').innerHTML = data[1];
+                            
+                            var scale = 2.5;
+                            var containerWidth = 100 * scale;
+                            var containerHeight = 100 * scale;
+                            
+                            var cantContainers = parseInt(header[1]);
+                            var containersPerLine = Math.floor(c.width / (containerWidth + 10));
+                            var cant_rows = Math.ceil(cantContainers / containersPerLine);
+                            c.height = cant_rows * (containerHeight + 20);
+                            
+                            //j are the lines, already read the first two
+                            var j = 2;
+                            for (var i=0; i<cantContainers; i++)
+                            {
+                                var origenContainer_x = 0;
+                                var origenContainer_y = 0;
+                                
+                                if (i >= containersPerLine)
+                                {
+                                    var row = Math.floor((i - containersPerLine) / containersPerLine) + 1;
+                                    var col = i - (containersPerLine * row);
+                                    origenContainer_x = (containerWidth + 10) * col;
+                                    origenContainer_y = (containerHeight + 20) * row;
+                                }
+                                else
+                                    origenContainer_x = (containerWidth + 10) * i;
+                                
+                                //draw container  
+                                ctx.strokeStyle="#008080"; //teal
+                                ctx.strokeRect(origenContainer_x,origenContainer_y,containerWidth,containerHeight);
+                                
+                                //draw settings for pieces
+                                ctx.strokeStyle="#2E9CCB"; //blue
+                                ctx.fillStyle="#000000"; //black
+                                ctx.font="normal normal 12px Consolas";
+                                while (data[j]!=="EOC")
+                                {
+                                    var dims = data[j].split(",");
+                                    //var orignal size
+                                    var size = dims[2]+","+dims[3];
+                                    
+                                    //scale dimensions
+                                    dims[0] = parseInt(dims[0]) * scale;
+                                    dims[1] = parseInt(dims[1]) * scale;
+                                    dims[2] = parseInt(dims[2]) * scale;
+                                    dims[3] = parseInt(dims[3]) * scale;
+                                    
+                                    //invert origin values
+                                    //x value
+                                    dims[1] = (parseInt(dims[1]) + origenContainer_x);
+                                    //y value
+                                    dims[0] = origenContainer_y + containerHeight - ( parseInt(dims[0]) + dims[3] );
+                                    
+                                    //draw piece
+                                    ctx.strokeRect(dims[1],dims[0],dims[2],dims[3]);
+                                    ctx.fillText(size, dims[1], dims[0]+10);
+
+                                    j++;
+                                }
+                                j++;
+                            }     
+                        };
+                reader.readAsText(file);
+            }
+            
+            
+            
+            
+        </script>
+        <footer class="footer">
+            Marcel Valdez & Priscila Angulo<br>  
+        </footer>
+    </body>
+</html>
