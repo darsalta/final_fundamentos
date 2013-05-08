@@ -1,5 +1,5 @@
 PF02.txt:7
-Heuristica (DJD 1/4)
+Heurística: DJD 1/4
 0,0,56,62
 0,56,26,100
 62,0,56,38

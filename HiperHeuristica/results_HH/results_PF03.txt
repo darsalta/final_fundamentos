@@ -1,5 +1,5 @@
 PF03.txt:8
-Hiperheuristica (DJD 1/3 & DJD 1/4)
+Hiperheurística: DJD 1/4
 0,0,84,54
 54,0,56,46
 0,84,16,54
