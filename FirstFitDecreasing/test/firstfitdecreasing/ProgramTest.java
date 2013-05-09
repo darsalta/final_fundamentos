@@ -72,30 +72,4 @@ public class ProgramTest {
         // Assert (visually)
         System.out.println(result);
     }
-    
-    @Test
-    public void testFindSample2() {
-        // Arrange
-        int[] pieces = new int[]{
-            // num1 = 1, num2 = 2, num3 = 5, num4 = 6, num5 = 7
-            // Regla: num4 < num5
-            // Regla: num3 + num1 > num2 * 2
-            // Regla: en los renglones donde haya num2, debe haber 2x num2
-            190, 19, 8, 8, 8,
-            79, 79, 69, 3, 3,
-            79, 79, 69, 3, 3,
-            79, 79, 69, 3, 3,
-            78, 76, 77, 1, 1,
-            75, 73, 71, 14,
-            69, 44, 36, 35, 35, 14
-            };
-        int capacity = 233;
-        // Act
-        //List<Bin> bins = Program.binPackFFD(pieces, capacity);
-        BinPackingResult result = new BinPackingResult(Program.binPackFFD(pieces, capacity));
-
-        // Assert (visually)
-        System.out.println(result);
-    }
-    
 }
