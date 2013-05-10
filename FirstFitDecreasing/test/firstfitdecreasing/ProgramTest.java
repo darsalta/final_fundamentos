@@ -62,16 +62,14 @@ public class ProgramTest {
             500, 500, 280, 10, 10,
             500, 500, 280, 10, 10,
             500, 280, 280, 222, 9, 9,
-            243, 211, 200, 200, 212, 197, 37,
-            189, 162, 150, 150, 150, 150, 154, 158, 37,};
+            243, 211, 200, 200, 212, 197, 37, //38,
+            189, 162, 150, 150, 150, 150, 154, 158, 37};
         int capacity = 1300;
         // Act
-        List<Bin> bins = Program.binPackFFD(pieces, capacity);
-
+        //List<Bin> bins = Program.binPackFFD(pieces, capacity);
+        BinPackingResult result = new BinPackingResult(Program.binPackFFD(pieces, capacity));
 
         // Assert (visually)
-        for (Bin bin : bins) {
-            System.out.println(bin);
-        }
+        System.out.println(result);
     }
 }

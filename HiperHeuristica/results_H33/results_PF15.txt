@@ -1,5 +1,5 @@
 PF15.txt:6
-Heuristica (DJD 1/3)
+Heurística: DJD 1/3
 0,0,50,58
 0,50,50,48
 48,50,44,50
