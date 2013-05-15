@@ -19,6 +19,9 @@ and open the template in the editor.
                 color:red; 
                 font-family:Calibri;
             }
+            .instrucciones {
+                font: normal normal 14px Calibri; 
+            }
             .normalText {
                 font-family:Calibri; 
                 font-weight:bold;
@@ -54,6 +57,15 @@ and open the template in the editor.
     <body>
         <div class="header">Fundamentos de la Computación: Proyecto final<br></div> 
         <div class="header2">Mayo 2013<br><br></div>
+        <div class="instrucciones">
+            Instrucciones: 
+            <br>1. Ejecutar proyecto "HiperHeuristica" para generar resultados.
+            <br>2. Seleccionar un archivo de resultados de las carpetas:
+            <br>&nbsp;&nbsp;&nbsp;HiperHeuristica\results_H25
+            <br>&nbsp;&nbsp;&nbsp;HiperHeuristica\results_H33
+            <br>&nbsp;&nbsp;&nbsp;HiperHeuristica\results_HH
+            <br>&nbsp;
+        </div>
         <div class="normalText">
             Resultados de la instancia del problema: &nbsp;
             <input type="file" name="results_file" id="results_file" class="input" onchange="fileSelected(this);"/>
@@ -63,7 +75,7 @@ and open the template in the editor.
         <div id="instanceName" class="normalText">&nbsp;</div>
         <div id="heuristica" class="normalText">&nbsp;</div>
         <div>
-            <canvas id="myCanvas" class="canvas" width="1200" height="600" ></canvas>
+            <canvas id="myCanvas" class="canvas" width="520" height="600" ></canvas>
         </div>
         <script>
             function fileSelected(fileInput){
@@ -157,6 +169,7 @@ and open the template in the editor.
                             }     
                         };
                 reader.readAsText(file);
+                reader.close();
             }
             
             

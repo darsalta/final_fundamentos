@@ -1,5 +1,5 @@
 PF01.txt:4
-Hiperheurística: DJD 1/4
+Hiperheurística seleccionó DJD 1/4
 0,0,100,66
 66,0,100,34
 EOC

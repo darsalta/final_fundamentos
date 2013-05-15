@@ -1,5 +1,5 @@
 PF14.txt:6
-Hiperheurística: DJD 1/4
+Hiperheurística seleccionó DJD 1/4
 0,0,68,52
 52,0,70,30
 0,70,30,100

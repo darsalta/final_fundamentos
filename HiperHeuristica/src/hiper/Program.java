@@ -154,9 +154,9 @@ public class Program {
       //Header: heuristic used
       if (initial_capacity == 0){
         if (recommended_capacity == (float).33)
-          bufWriter.write("Hiperheurística: DJD 1/3");
+          bufWriter.write("Hiperheurística seleccionó DJD 1/3");
         else
-          bufWriter.write("Hiperheurística: DJD 1/4");
+          bufWriter.write("Hiperheurística seleccionó DJD 1/4");
       }
       else if (initial_capacity == (float).33)
         bufWriter.write("Heurística: DJD 1/3");

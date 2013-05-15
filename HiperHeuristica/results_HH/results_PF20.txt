@@ -1,5 +1,5 @@
 PF20.txt:6
-Hiperheurística: DJD 1/4
+Hiperheurística seleccionó DJD 1/4
 0,0,38,90
 0,38,62,48
 48,38,62,36

@@ -1,5 +1,5 @@
 PF02.txt:7
-Hiperheurística: DJD 1/4
+Hiperheurística seleccionó DJD 1/4
 0,0,56,62
 0,56,26,100
 62,0,56,38
