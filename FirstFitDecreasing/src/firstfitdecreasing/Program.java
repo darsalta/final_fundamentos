@@ -80,8 +80,9 @@ public class Program {
         assert (pieces.length > 0);
         assert (binCapacity > 0);
 
-        Arrays.sort(pieces);
+        
         // Iterate in opposite order (descending values)
+        countingSort(pieces);
         List<Bin> bins = new ArrayList<>();
         bins.add(new Bin(binCapacity));
         for (int i = pieces.length - 1; i >= 0; i--) {
@@ -113,5 +114,39 @@ public class Program {
                 binPackFFD(pieces, binCapacity));
         System.out.println(result);
         System.out.println("****************************************");
+    }
+    
+    /**
+     * Does a counting sort on the numbers in the array [a]     
+     * @param a the input array
+     */
+    private static void countingSort(int[] a)
+    {
+        assert(a != null && a.length > 0);
+        
+        int max = a[0];
+        int min = a[0];
+        for(int i = 1; i < a.length; i++) {
+            if(a[i] > max) {
+                max = a[i];
+            } else if (a[i] < min) {
+                min = a[i];
+            }                        
+        }
+        
+        // this will hold all possible values, from low to high
+        int[] counts = new int[max - min + 1];
+        for (int x : a) {
+            counts[x - min]++;
+        } // - low so the lowest possible value is always 0
+
+        int current = 0;
+        for (int i = 0; i < counts.length; i++)
+        {
+            // fills counts[i] elements of value i + low in current
+            Arrays.fill(a, current, current + counts[i], i + min);
+            // leap forward by counts[i] steps
+            current += counts[i];
+        }
     }
 }
