@@ -48,15 +48,16 @@ public class ProgramTest {
     @Test
     public void testFindSample() {
         // Arrange
-        int[] pieces = new int[]{
-            // num1 = 12, num2 = 10, num3 = 9, num4 = 37, num5 = 38, nr = numero de repeticiones de num1
-            // Regla: num5 = num4+1
-            // Regla: num4 < num5
-            // Regla: num1 * [cuenta de num2] = num4 + 1
-            // Regla: num3 + num1 > num2 * 2
-            // Regla: en los renglones donde haya num2, debe haber 2x num2            
-            // Regla: Número de num1's en renglon 0 = número de renglones con num2
-            // Regla: (num2*2*nr - num1*nr) + (num3*2 - num2) + (num4 - num2*nr) + (num4 - 2*num2 - num3) = num3 - 1
+        // y = 12, x = 10, z = 9, w = 37, v = 38, n = numero de repeticiones de y
+            // Regla: v = w+1
+            // Regla: w = v-1
+            // Regla: y * n = w - 1
+            // Regla: z + y = 2x + 1
+            // Regla: z = x - 1
+            // Regla: y = x + 2
+            // Regla: En los renglones donde haxa x, debe haber 2 x's
+            // Regla: Debe haber n renglones donde haya x
+        int[] more_containers = new int[]{            
             665, 561, 12, 12, 12,
             500, 500, 280, 10, 10,
             500, 500, 280, 10, 10,
@@ -64,12 +65,25 @@ public class ProgramTest {
             500, 280, 280, 222, 9, 9,
             243, 211, 200, 200, 212, 197, 37, //38,
             189, 162, 150, 150, 150, 150, 154, 158, 37};
-        int capacity = 1300;
+        
+        int[] less_containers = new int[]{            
+            665, 561, 12, 12, 12,
+            500, 500, 280, 10, 10,
+            500, 500, 280, 10, 10,
+            500, 500, 280, 10, 10,
+            500, 280, 280, 222, 9, 9,
+            243, 211, 200, 200, 212, 197, 37, 38,
+            189, 162, 150, 150, 150, 150, 154, 158, 37};
+        int capacitx = 1300;
         // Act
-        //List<Bin> bins = Program.binPackFFD(pieces, capacity);
-        BinPackingResult result = new BinPackingResult(Program.binPackFFD(pieces, capacity));
+        BinPackingResult bigger_result = new BinPackingResult(
+                Program.binPackFFD(more_containers, capacitx));
+        BinPackingResult smaller_result = new BinPackingResult(
+                Program.binPackFFD(less_containers, capacitx));
 
         // Assert (visually)
-        System.out.println(result);
+        assertTrue(
+                bigger_result.getNumberOfBins() > smaller_result.getNumberOfBins());
+        //System.out.println(result);
     }
 }

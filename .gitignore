@@ -19,6 +19,7 @@ _yardoc
 # Editor backup files
 .xml~
 *.orig
+~.*
 
 /HiperHeuristica/nbproject/private/
 /HiperHeuristica/dist/
