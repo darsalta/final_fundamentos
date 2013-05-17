@@ -6,7 +6,7 @@ de la computación; así como el ensayo con formato de artículo con una
 introducción, metodología, discusión y conclusión tratando el desarollo de la 
 solución a los ejercicios.
 
-**Resultados de Compilación y Pruebas**: ![Build Status](https://travis-ci.org/marcel-valdez/final_fundamentos.png?branch=master)(https://travis-ci.org/marcel-valdez/final_fundamentos)  
+**Resultados de Compilación y Pruebas**: [![Build Status](https://travis-ci.org/marcel-valdez/final_fundamentos.png?branch=master)](https://travis-ci.org/marcel-valdez/final_fundamentos)  
 
 **Nota:** Para regenerar el archivo README.pdf, debe ejecutar el script: `$ ./make_readme.sh`  
 
