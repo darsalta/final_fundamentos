@@ -18,8 +18,8 @@ solución a los ejercicios.
 
 ### Integrantes
 
-1. Priscila Angulo
-2. Marcel valdez
+- Priscila Angulo - <A00813460@itesm.mx>
+- Marcel Valdez - <A00790834@itesm.mx>
 
 ## Contenido
 
